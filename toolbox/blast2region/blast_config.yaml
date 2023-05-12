@@ -1,0 +1,30 @@
+# FASTA ID string processing parameters
+# Each top level key points to a specific database
+# The 'custom' key allows the user to customize the process to fit their needs
+id_sep_dict:
+  'nr':
+    level1: [' ', 0]
+  'sprot':
+    level1: [' ', 0]
+    level2: ['|', 1]
+  'custom':
+    level1: []
+
+# Path to blast-formated database
+db_path:
+  "nr": "sequence.fasta" #"/shared/db/genbank/latest/blast/nr",
+  "sprot": "toy_hk_db" #"/groups/doudna/projects/shared_databases/blast/swissprot.faa"
+  "pdb": ""
+
+# Set the maximum number of Blastp hits to keep
+#  Results that surpass this limit will be kept based on lowest evalue
+blast_nkeep: 50
+
+# Email address required for Entrez queries
+entrez_login: "thedoudnalab@gmail.com"
+
+# NCBI Databases to be used by EFetch
+efetch_db: ['nucleotide', 'nuccore']
+
+# Output directory path
+dir_out: "blast2region_report"

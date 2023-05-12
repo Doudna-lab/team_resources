@@ -15,8 +15,8 @@ id_sep_dict:
 
 # Path to blast-formated database
 db_path:
-  "nr": "/shared/db/genbank/latest/blast/nr",
-  "sprot": "/groups/doudna/projects/shared_databases/blast/swissprot.faa"
+  "nr": "scratch/sequence.fasta"#"/shared/db/genbank/latest/blast/nr"
+  "sprot": "scratch/toy_cas6_db"#"/groups/doudna/projects/shared_databases/blast/swissprot.faa"
   "pdb": ""
 
 # Set the maximum number of Blastp hits to keep

@@ -1,0 +1,8 @@
+name: ncbi
+channels:
+  - defaults
+dependencies:
+  - biopython
+  - pyyaml
+  - bioservices
+prefix: /Users/bellieny/miniconda3/envs/ncbi

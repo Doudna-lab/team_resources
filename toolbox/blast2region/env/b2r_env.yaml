@@ -1,6 +1,7 @@
 name: ncbi
 channels:
-  - defaults
+  - conda-forge
+  - bioconda
 dependencies:
   - biopython
   - pyyaml

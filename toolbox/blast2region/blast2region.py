@@ -233,7 +233,7 @@ def gb_plier(query_to_gb_dict, uid_to_acc, win_size):
 						# Gather protein data for reference
 						prep_prot_dict = {"query": query,
 						                  "nuccore_acc": gbk.id,
-						                  "region_seq": gbk.seq[start:end + 1],
+						                  # "region_seq": gbk.seq[start:end + 1],
 						                  "window_start": start,
 						                  "window_end": end,
 						                  "feature_start": f_start,
@@ -261,11 +261,13 @@ def write_reports(list_report_dicts):
 
 
 def export_gbs(query_to_gb_dict, parent_path):
-	os.mkdir(parent_path)
+	if not os.path.exists(parent_path):
+		os.mkdir(parent_path)
 	for query in query_to_gb_dict:
 		query_suffix = re.sub(r'\|', '_', query[0:20])
 		out_path = f"{parent_path}{os.sep}{query_suffix}"
-		os.mkdir(out_path)
+		if not os.path.exists(out_path):
+			os.mkdir(out_path)
 		for hit in query_to_gb_dict[query]:
 			gbk = query_to_gb_dict[query][hit]
 			filename = f"{hit}.gb"
@@ -328,6 +330,8 @@ def main():
 	                                         evalue,
 	                                         config["id_sep_dict"][db_tag],
 	                                         config["blast_nkeep"])
+	# Remove blast XML temp file
+	os.remove('temp.xml')
 	# Entrez authentication
 	print("Entrez login")
 	Entrez.email = config["entrez_login"]

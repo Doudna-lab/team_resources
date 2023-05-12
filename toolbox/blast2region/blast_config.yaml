@@ -1,6 +1,9 @@
 # FASTA ID string processing parameters
-# Each top level key points to a specific database
-# The 'custom' key allows the user to customize the process to fit their needs
+# Each top level key points to a specific database (e.g. nr). The subsequent 'level#'
+#  describe which field separator will be used to split the string,
+#  and which field will be kept after the split
+# The 'custom' key allows users to customize the process to fit their needs
+#   This option is triggered by default when the user provides a custom database path
 id_sep_dict:
   'nr':
     level1: [' ', 0]
@@ -12,8 +15,8 @@ id_sep_dict:
 
 # Path to blast-formated database
 db_path:
-  "nr": "sequence.fasta" #"/shared/db/genbank/latest/blast/nr",
-  "sprot": "toy_hk_db" #"/groups/doudna/projects/shared_databases/blast/swissprot.faa"
+  "nr": "/shared/db/genbank/latest/blast/nr",
+  "sprot": "/groups/doudna/projects/shared_databases/blast/swissprot.faa"
   "pdb": ""
 
 # Set the maximum number of Blastp hits to keep

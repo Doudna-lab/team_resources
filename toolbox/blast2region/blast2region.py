@@ -116,7 +116,10 @@ def blast_result_parser(xml_temp_path, eval_threshold, sep_instructions, nkeep):
 def ukb2ncbi(uid):
 	u = UniProt(verbose=False)
 	# gbk_id = u.mapping("UniProtKB_AC-ID", "EMBL-GenBank-DDBJ", query=uid, polling_interval_seconds=3, max_waiting_time=100)["results"][0]["to"]
-	prot_id = u.mapping("UniProtKB_AC-ID", "EMBL-GenBank-DDBJ_CDS", query=uid, polling_interval_seconds=3, max_waiting_time=100)["results"][0]["to"]
+	try:
+		prot_id = u.mapping("UniProtKB_AC-ID", "EMBL-GenBank-DDBJ_CDS", query=uid, polling_interval_seconds=3, max_waiting_time=100)["results"][0]["to"]
+	except TypeError:
+		prot_id = ''
 	return prot_id
 
 

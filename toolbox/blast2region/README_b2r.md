@@ -1,17 +1,17 @@
 # - `toolbox/blast2region.py`
 ### This tool runs a BlastP on a FASTA-formatted file containing at least one protein sequence using either explicitly delimited databases or a custom database provided by the user. It returns the GenBank-formatted genomic region associated with each hit found in the BlastP search.
 ###    (0) QUICK-START
-####        0.1 - Provide a FASTA-formatted file as a positional argument for a quick standard run.
+####        0.1 - The argument `--help` (or `-h`) can be used for usage instructions:
 ```
 python3 blast2region.py --help
 ```
-####        0.2 - The argument `--help` (or `-h`) can be used for usage instructions:
+####        0.2 - Provide a FASTA-formatted file as a positional argument for a quick standard run.
 ```
 python3 blast2region.py <myfasta.faa>
 ```
 ####        0.3 - BlasP parameters such as number of threads and e-value cutoff can be controlled by the tool respectively with the `-t` and `-e` options:
 ```
-
+python3 blast2region.py <my_fasta.faa> -t 6 -e 0.05
 ```
 ###    (1) DATABASES
 ####       1.1 -  Databases can be either explicitly delimited in the `config/blast_config.yaml` file (*current version: ncbi-nr and swissprot*) or provided as a file path by the user.

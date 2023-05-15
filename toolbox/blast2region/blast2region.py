@@ -12,6 +12,8 @@ from Bio.Blast.Applications import NcbiblastpCommandline
 from Bio.Blast import NCBIXML
 from Bio import Entrez
 import yaml
+import urllib.request
+import urllib.error
 
 # Load config file
 with open("config/blast_config.yaml", "r") as f:
@@ -88,7 +90,7 @@ def id_parsing(id_string, sep_dict):
 def hit_report_limit(query_to_hit_dict, nkeep):
 	filtered_dict = {}
 	hit_id_list = []
-	# Within each blast query, keep a maximum of 50 hits based on lowest evaue
+	# Within each blast query, keep a maximum of nkeep hits based on lowest evaue
 	for query in query_to_hit_dict:
 		series = pd.DataFrame.from_dict(query_to_hit_dict[query], orient='index')
 		fseries = series['e-value'].nsmallest(nkeep, keep='first')
@@ -127,17 +129,26 @@ def elink_routine(db, hit_uid):
 	dup_check = []
 	not_found = ""
 	linked = ""
-	handle = Entrez.elink(dbfrom="protein", db=db, id=f"{hit_uid}")
+	link_record = ""
+	server_attempts = 0
+	try:
+		handle = Entrez.elink(dbfrom="protein", db=db, id=f"{hit_uid}")
+	except urllib.error.HTTPError as err:
+		if err.code == 500:
+			print(f'An internal server error occurred while handling the accession {hit_uid}')
+			not_found = hit_uid
+			return linked, hit_uid, not_found
 	try:
 		link_record = Entrez.read(handle)
 	except RuntimeError:
 		not_found = hit_uid
-	try:
-		linked = link_record[0]['LinkSetDb'][0]['Link'][0]['Id']
-		if linked not in dup_check:
-			dup_check.append(linked)
-	except (IndexError, KeyError):
-		not_found = hit_uid
+	if link_record:
+		try:
+			linked = link_record[0]['LinkSetDb'][0]['Link'][0]['Id']
+			if linked not in dup_check:
+				dup_check.append(linked)
+		except (IndexError, KeyError):
+			not_found = hit_uid
 	handle.close()
 	return linked, hit_uid, not_found
 

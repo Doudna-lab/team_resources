@@ -1,6 +1,16 @@
 # - `toolbox/blast2region.py`
 ### This tool runs a BlastP on a FASTA-formatted file containing at least one protein sequence using either explicitly delimited databases or a custom database provided by the user. It returns the GenBank-formatted genomic region associated with each hit found in the BlastP search.
 ###    (0) QUICK-START
+####        0.0 Set up the Anaconda environment to start running. The conda environment in `env/b2r_env.yaml` contains all `blast2region.py` dependencies. It can be installed/activated as follows (tested on Biotite on *05/15/2023*):
+##### - Create environment:
+```
+conda env create -f env/b2r_env.yaml
+```
+##### - Activate environment:
+```
+conda activate blast2region
+```
+
 ####        0.1 - The argument `--help` (or `-h`) can be used for usage instructions:
 ```
 python3 blast2region.py --help
@@ -22,13 +32,3 @@ python3 blast2region.py <my_fasta.faa> -t 6 -e 0.05
 #####          -   An array of directories named after each query sequence provided in the input. Within each directory, the genomic regions of each hit found in the BlastP search will be saved in GenBank format (*.gb*).
 #####          -   The regions that will be gathered around each BlastP hit encoding gene depend on the `window_size` parameter in `config/blast_config.yaml`. The default window is set to 15 kilobases.
 ####       2.2 - To keep the output size under control, the tool limits the maximum number of hits reported based on the `blast_nkeep` parameter in `config/blast_config.yaml`. This will perform a simple selection the top N hits based exclusively on e-value. 
-###    (3) ENVIRONMENT
-####       3.1 - The conda environment in `env/b2r_env.yaml` contains all `blast2region.py` dependencies. It can be installed/activated as follows (tested on Biotite on *05/15/2023*):
-##### - Create environment:
-```
-conda env create -f env/b2r_env.yaml
-```
-##### - Activate environment:
-```
-conda activate blast2region
-```

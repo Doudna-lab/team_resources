@@ -1,5 +1,4 @@
 # Native modules
-import argparse
 import os
 from argparse import ArgumentParser as argp
 import copy
@@ -45,7 +44,6 @@ def parse_arguments():
 	                    dest='threads',
 	                    default=1,
 	                    help='Specify the n of threads to compute this search. [Default: 1]')
-
 
 	# Parse arguments from the command line
 	arguments = parser.parse_args()
@@ -273,22 +271,6 @@ def export_gbs(query_to_gb_dict, parent_path):
 			filename = f"{hit}.gb"
 			with open(f"{out_path}{os.sep}{filename}", "w") as gb_handle:
 				SeqIO.write(gbk, gb_handle, "genbank")
-
-#
-#
-# #
-# fasta_in = "blast2region/toy_hk_query.fasta"
-# evalue = 0.005
-# threads = 2
-# temp = "blast2region/temp.xml"
-# out_path = "delete.out"
-# # Set database tag and path
-# db_path = "blast2region/toy_hk_db"
-# db_tag = 'sprot'
-# with open("blast2region/blast_config.yaml", "r") as f:
-# 	config = yaml.load(f, Loader=yaml.FullLoader)
-# efecth_db_list = config['efetch_db']
-#
 
 
 def main():

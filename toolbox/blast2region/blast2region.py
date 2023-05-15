@@ -128,7 +128,10 @@ def elink_routine(db, hit_uid):
 	not_found = ""
 	linked = ""
 	handle = Entrez.elink(dbfrom="protein", db=db, id=f"{hit_uid}")
-	link_record = Entrez.read(handle)
+	try:
+		link_record = Entrez.read(handle)
+	except RuntimeError:
+		not_found = hit_uid
 	try:
 		linked = link_record[0]['LinkSetDb'][0]['Link'][0]['Id']
 		if linked not in dup_check:

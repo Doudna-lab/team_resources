@@ -29,5 +29,8 @@ entrez_login: "thedoudnalab@gmail.com"
 # NCBI Databases to be used by EFetch
 efetch_db: ['nucleotide', 'nuccore']
 
+# Set the region size to be gathered around each BlastP hit
+window_size: 15000
+
 # Output directory path
 dir_out: "blast2region_report"

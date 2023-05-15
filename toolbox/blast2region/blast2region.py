@@ -302,6 +302,8 @@ def main():
 	temp = "temp.xml"
 	# NCBI databases to search
 	efecth_db_list = config['efetch_db']
+	# Set the region window size
+	wsize = config["window_size"]
 	# Set database tag and path
 	db_path = path_to_databases(args.database, config["db_path"])
 	db_tag = args.database
@@ -346,7 +348,7 @@ def main():
 
 	# Narrow down Genbank files based on hit UIDs
 	print("Extracting relevant features from GenBank objects")
-	targeg_gb_dict, target_hit_dict = gb_plier(gb_seqrec_per_query, hit_to_link, 2000)
+	targeg_gb_dict, target_hit_dict = gb_plier(gb_seqrec_per_query, hit_to_link, wsize)
 
 	# Generate summary dataframe
 	print("Generate reports")

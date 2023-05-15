@@ -1,4 +1,4 @@
-name: ncbi
+name: blast2region
 channels:
   - conda-forge
   - bioconda
@@ -6,4 +6,3 @@ dependencies:
   - biopython
   - pyyaml
   - bioservices
-prefix: blast2region

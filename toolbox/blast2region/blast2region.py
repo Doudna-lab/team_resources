@@ -15,7 +15,7 @@ from Bio import Entrez
 import yaml
 
 # Load config file
-with open("blast_config.yaml", "r") as f:
+with open("config/blast_config.yaml", "r") as f:
 	config = yaml.load(f, Loader=yaml.FullLoader)
 
 

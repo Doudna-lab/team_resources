@@ -6,4 +6,4 @@ dependencies:
   - biopython
   - pyyaml
   - bioservices
-prefix: /Users/bellieny/miniconda3/envs/ncbi
+prefix: blast2region

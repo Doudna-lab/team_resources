@@ -1,7 +1,7 @@
 # - `toolbox/blast2region.py`
 ### This tool runs a BlastP on a FASTA-formatted file containing at least one protein sequence using either explicitly delimited databases or a custom database provided by the user. It returns the GenBank-formatted genomic region associated with each hit found in the BlastP search.
 ###    (0) QUICK-START
-####        0.0 Set up the Anaconda environment to start running. The conda environment in `env/b2r_env.yaml` contains all `blast2region.py` dependencies. It can be installed/activated as follows (tested on Biotite on *05/15/2023*):
+####        0.0 - Set up the Anaconda environment to start running. The conda environment in `env/b2r_env.yaml` contains all `blast2region.py` dependencies. It can be installed/activated as follows (tested on Biotite on *05/15/2023*):
 ##### - Create environment:
 ```
 conda env create -f env/b2r_env.yaml

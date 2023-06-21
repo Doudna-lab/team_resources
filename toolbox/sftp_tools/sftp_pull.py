@@ -1,5 +1,5 @@
 import pysftp
-
+import os
 
 def transfer_callback(event, chunk):
     # Callback function to track the transfer progress
@@ -11,15 +11,17 @@ def transfer_callback(event, chunk):
         print(f"Downloaded {chunk} bytes")
 
 
-# Create an instance of the `pysftp.Connection` class
-with pysftp.Connection('sftp.genewiz.com',
-                       username='isylvain_berkeley',
-                       password='aS06jJvl2oMG0MvKIBtx') as sftp:
+def download_directory(sftp, remote_dir, local_dir):
+    # Recursively download files from the remote directory to the local directory
+    for item in sftp.listdir_attr(remote_dir):
+        remote_path = remote_dir + '/' + item.filename
+        local_path = local_dir + '/' + item.filename
 
-    # Change to the desired remote directory
-    sftp.chdir('30-857011403/00_fastq/')
-
-    # Start the background file transfer
-    sftp.get('30-857011403/00_fastq/', localpath='/groups/doudna/team_resources/azenta_temp/30-857011403', callback=transfer_callback)
-
-# The file transfer is running in the background after the `with` block is exited
+        if item.st_mode & 0o40000:
+            # Directory
+            if not os.path.exists(local_path):
+                os.makedirs(local_path)
+            download_directory(sftp, remote_path, local_path)
+        else:
+            # File
+            sftp.get(remote_path, localpath=local_path, callback=transfer_callback)

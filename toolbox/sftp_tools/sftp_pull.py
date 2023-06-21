@@ -20,6 +20,6 @@ with pysftp.Connection('sftp.genewiz.com',
     sftp.chdir('30-857011403/00_fastq/')
 
     # Start the background file transfer
-    sftp.put('/groups/doudna/team_resources/azenta_temp/30-857011403', callback=transfer_callback)
+    sftp.get('30-857011403/00_fastq/', localpath='/groups/doudna/team_resources/azenta_temp/30-857011403', callback=transfer_callback)
 
 # The file transfer is running in the background after the `with` block is exited

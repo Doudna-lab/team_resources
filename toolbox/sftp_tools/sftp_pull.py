@@ -1,6 +1,7 @@
 import pysftp
 import os
 
+
 def transfer_callback(event, chunk):
     # Callback function to track the transfer progress
     if event == 'put':
@@ -25,3 +26,14 @@ def download_directory(sftp, remote_dir, local_dir):
         else:
             # File
             sftp.get(remote_path, localpath=local_path, callback=transfer_callback)
+
+
+# Create an instance of the `pysftp.Connection` class
+with pysftp.Connection('sftp.genewiz.com',
+                       username='isylvain_berkeley',
+                       password='aS06jJvl2oMG0MvKIBtx') as sftp:
+    # Change to the desired remote directory
+    sftp.chdir('30-857011403/00_fastq/')
+
+    # Start the recursive download of files
+    download_directory(sftp, '.', '/groups/doudna/team_resources/azenta_temp/30-857011403')

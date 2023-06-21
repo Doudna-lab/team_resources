@@ -12,9 +12,9 @@ def transfer_callback(event, chunk):
         print(f"Downloaded {chunk} bytes")
 
 
-def download_directory(sftp, remote_dir, local_dir):
+def download_directory(sftp_instance, remote_dir, local_dir):
     # Recursively download files from the remote directory to the local directory
-    for item in sftp.listdir_attr(remote_dir):
+    for item in sftp_instance.listdir_attr(remote_dir):
         remote_path = remote_dir + '/' + item.filename
         local_path = local_dir + '/' + item.filename
 
@@ -22,10 +22,10 @@ def download_directory(sftp, remote_dir, local_dir):
             # Directory
             if not os.path.exists(local_path):
                 os.makedirs(local_path)
-            download_directory(sftp, remote_path, local_path)
+            download_directory(sftp_instance, remote_path, local_path)
         else:
             # File
-            sftp.get(remote_path, localpath=local_path, callback=transfer_callback)
+            sftp_instance.get(remote_path, localpath=local_path, callback=transfer_callback)
 
 
 # Create an instance of the `pysftp.Connection` class

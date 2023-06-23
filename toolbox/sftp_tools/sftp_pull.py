@@ -1,5 +1,10 @@
 import pysftp
 import os
+import yaml
+
+# Load config_render file
+with open('config/basespace_sftp.yaml', "r") as f:
+	config = yaml.safe_load(f)
 
 
 def transfer_callback(event, chunk):
@@ -29,11 +34,11 @@ def download_directory(sftp_instance, remote_dir, local_dir):
 
 
 # Create an instance of the `pysftp.Connection` class
-with pysftp.Connection('sftp.genewiz.com',
-                       username='isylvain_berkeley',
-                       password='aS06jJvl2oMG0MvKIBtx') as sftp:
+with pysftp.Connection(config["sftp_address"],
+                       config["username"],
+                       config["password"]) as sftp:
     # Change to the desired remote directory
-    sftp.chdir('30-857011403/00_fastq/')
+    sftp.chdir(config["sftp_target_directory"])
 
     # Start the recursive download of files
-    download_directory(sftp, '.', '/groups/doudna/team_resources/azenta_temp/30-857011403')
+    download_directory(sftp, '.', config["local_download_directory"])

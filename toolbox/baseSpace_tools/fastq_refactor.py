@@ -27,13 +27,6 @@ fastq_pattern_dict = {
 }
 
 
-def get_absolute_path(name):
-	for root, dirs, files in os.walk(Path.home()):
-		for item in dirs + files:
-			if re.search(fr"\b{name}\b", item):
-				return os.path.abspath(os.path.join(root, item))
-
-
 def parse_arguments():
 	#  Launch argparse parser
 	parser = argp(
@@ -67,9 +60,7 @@ def parse_arguments():
 
 
 def loopNrename_files(directory, current_seq_platform, pattern_dict):
-	directory = get_absolute_path(directory.rstrip(os.sep))
-
-	for filename in os.listdir(directory):
+	for filename in os.listdir(directory.rstrip(os.sep)):
 		try:
 			flowcell = pattern_dict['flowcell'][current_seq_platform][0].search(filename).group()
 		except AttributeError:

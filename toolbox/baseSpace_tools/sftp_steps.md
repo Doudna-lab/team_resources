@@ -34,7 +34,7 @@
 ### Create project in the BaseSpace account
 `bs create project -n 30-857011403 -d "project description"`
 
-### Go to the directory where the content is located
+### Go to the local directory where the content is located
 `cd /groups/doudna/team_resources/azenta_temp/30-857011403`
 
 ### Upload the dataset

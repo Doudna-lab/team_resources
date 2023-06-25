@@ -17,7 +17,7 @@ def compare_hashes_in_directory(directory):
             expected_hash_file_path = file_path + ".md5"  # Assume hash value is stored in a .txt file
 
             with open(expected_hash_file_path, "r") as hash_file:
-                expected_hash = hash_file.readline().strip()
+                expected_hash = hash_file.readline().split('\t')[0]
 
             if md5_hash_value == expected_hash:
                 print(f"Hash match for file: {filename}")

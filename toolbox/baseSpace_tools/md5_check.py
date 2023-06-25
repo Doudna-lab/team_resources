@@ -14,7 +14,7 @@ def compare_hashes_in_directory(directory):
 					md5_hash.update(chunk)
 
 			md5_hash_value = md5_hash.hexdigest()
-			expected_hash_file_path = file_path.rsplit(".", 1)[0] + ".txt"  # Assume hash value is stored in a .txt file
+			expected_hash_file_path = file_path + ".md5"  # Assume hash value is stored in a .txt file
 
 			with open(expected_hash_file_path, "r") as hash_file:
 				expected_hash = hash_file.readline().strip()

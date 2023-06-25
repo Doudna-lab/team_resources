@@ -41,8 +41,7 @@ def parse_arguments():
 		description='',
 		usage='%(prog)s [options]')
 	# Define arguments
-	parser.add_argument('-d',
-	                    dest='project_directory',
+	parser.add_argument('project_directory',
 	                    help='Path to the folder containing fastq files')  # positional argument
 	parser.add_argument('-p',
 	                    dest='platform',

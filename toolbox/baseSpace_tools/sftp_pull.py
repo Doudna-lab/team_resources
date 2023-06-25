@@ -2,9 +2,9 @@ import pysftp
 import os
 import yaml
 
-# Load config_render file
+# Load sftp_config file
 with open('config/basespace_sftp.yaml', "r") as f:
-	config = yaml.safe_load(f)
+    sftp_config = yaml.safe_load(f)
 
 
 def transfer_callback(event, chunk):
@@ -33,12 +33,14 @@ def download_directory(sftp_instance, remote_dir, local_dir):
             sftp_instance.get(remote_path, localpath=local_path, callback=transfer_callback)
 
 
-# Create an instance of the `pysftp.Connection` class
-with pysftp.Connection(config["sftp_address"],
-                       config["username"],
-                       config["password"]) as sftp:
-    # Change to the desired remote directory
-    sftp.chdir(config["sftp_target_directory"])
+try:
+    # Create an instance of the `pysftp.Connection` class
+    with pysftp.Connection(sftp_config["sftp_address"], sftp_config["username"], sftp_config["password"]) as sftp:
+        # Change to the desired remote directory
+        sftp.chdir(sftp_config["sftp_target_directory"])
 
-    # Start the recursive download of files
-    download_directory(sftp, '.', config["local_download_directory"])
+        # Start the recursive download of files
+        download_directory(sftp, '.', sftp_config["local_download_directory"])
+
+except Exception as e:
+    print(f"An error occurred: {e}")

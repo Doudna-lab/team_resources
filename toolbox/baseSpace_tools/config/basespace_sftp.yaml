@@ -3,4 +3,4 @@ username: "isylvain_berkeley"
 password: "aS06jJvl2oMG0MvKIBtx"
 
 sftp_target_directory: "30-857011403/00_fastq/"
-local_download_directory: "/groups/doudna/team_resources/azenta_temp/30-857011403"
+local_download_directory: "/Users/bellieny" #"/groups/doudna/team_resources/azenta_temp/30-857011403"

@@ -1,6 +1,7 @@
 # Native modules
 import re
 import os
+import pathlib
 from argparse import ArgumentParser as argp
 from pathlib import Path
 
@@ -61,6 +62,7 @@ def parse_arguments():
 
 def loopNrename_files(directory, current_seq_platform, pattern_dict):
 	for filename in os.listdir(directory.rstrip(os.sep)):
+		suffix = re.search(r'\.(.*)', filename).group(1)
 		try:
 			flowcell = pattern_dict['flowcell'][current_seq_platform][0].search(filename).group()
 		except AttributeError:
@@ -70,18 +72,18 @@ def loopNrename_files(directory, current_seq_platform, pattern_dict):
 			sample_name = pattern_dict['sample_name'][0].search(filename).groups()[0]
 			sample_number = pattern_dict['sample_name'][0].search(filename).groups()[1]
 		except AttributeError:
-			raise "Could not find sample name in the filenames"
+			raise f"Could not find sample name in filename {filename}"
 		# print(sample_name)
 		# print(sample_number)
 		try:
 			read = pattern_dict['read'][0].search(filename).group()
 		except AttributeError:
-			raise "Could not find read reference in the filenames"
+			raise f"Could not find read reference in the filename {filename}"
 		# print(read)
 		try:
 			lane = pattern_dict['lane'][0].search(filename).group()
 		except AttributeError:
-			raise "Could not find lane reference in the filenames"
+			raise f"Could not find lane reference in the filename {filename}"
 		# print(lane)
 
 		# Get the full path of the file
@@ -90,7 +92,7 @@ def loopNrename_files(directory, current_seq_platform, pattern_dict):
 		# Check if the path is a file
 		if os.path.isfile(file_path):
 			# Generate the new filename
-			new_filename = f"{sample_name}_{sample_number}_{lane}_{read}_{flowcell}.fastq.gz"
+			new_filename = f"{sample_name}_{sample_number}_{lane}_{read}_{flowcell}.{suffix}"
 			# Rename the file
 			os.rename(file_path, os.path.join(directory, new_filename))
 			print(f"Renamed file: {filename} to {new_filename}")

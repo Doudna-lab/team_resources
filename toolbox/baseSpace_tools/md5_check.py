@@ -1,5 +1,6 @@
 import os
 import hashlib
+import sys
 
 
 def compare_hashes_in_directory(directory):
@@ -26,7 +27,7 @@ def compare_hashes_in_directory(directory):
 
 def main():
 	# Provide the directory path to compare hashes
-	directory_path = "path/to/directory"
+	directory_path = sys.argv[1]
 	compare_hashes_in_directory(directory_path)
 
 

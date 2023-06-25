@@ -22,6 +22,7 @@ def download_directory(sftp_instance, remote_dir, local_dir):
     for item in sftp_instance.listdir_attr(remote_dir):
         remote_path = remote_dir + '/' + item.filename
         local_path = local_dir + '/' + item.filename
+        print(f"Processing item {item}")
 
         if item.st_mode & 0o40000:
             # Directory

@@ -67,8 +67,11 @@ def parse_arguments():
 
 
 def loopNrename_files(directory, current_seq_platform, pattern_dict):
-	directory = get_absolute_path(directory)
+	directory = get_absolute_path(directory.rstrip(os.sep))
+
 	for filename in os.listdir(directory):
+		print(filename)
+		print(directory)
 		try:
 			flowcell = pattern_dict['flowcell'][current_seq_platform][0].search(filename).group()
 		except AttributeError:
@@ -101,7 +104,7 @@ def loopNrename_files(directory, current_seq_platform, pattern_dict):
 			# Generate the new filename
 			new_filename = f"{sample_name}_{sample_number}_{lane}_{read}_{flowcell}.fastq.gz"
 			# Rename the file
-			os.rename(file_path, os.path.join(directory, new_filename))
+			# os.rename(file_path, os.path.join(directory, new_filename))
 
 			print(f"Renamed file: {filename} to {new_filename}")
 
@@ -110,8 +113,9 @@ def main():
 	# Call argument parsing function
 	args = parse_arguments()
 	sequencing_platform = args.platform
-	project_directory = args.project_directory
-
+	project_directory = str(args.project_directory)
+	# print("No main ", project_directory)
+	# print("No main ", sequencing_platform)
 	loopNrename_files(project_directory, sequencing_platform, fastq_pattern_dict)
 
 

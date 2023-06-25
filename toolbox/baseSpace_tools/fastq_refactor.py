@@ -39,7 +39,7 @@ def parse_arguments():
 	parser = argp(
 		prog='fastq_refactor.py',
 		description='',
-		usage='%(prog)s [options]')
+		usage='%(prog)s [options] project_directory')
 	# Define arguments
 	parser.add_argument('project_directory',
 	                    help='Path to the folder containing fastq files')  # positional argument

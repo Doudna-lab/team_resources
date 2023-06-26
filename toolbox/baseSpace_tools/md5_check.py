@@ -20,7 +20,8 @@ def compare_hashes_in_directory(directory):
                 expected_hash = hash_file.readline()
 
             print(f"Hash match for file: {filename}")
-            print(expected_hash, "\n", md5_hash_value)
+            print(expected_hash)
+            print(md5_hash_value, "\n")
 
 
 def main():

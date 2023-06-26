@@ -1,3 +1,10 @@
+## Introduction
+- This tutorial page covers the necessary steps to conduct data intake from Azenta and its integration with BaseSpace 
+- The placeholder paths and credentials used in this tutorial are:
+  - `<Azenta SFTP login>`: `isylvain_berkeley@sftp.genewiz.com`
+  - `<remote sftp path>`: `30-857011403/00_fastq/`
+  - `<local path to store download>`: `/groups/doudna/team_resources/azenta_temp/30-857011403`
+  - `<BaseSpace project label>`: `IGI_Germline_WGS_Assay`
 
 ## BaseSpace Setup
 ### Local machine setup
@@ -30,13 +37,19 @@
 ### Further instructions will be available soon
 
 
+## Adjust FASTQ name convention 
+### BaseSpace requires FASTQ filenames to adhere to a specific naming convention
+### The script fastq_refactor.py gathers all filenames within a directory and apply
+### the BaseSpace designated rules
+`cd /groups/doudna/team_resources/toolbox/baseSpace_tools`
+`python3 fastq_refactor.py /groups/doudna/team_resources/azenta_temp/30-857011403`
+
 ## Upload to BaseSpace
 ### Create project in the BaseSpace account
-`bs create project -n 30-857011403 -d "project description"`
+`bs create project -n IGI_Germline_WGS_Assay`
 
 ### Go to the local directory where the content is located
 `cd /groups/doudna/team_resources/azenta_temp/30-857011403`
 
 ### Upload the dataset
-`bs upload dataset --project=30-857011403 *`
-
+`nohup bs upload dataset --project=IGI_Germline_WGS_Assay --allow-invalid-readnames /groups/doudna/team_resources/azenta_temp/30-857011403/* &`

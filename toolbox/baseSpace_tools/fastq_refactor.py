@@ -1,9 +1,7 @@
 # Native modules
 import re
 import os
-import pathlib
 from argparse import ArgumentParser as argp
-from pathlib import Path
 
 # Load flowcell, sample name, read and lane naming patterns for filename recognition
 # Flowcell ref:
@@ -22,9 +20,9 @@ fastq_pattern_dict = {
 	             "NovaSeq 6000 SP and S1": [re.compile("\w{4}DR\w{1,2}")],
 	             "NovaSeq 6000 S2": [re.compile("\w{4}DM\w{1,2}")],
 	             "NovaSeq 6000 S4": [re.compile("\w{4}DS\w{1,2}")]},
-	"lane": [re.compile("L0{0,2}\d")],
+	"lane": [re.compile("L0{0,2}(\d+)")],
 	"read": [re.compile("[RI][12]")],
-	"sample_name": [re.compile("(IGU-\d{3})-(N\d+)")]
+	"sample_name": [re.compile("(IGU-\d{3})-N(\d+)")]
 }
 
 
@@ -61,16 +59,19 @@ def parse_arguments():
 
 
 def loopNrename_files(directory, current_seq_platform, pattern_dict):
+	flowcell_id = ''
+	flowcell_bs = ''
 	for filename in os.listdir(directory.rstrip(os.sep)):
 		suffix = re.search(r'\.(.*)', filename).group(1)
 		try:
-			flowcell = pattern_dict['flowcell'][current_seq_platform][0].search(filename).group()
+			flowcell_id = pattern_dict['flowcell'][current_seq_platform][0].search(filename).group()
+			flowcell_bs = '001'
 		except AttributeError:
 			raise "Could not find flowcell index based on the provided sequencing platform"
 		# print(flowcell)
 		try:
 			sample_name = pattern_dict['sample_name'][0].search(filename).groups()[0]
-			sample_number = pattern_dict['sample_name'][0].search(filename).groups()[1]
+			sample_number = f"S{pattern_dict['sample_name'][0].search(filename).groups()[1]}"
 		except AttributeError:
 			raise f"Could not find sample name in filename {filename}"
 		# print(sample_name)
@@ -81,7 +82,14 @@ def loopNrename_files(directory, current_seq_platform, pattern_dict):
 			raise f"Could not find read reference in the filename {filename}"
 		# print(read)
 		try:
-			lane = pattern_dict['lane'][0].search(filename).group()
+			lane_number = int(pattern_dict['lane'][0].search(filename).groups()[0])
+			lane = 'L'
+			if lane_number > 100:
+				lane = f"L{lane_number}"
+			if isinstance(lane_number, int) and 10 <= lane_number < 100:
+				lane = f"L0{lane_number}"
+			if isinstance(lane_number, int) and 0 <= lane_number < 10:
+				lane = f"L00{lane_number}"
 		except AttributeError:
 			raise f"Could not find lane reference in the filename {filename}"
 		# print(lane)
@@ -92,10 +100,11 @@ def loopNrename_files(directory, current_seq_platform, pattern_dict):
 		# Check if the path is a file
 		if os.path.isfile(file_path):
 			# Generate the new filename
-			new_filename = f"{sample_name}_{sample_number}_{lane}_{read}_{flowcell}.{suffix}"
+			new_filename = f"{sample_name}_{sample_number}_{lane}_{read}_{flowcell_bs}.{suffix}"
 			# Rename the file
 			os.rename(file_path, os.path.join(directory, new_filename))
 			print(f"Renamed file: {filename} to {new_filename}")
+	return flowcell_id, flowcell_bs
 
 
 def main():
@@ -103,8 +112,17 @@ def main():
 	args = parse_arguments()
 	sequencing_platform = args.platform
 	project_directory = str(args.project_directory)
+	flowcell_log_path = os.path.join(project_directory, "flowcell.log")
 
-	loopNrename_files(project_directory, sequencing_platform, fastq_pattern_dict)
+	(flowcell, truncated_flowcell) = loopNrename_files(project_directory, sequencing_platform, fastq_pattern_dict)
+
+	with open(flowcell_log_path, 'w') as f:
+		log_string = f"""
+Based on the flowcell ID found in the original filenames the Sequencing platform used was: {sequencing_platform}
+Flowcell ID: {flowcell}
+To comply with BaseSpace naming convention, the flowcell ID was truncated to:  {truncated_flowcell}
+		"""
+		f.write(log_string)
 
 
 if __name__ == "__main__":

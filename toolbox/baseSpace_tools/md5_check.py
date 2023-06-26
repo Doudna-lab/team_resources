@@ -17,19 +17,17 @@ def compare_hashes_in_directory(directory):
             expected_hash_file_path = file_path + ".md5"  # Assume hash value is stored in a .txt file
 
             with open(expected_hash_file_path, "r") as hash_file:
-                expected_hash = hash_file.readline().split('\t')[0]
+                expected_hash = hash_file.readline()
 
-            if md5_hash_value == expected_hash:
-                print(f"Hash match for file: {filename}")
-            else:
-                print(f"Hash mismatch for file: {filename}")
+            print(f"Hash match for file: {filename}")
+            print(expected_hash, "\n", md5_hash_value)
 
 
 def main():
-	# Provide the directory path to compare hashes
-	directory_path = sys.argv[1]
-	compare_hashes_in_directory(directory_path)
+    # Provide the directory path to compare hashes
+    directory_path = sys.argv[1]
+    compare_hashes_in_directory(directory_path)
 
 
 if __name__ == "__main__":
-	main()
+    main()

@@ -70,7 +70,7 @@ def loopNrename_files(directory, current_seq_platform, pattern_dict):
 			raise "Could not find flowcell index based on the provided sequencing platform"
 		# print(flowcell)
 		try:
-			sample_name = pattern_dict['sample_name'][0].search(filename).groups()[0]
+			sample_name = re.sub("-", "", pattern_dict['sample_name'][0].search(filename).groups()[0])
 			sample_number = f"S{pattern_dict['sample_name'][0].search(filename).groups()[1]}"
 		except AttributeError:
 			raise f"Could not find sample name in filename {filename}"
@@ -110,12 +110,16 @@ def loopNrename_files(directory, current_seq_platform, pattern_dict):
 def main():
 	# Call argument parsing function
 	args = parse_arguments()
+	# Process arguments
 	sequencing_platform = args.platform
 	project_directory = str(args.project_directory)
+	# Set up flowcell log path
 	flowcell_log_path = os.path.join(project_directory, "flowcell.log")
 
+	# Loop through files and rename
 	(flowcell, truncated_flowcell) = loopNrename_files(project_directory, sequencing_platform, fastq_pattern_dict)
 
+	# Export flowcell log
 	with open(flowcell_log_path, 'w') as f:
 		log_string = f"""
 Based on the flowcell ID found in the original filenames the Sequencing platform used was: {sequencing_platform}

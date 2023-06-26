@@ -5,6 +5,7 @@
   - `<remote sftp path>`: `30-857011403/00_fastq/`
   - `<local path to store download>`: `/groups/doudna/team_resources/azenta_temp/30-857011403`
   - `<BaseSpace project label>`: `IGI_Germline_WGS_Assay`
+  - `<BaseSpace project id>`: `392083693`
 
 ## BaseSpace Setup
 ### Local machine setup
@@ -52,4 +53,4 @@
 `cd /groups/doudna/team_resources/azenta_temp/30-857011403`
 
 ### Upload the dataset
-`nohup bs upload dataset --project=IGI_Germline_WGS_Assay --allow-invalid-readnames /groups/doudna/team_resources/azenta_temp/30-857011403/* &`
+`nohup bs upload dataset --project=392083693 /groups/doudna/team_resources/azenta_temp/30-857011403/* &`

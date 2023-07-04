@@ -1,0 +1,15 @@
+# number of threads for multi-threaded applications
+threads: 10
+
+# Directory where the raw short reads are stored
+# Biotite Path
+read_directory: "/groups/doudna/projects/doherty_ee/30-879189029/00_fastq"
+
+# Unique sample descriptors - should be in the file names
+samples: ["ED-I-109-1_S1", "ED-I-109-2_S3", "ED-I-116-1_S2"]
+
+# Biotite Path
+run_name: "/groups/doudna/projects/doherty_ee/30-879189029_analysis"
+
+# Trimmomatic
+trim_params: "LEADING:20 TRAILING:20 SLIDINGWINDOW:4:20 MINLEN:75"

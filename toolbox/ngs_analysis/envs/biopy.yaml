@@ -1,0 +1,21 @@
+name: bio
+channels:
+  - defaults
+dependencies:
+  - seaborn
+  - scipy
+  - matplotlib
+  - sqlalchemy
+  - biopython
+  - pandas
+  - pigz
+  - scikit-learn
+  - psycopg2
+  - openpyxl
+  - lxml
+  - html5lib
+  - beautifulsoup4
+  - jupyter
+  - multiqc
+  - trimmomatic
+prefix: /Users/bellieny/miniconda3/envs/bio

@@ -28,7 +28,7 @@ rule clumpify:
         r1_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz",
         r2_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R2_dedup.fastq.gz"
     conda:
-        "envs/readqc.yaml"
+        "envs/biopy.yaml"
     message:
         "Clumpifying read pairs:\nR1: {input.r1}\nR2: {input.r2}\n ==> Output:\n 1- {output.r1_dedup}\n 2- {output.r2_dedup}"
     threads:
@@ -44,7 +44,7 @@ rule fastqc_1:
     output:
         directory("{run}/fastqc_preTrim/")
     conda:
-        "envs/readqc.yaml"
+        "envs/biopy.yaml"
     message:
         "Running FastQC on pre-trim read pairs:\nR1: {input.r1_dedup}\nR2: {input.r2_dedup}"
     threads:
@@ -60,7 +60,7 @@ rule multiqc_1:
     output:
         d1 = "{run}/multiqc_preTrim/multiqc_report.html"
     conda:
-        "envs/readqc.yaml"
+        "envs/biopy.yaml"
     params:
         folder = "{run}/multiqc_preTrim/"
     message:
@@ -82,7 +82,7 @@ rule trimmomatic:
     params:
         trim_params = config["trim_params"]
     conda:
-        "envs/readqc.yaml"
+        "envs/biopy.yaml"
     message:
         """Trimming read pairs:\nR1: {input.r1_dedup}\nR2: {input.r2_dedup} 
         ==> Output:\n 1- {output.p1}\n 2- {output.p2} 
@@ -136,7 +136,7 @@ rule trim_stats:
         summary = "{run}/trim_summary/summary_trim_stats.csv",
         graph_summary = "{run}/trim_summary/summary_trim_stats.png"
     conda:
-        "envs/py.yaml"
+        "envs/biopy.yaml"
     message:
         "Calculating trimming stats. Processing: {input.report}\n ==> Outputs to: {params.graph_summary}\n"
     script:
@@ -150,7 +150,7 @@ rule fastqc_2:
     output:
         directory("{run}/fastqc_postTrim/")
     conda:
-        "envs/readqc.yaml"
+        "envs/biopy.yaml"
     message:
         "Running FastQC on trimmed read pairs:\nR1: {input.p1}\nR2: {input.p2}"
     threads:
@@ -166,7 +166,7 @@ rule multiqc_2:
     output:
         d1 = "{run}/multiqc_postTrim/multiqc_report.html"
     conda:
-        "envs/readqc.yaml"
+        "envs/biopy.yaml"
     params:
         folder = "{run}/multiqc_postTrim/"
     message:

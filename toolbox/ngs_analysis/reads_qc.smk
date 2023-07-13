@@ -9,16 +9,25 @@ import glob
 # noinspection SmkAvoidTabWhitespace
 rule all:
     input:
-        expand("{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz",sample=config["samples"], run=config["run_name"]),
+        expand("{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz",sample=config["samples"], run=config["job_name"]),
         #Reads QC Pre-Trim
-        expand("{run}/fastqc_preTrim/", sample=config["samples"], run=config["run_name"]),
-        expand("{run}/multiqc_preTrim/multiqc_report.html",run=config["run_name"]),
+        expand("{run}/fastqc_preTrim/", sample=config["samples"], run=config["job_name"]),
+        expand("{run}/multiqc_preTrim/multiqc_report.html",run=config["job_name"]),
         #Reads Trimming and rRNA removal
-        expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_P1.fastq.gz",sample=config["samples"], run=config["run_name"]),
+        expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_P1.fastq.gz",sample=config["samples"], run=config["job_name"]),
         #Reads QC Post-Trim
-        expand("{run}/fastqc_postTrim/",sample=config["samples"], run=config["run_name"]),
-        expand("{run}/multiqc_postTrim/multiqc_report.html",run=config["run_name"]),
-        expand("{run}/trim_summary/",run=config["run_name"])
+        expand("{run}/fastqc_postTrim/",sample=config["samples"], run=config["job_name"]),
+        expand("{run}/multiqc_postTrim/multiqc_report.html",run=config["job_name"]),
+        expand("{run}/trim_summary/",run=config["job_name"])
+
+rule demultiplex:
+    # TODO: REsolver como receber e processar arquivos que associam RUN-ID com SAMPLE-Name
+    input:
+        r1 = lambda wildcards: glob.glob("{directory}/{run_name}_L001_R1_001.fastq.gz".format(directory=config["read_directory"],run_name=config["run_name"])),
+        r2 = lambda wildcards: glob.glob("{directory}/{sample}_L001_R2_001.fastq.gz".format(directory=config["read_directory"],run_name=config["run_name"]))
+    output:
+        r1_demux = "",
+        r2_demux = ""
 
 rule clumpify:
     input:
@@ -39,8 +48,8 @@ rule clumpify:
         """
 rule fastqc_1:
     input:
-        r1_dedup = expand("{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz", run=config["run_name"], sample=config["samples"]),
-        r2_dedup = expand("{run}/clumpify/{sample}_dedup/{sample}_R2_dedup.fastq.gz", run=config["run_name"], sample=config["samples"])
+        r1_dedup = expand("{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz", run=config["job_name"], sample=config["samples"]),
+        r2_dedup = expand("{run}/clumpify/{sample}_dedup/{sample}_R2_dedup.fastq.gz", run=config["job_name"], sample=config["samples"])
     output:
         directory("{run}/fastqc_preTrim/")
     conda:
@@ -129,7 +138,7 @@ rule trimmomatic:
 # 		"""
 rule trim_stats:
     input:
-        report = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_trim_report.txt", run=config["run_name"], sample=config["samples"])
+        report = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_trim_report.txt", run=config["job_name"], sample=config["samples"])
     output:
         directory("{run}/trim_summary/")
     params:
@@ -143,10 +152,10 @@ rule trim_stats:
         "py/trim_stats.py"
 rule fastqc_2:
     input:
-        p1 = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_P1.fastq.gz", run=config["run_name"], sample=config["samples"]),
-        p2 = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_P2.fastq.gz", run=config["run_name"], sample=config["samples"]),
-        u1 = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_U1.fastq.gz", run=config["run_name"], sample=config["samples"]),
-        u2 = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_U2.fastq.gz", run=config["run_name"], sample=config["samples"])
+        p1 = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_P1.fastq.gz", run=config["job_name"], sample=config["samples"]),
+        p2 = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_P2.fastq.gz", run=config["job_name"], sample=config["samples"]),
+        u1 = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_U1.fastq.gz", run=config["job_name"], sample=config["samples"]),
+        u2 = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_U2.fastq.gz", run=config["job_name"], sample=config["samples"])
     output:
         directory("{run}/fastqc_postTrim/")
     conda:

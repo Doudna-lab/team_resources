@@ -1,28 +1,84 @@
 # number of threads for multi-threaded applications
 threads: 10
 
-# Directory where the raw short reads are stored
+# Directory where the demultiplexed raw short reads are stored
+#   *** In case the files are not demultiplexed, run: py/process_barcodes.py
 # Biotite Path
-read_directory: "/groups/doudna/projects/doherty_ee/30-879189029/00_fastq"
-
-# Unique sample descriptors - should be in the file names
-samples: ["109-A_0", "109-A_120", "109-C_0",
-          "109-C_120", "109-E_0", "109-E_120",
-          "109-G_0", "109-G_120", "109-I_0",
-          "109-I_120", "109-K_0", "109-K_120",
-          "124-T_0", "124-T_120", "124-U_0",
-          "124-U_120", "124-V_0", "124-V_120",
-          "124-M_0", "124-M_120", "124-N_0",
-          "124-N_120", "124-O_0", "124-O_120",
-          "124-P_0", "124-P_120", "124-Q_0",
-          "124-Q_120", "124-R_0", "124-R_120",
-          "124-S_0", "124-S_120"]
-
-
-run_names: ["ED-I-109-1_S1", "ED-I-109-2_S3", "ED-I-116-1_S2"]
+read_directory: "/groups/doudna/projects/doherty_ee/30-879189029_analysis/demultiplexed"
 
 # Biotite Path
 job_name: "/groups/doudna/projects/doherty_ee/30-879189029_analysis"
 
 # Trimmomatic
 trim_params: "SLIDINGWINDOW:4:15 MINLEN:75"
+
+#RUN vs. SAMPLE REPORT:
+samples:
+  '109-A_0': 'ED-I-109-1'
+  '109-A_120': 'ED-I-109-1'
+  '109-C_0': 'ED-I-109-1'
+  '109-C_120': 'ED-I-109-1'
+  '109-E_0': 'ED-I-109-1'
+  '109-E_120': 'ED-I-109-1'
+  '109-G_0': 'ED-I-109-1'
+  '109-G_120': 'ED-I-109-1'
+  '109-I_0': 'ED-I-109-1'
+  '109-I_120': 'ED-I-109-1'
+  '109-K_0': 'ED-I-109-1'
+  '109-K_120': 'ED-I-109-1'
+  '124-T_0': 'ED-I-109-2'
+  '124-T_120': 'ED-I-109-2'
+  '124-U_0': 'ED-I-109-2'
+  '124-U_120': 'ED-I-109-2'
+  '124-V_0': 'ED-I-109-2'
+  '124-V_120': 'ED-I-109-2'
+  '124-M_0': 'ED-I-109-2'
+  '124-M_120': 'ED-I-109-2'
+  '124-N_0': 'ED-I-109-2'
+  '124-N_120': 'ED-I-109-2'
+  '124-O_0': 'ED-I-109-2'
+  '124-O_120': 'ED-I-109-2'
+  '124-P_0': 'ED-I-116-1'
+  '124-P_120': 'ED-I-116-1'
+  '124-Q_0': 'ED-I-116-1'
+  '124-Q_120': 'ED-I-116-1'
+  '124-R_0': 'ED-I-116-1'
+  '124-R_120': 'ED-I-116-1'
+  '124-S_0': 'ED-I-116-1'
+  '124-S_120': 'ED-I-116-1'
+
+#REFERENCE SEQUENCE vs. SAMPLE REPORT:
+reference:
+  '109-A_0': 'ED_o_040'
+  '109-A_120': 'ED_o_040'
+  '109-C_0': 'ED_o_040'
+  '109-C_120': 'ED_o_040'
+  '109-E_0': 'ED_o_041'
+  '109-E_120': 'ED_o_041'
+  '109-G_0': 'ED_o_041'
+  '109-G_120': 'ED_o_041'
+  '109-I_0': 'ED_o_023'
+  '109-I_120': 'ED_o_023'
+  '109-K_0': 'ED_o_023'
+  '109-K_120': 'ED_o_023'
+  '124-T_0': 'ED_o_041'
+  '124-T_120': 'ED_o_041'
+  '124-U_0': 'ED_o_041'
+  '124-U_120': 'ED_o_041'
+  '124-V_0': 'ED_o_040'
+  '124-V_120': 'ED_o_040'
+  '124-M_0': 'ED_o_041'
+  '124-M_120': 'ED_o_041'
+  '124-N_0': 'ED_o_041'
+  '124-N_120': 'ED_o_041'
+  '124-O_0': 'ED_o_040'
+  '124-O_120': 'ED_o_040'
+  '124-P_0': 'ED_o_093'
+  '124-P_120': 'ED_o_093'
+  '124-Q_0': 'ED_o_093'
+  '124-Q_120': 'ED_o_093'
+  '124-R_0': 'ED_o_097'
+  '124-R_120': 'ED_o_097'
+  '124-S_0': 'ED_o_097'
+  '124-S_120': 'ED_o_097'
+

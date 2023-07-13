@@ -1,0 +1,26 @@
+# cluster.yaml - cluster configuration for my Snakefile.
+__default__:
+  partition: node
+  time: '2:00:00'
+  nodes: 1
+  cores: 20
+
+clumpify:
+  cores: 5
+  time: '4:00:00'
+
+trimmomatic:
+  cores: 5
+  time: '4:00:00'
+
+salmon_build:
+  cores: 20
+  time: '12:00:00'
+
+salmon_pe:
+  cores: 20
+  time: '6:00:00'
+
+salmon_se:
+  cores: 20
+  time: '6:00:00'

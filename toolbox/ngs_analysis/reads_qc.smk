@@ -4,7 +4,7 @@ configfile: "config/reads_qc.yaml"
 import glob
 
 # Cluster run template
-#nohup snakemake --snakefile reads_qc.smk -j 10 --cluster "sbatch -t {cluster.time} -n {cluster.cores} -N {cluster.nodes}" --cluster-config cluster.yaml --use-conda &
+#nohup snakemake --snakefile reads_qc.smk -j 5 --cluster "sbatch -t {cluster.time} -n {cluster.cores} -N {cluster.nodes}" --cluster-config config/cluster.yaml --latency-wait 60 --use-conda &
 
 # noinspection SmkAvoidTabWhitespace
 rule all:
@@ -20,26 +20,27 @@ rule all:
         expand("{run}/multiqc_postTrim/multiqc_report.html",run=config["job_name"]),
         expand("{run}/trim_summary/",run=config["job_name"])
 
-rule demultiplex:
-    # TODO: REsolver como receber e processar arquivos que associam RUN-ID com SAMPLE-Name
-    input:
-        r1 = lambda wildcards: glob.glob("{directory}/{run_name}_L001_R1_001.fastq.gz".format(directory=config["read_directory"],run_name=config["run_name"])),
-        r2 = lambda wildcards: glob.glob("{directory}/{sample}_L001_R2_001.fastq.gz".format(directory=config["read_directory"],run_name=config["run_name"]))
-    output:
-        r1_demux = "",
-        r2_demux = ""
+# rule demultiplex:
+#     input:
+#         r1 = lambda wildcards: glob.glob("{directory}/{run_name}_L001_R1_001.fastq.gz".format(directory=config["read_directory"],run_name=config["run_name"])),
+#         r2 = lambda wildcards: glob.glob("{directory}/{sample}_L001_R2_001.fastq.gz".format(directory=config["read_directory"],run_name=config["run_name"]))
+#     output:
+#         r1_demux = "",
+#         r2_demux = ""
 
 rule clumpify:
     input:
-        r1 = lambda wildcards: glob.glob("{directory}/{sample}_L001_R1_001.fastq.gz".format(directory=config["read_directory"],sample=wildcards.sample)),
-        r2 = lambda wildcards: glob.glob("{directory}/{sample}_L001_R2_001.fastq.gz".format(directory=config["read_directory"],sample=wildcards.sample))
+        r1 = lambda wildcards: glob.glob("{directory}/{run_id}_S?_L001_R1_001_{sample}.fastq.gz".format(directory=config["read_directory"],
+            sample=wildcards.sample,run_id=config['samples'][wildcards.sample])),
+        r2 = lambda wildcards: glob.glob("{directory}/{run_id}_S?_L001_R2_001_{sample}.fastq.gz".format(directory=config["read_directory"],
+            sample=wildcards.sample,run_id=config['samples'][wildcards.sample]))
     output:
         r1_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz",
         r2_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R2_dedup.fastq.gz"
     conda:
         "envs/biopy.yaml"
     message:
-        "Clumpifying read pairs:\nR1: {input.r1}\nR2: {input.r2}\n ==> Output:\n 1- {output.r1_dedup}\n 2- {output.r2_dedup}"
+        "Clumpifying read pairs:\nR1: {input.r1}\nR2: {input.r2}\n ==> Output:\n 1- {output.r1_dedup}\n 2- {output.r2_dedup}\nWildcards: {wildcards}"
     threads:
         config["threads"]
     shell:

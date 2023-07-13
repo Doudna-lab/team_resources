@@ -97,7 +97,9 @@ def main():
 	df = df.dropna(subset=[df.columns[0]], how='any')
 
 	# Get output path from the main analysis config file
-	output_path = config_main['job_name']
+	output_path = f"{config_main['job_name']}{os.sep}demultiplexed"
+	if not os.path.exists(output_path):
+		os.makedirs(output_path)
 	# Get column names
 	run_id_col_name = str(df.columns[config['run_id_col']].tolist()[0])
 	barcode_col_name = df.columns[config['barcode_seq_col']].tolist()

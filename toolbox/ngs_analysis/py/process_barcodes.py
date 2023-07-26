@@ -95,6 +95,7 @@ def main():
 	quality_check_config = abspath(str(args.quality_check_config))
 	mode = str(args.mode)
 	append = args.append
+	reference_list = []
 
 	# DEBUG lines
 	# config_path = "toolbox/ngs_analysis/config/process_barcodes.yaml"
@@ -125,7 +126,6 @@ def main():
 
 	for run in set(df[run_id_col_name].tolist()):
 		write_content = ''
-		current_reference = ''
 		barcode_file_path = f'{output_path}{os.sep}{run}.tsv'
 		# Gather input (multiplexed filenames)
 		sample_id_list = extract_item_from_df(df, run, run_id_col_name, sample_id_col_name)
@@ -140,6 +140,7 @@ def main():
 			write_content += f'{sample_id}\t{barcodes_string}\n'
 			report_samples2run += f"  '{sample_id}': '{run}'\n"
 			report_samples2ref += f"  '{sample_id}': '{current_reference}'\n"
+			reference_list.append(current_reference)
 
 		if mode == 'add_info':
 			# Export barcode file
@@ -154,11 +155,13 @@ def main():
 
 	if append:
 		with open(quality_check_config, 'a') as q:
-			q.write(f"#RUN vs. SAMPLE REPORT:\n{report_samples2run}\n")
-			q.write(f"#REFERENCE SEQUENCE vs. SAMPLE REPORT:\n{report_samples2ref}\n")
+			q.write(f"#REPORT: SAMPLE vs. RUN:\n{report_samples2run}\n")
+			q.write(f"#REPORT: SAMPLE vs. REFERENCE SEQUENCE:\n{report_samples2ref}\n")
+			q.write(f"#REFERENCE LIST:\nreference_sequences: {list(set(reference_list))}\n")
 	if not append:
-		print("#RUN vs. SAMPLE REPORT:\n", f"\b{report_samples2run}\n")
-		print("#REFERENCE SEQUENCE vs. SAMPLE REPORT:\n", f"\b{report_samples2ref}\n")
+		print("#REPORT: SAMPLE vs. RUN:\n", f"\b{report_samples2run}\n")
+		print("#REPORT: SAMPLE vs. REFERENCE SEQUENCE:\n", f"\b{report_samples2ref}\n")
+		print(f"#REFERENCE LIST:\nreference_sequences: {list(set(reference_list))}\n")
 
 
 if __name__ == "__main__":

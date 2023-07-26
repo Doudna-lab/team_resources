@@ -6,26 +6,24 @@ threads: 10
 # Biotite Path
 read_directory: "/groups/doudna/projects/doherty_ee/30-879189029_analysis/demultiplexed"
 
-# Biotite Path
+# Biotite Path where the current analysis files will be stored
 job_name: "/groups/doudna/projects/doherty_ee/30-879189029_analysis"
 
-# Trimmomatic
-trim_params: "SLIDINGWINDOW:4:15 MINLEN:75"
+# Path to reference sequence(s) to be used in te alignment
+reference_path: "/groups/doudna/projects/doherty_ee/30-879189029/reference_seq"
 
-#RUN vs. SAMPLE REPORT:
+# Trimmomatic
+trim_params: "SLIDINGWINDOW:4:30 MINLEN:75"
+#REPORT: SAMPLE vs. RUN:
 samples:
-  '109-A_0': 'ED-I-109-1'
-  '109-A_120': 'ED-I-109-1'
-  '109-C_0': 'ED-I-109-1'
-  '109-C_120': 'ED-I-109-1'
-  '109-E_0': 'ED-I-109-1'
-  '109-E_120': 'ED-I-109-1'
-  '109-G_0': 'ED-I-109-1'
-  '109-G_120': 'ED-I-109-1'
-  '109-I_0': 'ED-I-109-1'
-  '109-I_120': 'ED-I-109-1'
-  '109-K_0': 'ED-I-109-1'
-  '109-K_120': 'ED-I-109-1'
+  '124-P_0': 'ED-I-116-1'
+  '124-P_120': 'ED-I-116-1'
+  '124-Q_0': 'ED-I-116-1'
+  '124-Q_120': 'ED-I-116-1'
+  '124-R_0': 'ED-I-116-1'
+  '124-R_120': 'ED-I-116-1'
+  '124-S_0': 'ED-I-116-1'
+  '124-S_120': 'ED-I-116-1'
   '124-T_0': 'ED-I-109-2'
   '124-T_120': 'ED-I-109-2'
   '124-U_0': 'ED-I-109-2'
@@ -38,29 +36,29 @@ samples:
   '124-N_120': 'ED-I-109-2'
   '124-O_0': 'ED-I-109-2'
   '124-O_120': 'ED-I-109-2'
-  '124-P_0': 'ED-I-116-1'
-  '124-P_120': 'ED-I-116-1'
-  '124-Q_0': 'ED-I-116-1'
-  '124-Q_120': 'ED-I-116-1'
-  '124-R_0': 'ED-I-116-1'
-  '124-R_120': 'ED-I-116-1'
-  '124-S_0': 'ED-I-116-1'
-  '124-S_120': 'ED-I-116-1'
+  '109-A_0': 'ED-I-109-1'
+  '109-A_120': 'ED-I-109-1'
+  '109-C_0': 'ED-I-109-1'
+  '109-C_120': 'ED-I-109-1'
+  '109-E_0': 'ED-I-109-1'
+  '109-E_120': 'ED-I-109-1'
+  '109-G_0': 'ED-I-109-1'
+  '109-G_120': 'ED-I-109-1'
+  '109-I_0': 'ED-I-109-1'
+  '109-I_120': 'ED-I-109-1'
+  '109-K_0': 'ED-I-109-1'
+  '109-K_120': 'ED-I-109-1'
 
-#REFERENCE SEQUENCE vs. SAMPLE REPORT:
+#REPORT: SAMPLE vs. REFERENCE SEQUENCE:
 reference:
-  '109-A_0': 'ED_o_040'
-  '109-A_120': 'ED_o_040'
-  '109-C_0': 'ED_o_040'
-  '109-C_120': 'ED_o_040'
-  '109-E_0': 'ED_o_041'
-  '109-E_120': 'ED_o_041'
-  '109-G_0': 'ED_o_041'
-  '109-G_120': 'ED_o_041'
-  '109-I_0': 'ED_o_023'
-  '109-I_120': 'ED_o_023'
-  '109-K_0': 'ED_o_023'
-  '109-K_120': 'ED_o_023'
+  '124-P_0': 'ED_o_093'
+  '124-P_120': 'ED_o_093'
+  '124-Q_0': 'ED_o_093'
+  '124-Q_120': 'ED_o_093'
+  '124-R_0': 'ED_o_097'
+  '124-R_120': 'ED_o_097'
+  '124-S_0': 'ED_o_097'
+  '124-S_120': 'ED_o_097'
   '124-T_0': 'ED_o_041'
   '124-T_120': 'ED_o_041'
   '124-U_0': 'ED_o_041'
@@ -73,12 +71,18 @@ reference:
   '124-N_120': 'ED_o_041'
   '124-O_0': 'ED_o_040'
   '124-O_120': 'ED_o_040'
-  '124-P_0': 'ED_o_093'
-  '124-P_120': 'ED_o_093'
-  '124-Q_0': 'ED_o_093'
-  '124-Q_120': 'ED_o_093'
-  '124-R_0': 'ED_o_097'
-  '124-R_120': 'ED_o_097'
-  '124-S_0': 'ED_o_097'
-  '124-S_120': 'ED_o_097'
+  '109-A_0': 'ED_o_040'
+  '109-A_120': 'ED_o_040'
+  '109-C_0': 'ED_o_040'
+  '109-C_120': 'ED_o_040'
+  '109-E_0': 'ED_o_041'
+  '109-E_120': 'ED_o_041'
+  '109-G_0': 'ED_o_041'
+  '109-G_120': 'ED_o_041'
+  '109-I_0': 'ED_o_023'
+  '109-I_120': 'ED_o_023'
+  '109-K_0': 'ED_o_023'
+  '109-K_120': 'ED_o_023'
 
+#REFERENCE LIST:
+reference_sequences: ['ED_o_041', 'ED_o_097', 'ED_o_023', 'ED_o_040', 'ED_o_093']

@@ -76,3 +76,4 @@ Mapped Output:
 		rm {params.map}
 		samtools index -c -@ {threads} {output.bam_sort} {output.bam_index}
 		"""
+

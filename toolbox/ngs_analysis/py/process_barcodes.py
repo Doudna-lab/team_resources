@@ -8,6 +8,7 @@ import re
 import subprocess
 # Installed modules
 import yaml
+from Bio import SeqIO
 
 
 def parse_arguments():
@@ -35,6 +36,11 @@ def parse_arguments():
 	                    -> "add_info": a block of text will be provided ALONG with demultiplexing so it can be added to the QC yaml config
 	                    -> "only_info": the script will not execute demultiplexing, instead it'll only print out the sample information block\n
 	                    Default: "only_info" """)
+	parser.add_argument('--mismatch',
+	                    dest='mism',
+	                    default=1,
+	                    help="""Number of mismatches allowed when searching for barcodes in sequences.
+		                    Default: 1 """)
 	parser.add_argument('-a',
 	                    dest='append',
 	                    action='store_true',
@@ -86,6 +92,33 @@ def consolidate_records_dict(records_dict, new_key):
 				checked_key = records_dict[idx][internal_key]
 
 
+# Function to process each sequence
+def barcode_match(sequence, barcode, mismatch_allowed):
+	matches = None
+	for mismatch_count in range(0, mismatch_allowed):
+		pattern = f"{barcode}{{0,{mismatch_count}}}"
+		matches = re.findall(pattern, sequence)
+		if len(matches) > 1:
+			return matches, mismatch_count
+	return matches
+
+
+def demux(barcode_dict, fwd_fastq_path, rev_fastq_path, mismatch_allowed):
+	# Process barcode file
+	fwd_records = {}
+	with open(fwd_fastq_path, "r") as fwd_fastq:
+		for record in SeqIO.parse(fwd_fastq, "fastq"):
+			f_sequence_5p = record.seq[0:10]
+			f_sequence_3p = record.seq[-10:]
+			for sample in barcode_dict:
+				barcode_5p = barcode_dict[sample][0]
+				if len(barcode_dict[sample]) > 1:
+					barcode_3p = barcode_dict[sample][1]
+					(matches_3p, mismatch_count) = barcode_match(f_sequence_3p, barcode_3p, mismatch_allowed)
+					fwd_records.setdefault(sample, {}).setdefault(record, mismatch_count)
+				(matches_5p, mismatch_count) = barcode_match(f_sequence_5p, barcode_5p, mismatch_allowed)
+
+
 def main():
 	# Call argument parsing function
 	args = parse_arguments()
@@ -94,6 +127,7 @@ def main():
 	config_path = abspath(str(args.config))
 	quality_check_config = abspath(str(args.quality_check_config))
 	mode = str(args.mode)
+	mism = int(args.mism)
 	append = args.append
 	reference_list = []
 
@@ -124,18 +158,21 @@ def main():
 	report_samples2run = "samples:\n"
 	report_samples2ref = "reference:\n"
 
+	run2barcode_dict = {}
 	for run in set(df[run_id_col_name].tolist()):
 		write_content = ''
 		barcode_file_path = f'{output_path}{os.sep}{run}.tsv'
 		# Gather input (multiplexed filenames)
 		sample_id_list = extract_item_from_df(df, run, run_id_col_name, sample_id_col_name)
 		# print(sample_id_list)
-		fastq_path = ' '.join(get_filepath_list(config['reads_raw_dir_path'], run, 'fastq.gz'))
+		fastq_path = get_filepath_list(config['reads_raw_dir_path'], run, 'fastq.gz')
 		for sample_id in sample_id_list:
 			current_barcode = extract_item_from_df(df, sample_id, sample_id_col_name, barcode_col_name)
 			current_reference = extract_item_from_df(df, sample_id, sample_id_col_name, ref_seq_col_name)
 
 			# Format strings
+			run2barcode_dict.setdefault(sample_id, current_barcode)
+			# the string formatting below might become useless
 			barcodes_string = '\t'.join(current_barcode)
 			write_content += f'{sample_id}\t{barcodes_string}\n'
 			report_samples2run += f"  '{sample_id}': '{run}'\n"
@@ -148,10 +185,10 @@ def main():
 				f.write(write_content)
 
 			# Setup shell command
-			command = f"demultiplex match -p {output_path} {barcode_file_path} {fastq_path}"
-			print(f"Executing command:\n->{command}")
+			# command = f"demultiplex match -p {output_path} {barcode_file_path} {fastq_path}"
+			# print(f"Executing command:\n->{command}")
 			# Execute demultiplexing through shell
-			subprocess.run(command, shell=True, capture_output=True, text=True)
+			# subprocess.run(command, shell=True, capture_output=True, text=True)
 
 	if append:
 		with open(quality_check_config, 'a') as q:

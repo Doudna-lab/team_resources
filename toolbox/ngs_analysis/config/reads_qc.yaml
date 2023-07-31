@@ -13,7 +13,7 @@ job_name: "/groups/doudna/projects/doherty_ee/30-879189029_analysis"
 reference_path: "/groups/doudna/projects/doherty_ee/30-879189029/reference_seq"
 
 # Trimmomatic
-trim_params: "SLIDINGWINDOW:4:30 MINLEN:75"
+trim_params: "SLIDINGWINDOW:4:20 MINLEN:50"
 #REPORT: SAMPLE vs. RUN:
 samples:
   '124-P_0': 'ED-I-116-1'

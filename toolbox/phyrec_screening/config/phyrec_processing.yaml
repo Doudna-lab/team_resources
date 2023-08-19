@@ -2,7 +2,7 @@
 threads: 10
 
 # Parent directorry where the analyses will be stored
-run: "/groups/doudna/projects/daniel_projects/bolger_r/phyrec_screening"
+run: "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening"
 
 # Parent path to the shared database files in the server
 shared_db_dir: "/shared/db"

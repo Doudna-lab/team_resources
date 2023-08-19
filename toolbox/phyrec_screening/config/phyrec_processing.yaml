@@ -1,0 +1,18 @@
+# Default threads for processes ran in this pipeline
+threads: 10
+
+# Parent directorry where the analyses will be stored
+run: "/groups/doudna/projects/daniel_projects/bolger_r/phyrec_screening"
+
+# Parent path to the shared database files in the server
+shared_db_dir: "/shared/db"
+
+# List of databases included in the sequence search step
+included_databases: ["uniprot/latest/knowledgebase/fasta/uniprot_sprot_trembl.fasta",
+"refseq/latest/protein/fasta/refseq_protein.faa"]
+
+input_prefix: ["G2II_nLTR_RT"]
+
+# Name given to the merger of the databases collected for the analysis
+db_prefix: "phyrec_db_2023-08"
+

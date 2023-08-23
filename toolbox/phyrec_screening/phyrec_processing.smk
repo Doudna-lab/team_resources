@@ -14,68 +14,94 @@ rule all:
 		expand("{run}/custom_db/{db_prefix}.phr",
 			run=config["run"],db_prefix=config["db_prefix"]),
 		# PSI-Blast the MSA input using a list of sequence databases
-		expand("{run}/psiblast_out/db|{db_prefix}_query|{input_prefix}.out",
-			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"])
+		expand("{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}.out",
+			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["iput_prefix"]),
+		# Count TaxID occurrences in PSI-BLAST output
+		expand("{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid_counts",
+			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["iput_prefix"])
 
 # noinspection SmkAvoidTabWhitespace
-rule merge_and_makedb:
-	input:
-		included_databases = expand("{shared_db_dir}/{included_db}",
-			shared_db_dir=config["shared_db_dir"] ,
-			included_db=config["included_databases"])
-	output:
-		merged_db = "{run}/custom_db/{db_prefix}.phr"
-	params:
-		outdir = "{run}/custom_db/{db_prefix}",
-		merged_fasta = "{run}/custom_db/{db_prefix}.fasta"
-	message:  """
-	Make BLAST database:
-	input databases:\n ==> {input.included_databases}
-	merged output:\n ==> {output.merged_db}
-	Shell command:\n ==>\n
-	cat {input.included_databases} > {params.merged_fasta}
-        makeblastdb \
-        -dbtype prot \
-        -taxid 5 \
-        -in {params.merged_fasta} \
-        -out {params.outdir}
-	"""
-	shell:
-		"""
-		cat {input.included_databases} > {params.merged_fasta}
-        makeblastdb \
-        -dbtype prot \
-        -taxid 5 \
-        -in {params.merged_fasta} \
-        -out {params.outdir}
-        """
+# rule merge_and_makedb:
+# 	input:
+# 		included_databases = expand("{shared_db_path}/{included_db}",
+# 			shared_db_path=config["shared_db_path"] ,
+# 			included_db=config["included_databases"])
+# 	output:
+# 		merged_db = "{run}/custom_db/{db_prefix}.phr"
+# 	params:
+# 		taxid_map = lambda wildcards: glob.glob("{shared_db_path}/prot.accession2taxid.FULL".format(shared_db_path=config["shared_db_path"])),
+# 		outdir = "{run}/custom_db/{db_prefix}",
+# 		merged_fasta = "{run}/custom_db/{db_prefix}.fasta"
+# 	message:  """
+# 	Make BLAST database:
+# 	input databases:\n ==> {input.included_databases}
+# 	taxid map file:\n ==> {params.taxid_map}
+# 	merged output:\n ==> {output.merged_db}
+# 	"""
+# 	shell:
+# 		"""
+# 		cat {input.included_databases} > {params.merged_fasta}
+#         makeblastdb \
+#         -dbtype prot \
+#         -blastdb_version 5 \
+#         -in {params.merged_fasta} \
+#         -out {params.outdir}
+#         """
 
 # noinspection SmkAvoidTabWhitespace
 rule iterative_search:
 	input:
-		merged_db = "{run}/custom_db/{db_prefix}.phr",
 		msa_in = "{run}/input/{input_prefix}.msa.fasta"
+		# merged_db = lambda wildcards: glob.glob("{shared_db_path}/nr".format(shared_db_path=config["shared_db_path"])), #"{run}/custom_db/{db_prefix}.phr",
 	output:
-		psiblast_out = "{run}/psiblast_out/db|{db_prefix}_query|{input_prefix}.out"
+		psiblast_out = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}.out"
 	params:
-		db = "{run}/custom_db/{db_prefix}",
-		# input_prefix = lambda wildcards: config["input_prefix"][wildcards.input_prefix],
-		# seq_id_intersection= "True",
-		seq_format = "fasta"
+		db = config["shared_db_path"],
+		custom_cols = config["blast_custom_cols"],
 	threads:
 		config["threads"]
 	message:
-		"Blasting query :\n {input.msa_in}\nAgainst database:\n {input.merged_db}\nGenerating:\n {output.psiblast_out}"
+		"Blasting query :\n {input.msa_in}\nAgainst database:\n {params.db}\nGenerating:\n {output.psiblast_out}"
 	shell:
 		"""
         psiblast \
-        -query {input.msa_in} \
-        -db {input.merged_db} \
-        -outfmt 5 \
+        -in_msa {input.msa_in} \
+        -db {params.db} \
+        -outfmt "10 {params.custom_cols}" \
         -num_threads {threads} \
-        -num_iterations 10
-        -evalue 1e-10 \
+        -num_iterations 10 \
+        -max_hsps 1 \
+        -subject_besthit \
+        -evalue 1e-5 \
         -qcov_hsp_perc 85 \
-        -perc_identity 80 \
         -out {output.psiblast_out}
         """
+
+# noinspection SmkAvoidTabWhitespace
+rule taxid_parse:
+	input:
+		psiblast_out = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}.out"
+	output:
+		taxid_counts = "{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid_counts.tsv"
+	params:
+		blast_col_names = config["blast_custom_cols"]
+	conda:
+		"envs/phyrec.yaml"
+	script:
+		"py/blastout_taxid_count.py"
+
+# noinspection SmkAvoidTabWhitespace
+rule krona:
+	input:
+		taxid_counts = "{run}/krona/db-{db_prefix}_query-{input_prefix}.taxid_counts.tsv"
+	output:
+		krona_chart = "{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid_counts.tsv"
+	params:
+		taxdump_path = config["taxdump_path"]
+	conda:
+		"envs/phyrec.yaml"
+	shell:
+		"""
+		ktUpdateTaxonomy.sh {params.taxdump_path}
+		ktImportTaxonomy -m 2 -t 3 -tax {params.taxdump_path} -o {output.krona_chart} {input.taxid_counts}
+		"""

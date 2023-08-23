@@ -1,18 +1,22 @@
 # Default threads for processes ran in this pipeline
-threads: 10
+threads: 5
 
 # Parent directorry where the analyses will be stored
 run: "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening"
 
 # Parent path to the shared database files in the server
-shared_db_dir: "/shared/db"
+shared_db_path: "/shared/db/genbank/latest/blast/nr"  # "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening/custom_db/slice_nr" # "/groups/doudna/team_resources/shared_databases/preform_nr" #  "/shared/db/genbank/latest/blast"#
 
 # List of databases included in the sequence search step
-included_databases: ["uniprot/latest/knowledgebase/fasta/uniprot_sprot_trembl.fasta",
-"refseq/latest/protein/fasta/refseq_protein.faa"]
+#included_databases: ["slice_nr.fasta"] #,"swissprot.fasta"] #,
+#"pdbaa.fasta"]
 
 input_prefix: ["G2II_nLTR_RT"]
 
 # Name given to the merger of the databases collected for the analysis
-db_prefix: "phyrec_db_2023-08"
+db_prefix: "NR"
 
+taxdump_path: "/groups/doudna/team_resources/shared_databases/taxdump"
+
+
+blast_custom_cols: "qacc sacc evalue pident qcovhsp staxid"

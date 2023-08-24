@@ -1,0 +1,16 @@
+name: krona
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1
+  - _openmp_mutex=5.1
+  - gdbm=1.18
+  - krona=2.7
+  - libgcc-ng=11.2.0
+  - libgomp=11.2.0
+  - ncurses=6.4
+  - perl=5.34.0
+  - perl-threaded=5.32.1
+  - readline=8.2
+prefix: /home/danielbr/miniconda3/envs/krona

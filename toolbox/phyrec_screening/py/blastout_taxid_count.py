@@ -1,5 +1,10 @@
 # Installed modules
+import re
+
 import pandas as pd
+import yaml
+from Bio import Entrez
+from Bio import SeqIO
 
 # DEBUG INPUTS
 # blastout_path = "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening/psiblast_out/db-phyrec_db_2023-08_query-test.out"
@@ -8,13 +13,56 @@ import pandas as pd
 # import yaml
 # with open(config_path, "r") as f:
 # 	config = yaml.load(f, Loader=yaml.FullLoader)
+# blast_col_names = config["blast_custom_cols"]
+
+
+def ncbi_fetch(acc_list, ncbi_db, file_format):
+	Entrez.email = config["entrez_login"]
+	record_list = []
+	for acc in acc_list:
+		handle = Entrez.efetch(db=ncbi_db, id=f"{acc}", rettype=file_format, retmode="text")
+		record = SeqIO.read(handle, file_format)
+		# Synchronize accessions orthography
+		sync_acc = re.search(acc, record.id)
+		record.id = sync_acc.group()
+		print(sync_acc, record.id)
+		# Put it back on the record
+		record_list.append(record)
+	return record_list
+
+
+def export_records(rec_list, output_path, file_format,):
+	with open(f"{output_path}", "w") as handle:
+		SeqIO.write(rec_list, handle, file_format)
+
+
+def attach_label_to_fasta(seqrecords_list, id_to_label_df):
+	new_seqrecords_list = []
+	match_dict = {}
+	id_to_label_df.apply(lambda row: match_dict.setdefault(row["sacc"], row["staxid"]), axis=1).to_dict()
+	for record in seqrecords_list:
+		try:
+			record.id = f"{record.id}|{match_dict[record.id]}"
+		except KeyError:
+			pass
+		new_seqrecords_list.append(record)
+	return new_seqrecords_list
+
+
+# Load config file
+config_path = "/groups/doudna/team_resources/toolbox/phyrec_screening/config/phyrec_processing.yaml"
+with open(config_path, "r") as f:
+	config = yaml.load(f, Loader=yaml.FullLoader)
 
 
 def main():
 	# Snakemake Imports
+	#   SMK Inputs
 	blastout_path = str(snakemake.input.psiblast_out)
 	blast_col_names = str(snakemake.params.blast_col_names)
+	#   SMK Outputs
 	output_taxcount_table = str(snakemake.output.taxid_counts)
+	output_fasta_hits = str(snakemake.output.hits_fasta)
 
 	# Import blastout table
 	blast_col_names_list = blast_col_names.split(" ")
@@ -22,14 +70,19 @@ def main():
 	                       names=blast_col_names_list,
 	                       index_col=False).convert_dtypes().infer_objects()
 	# Process pd Dataframe and take the unique set of hit IDs
-	all_uniq_blast_ids = set(blast_df['sacc'].dropna().tolist())
-	id_to_taxid = blast_df[blast_df['sacc'].isin(all_uniq_blast_ids)][['sacc', 'staxid']]
+	uniq_blast_hits = set(blast_df['sacc'].dropna().tolist())
+	id_to_taxid = blast_df[blast_df['sacc'].isin(uniq_blast_hits)][['sacc', 'staxid']]
 
 	# Count occurrences of each TaxID in the relevant column
 	taxid_counts_df = id_to_taxid['staxid'].value_counts().reset_index()
 	taxid_counts_df.columns = ['sacc', 'staxid_count']
-
+	# Export output
 	taxid_counts_df.to_csv(output_taxcount_table, sep="\t")
+
+	# Parse hit sequences to FASTA file
+	hit_seq_record_list = ncbi_fetch(uniq_blast_hits, 'protein', 'fasta')
+	hit_taxid_seq_record_list = attach_label_to_fasta(hit_seq_record_list, id_to_taxid)
+	export_records(hit_seq_record_list, output_fasta_hits, 'fasta')
 	#
 	# # Start the stopwatch / counter
 	# t1_start = process_time()

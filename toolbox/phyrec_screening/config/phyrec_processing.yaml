@@ -4,6 +4,9 @@ threads: 5
 # Parent directorry where the analyses will be stored
 run: "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening"
 
+# Email address required for Entrez queries
+entrez_login: "thedoudnalab@gmail.com"
+
 # Parent path to the shared database files in the server
 shared_db_path: "/shared/db/genbank/latest/blast/nr"  # "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening/custom_db/slice_nr" # "/groups/doudna/team_resources/shared_databases/preform_nr" #  "/shared/db/genbank/latest/blast"#
 

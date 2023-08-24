@@ -8,17 +8,16 @@ run: "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening"
 entrez_login: "thedoudnalab@gmail.com"
 
 # Parent path to the shared database files in the server
-shared_db_path: "/shared/db/genbank/latest/blast/nr"  # "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening/custom_db/slice_nr" # "/groups/doudna/team_resources/shared_databases/preform_nr" #  "/shared/db/genbank/latest/blast"#
+shared_db_path: "/shared/db/genbank/latest/blast/nr"
 
-# List of databases included in the sequence search step
-#included_databases: ["slice_nr.fasta"] #,"swissprot.fasta"] #,
-#"pdbaa.fasta"]
-
+# Prefix name found in the input MSA filename
 input_prefix: ["G2II_nLTR_RT"]
 
 # Name given to the merger of the databases collected for the analysis
 db_prefix: "NR"
 
+# Path to NCBI taxonomy download directory
 taxdump_path: "/groups/doudna/team_resources/shared_databases/taxdump"
 
+# PSI-BLAST custom columns
 blast_custom_cols: "qacc sacc evalue pident qcovhsp staxid"

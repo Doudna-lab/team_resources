@@ -27,7 +27,13 @@ rule all:
 			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
 		# Re-align the initial MSA with the PSI-BLAST hit sequences
 		expand("{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta",
-		run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"])
+			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		# Phylogenetic reconstruction
+		expand("{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile",
+			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		# Build HMM based on the consolidated alignment
+		expand("{run}/hmm/db-{db_prefix}_query-{input_prefix}.hmm",
+			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"])
 
 # noinspection SmkAvoidTabWhitespace
 # rule merge_and_makedb:
@@ -132,4 +138,33 @@ rule realignment:
 		"""
 		cat {input.msa_in} {input.hits_fasta} > {params.merged_input}
 		clustalo --iter 10 --threads {threads} -i {params.merged_input} -o {output.post_search_msa} -v
+		"""
+
+# noinspection SmkAvoidTabWhitespace
+rule phylogeny:
+	input:
+		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
+	output:
+		phylogenetic_reconstruction = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile"
+	params:
+		output_prefix = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}"
+	threads:
+		config["threads"]
+	shell:
+		"""
+		iqtree -s {input.post_search_msa} -mtree -m MFP -bb 1000 -pre {params.output_prefix} -st AA -nt {threads} -v 
+		"""
+
+rule build_hmm:
+	input:
+		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
+	output:
+		hmmbuild = "{run}/hmm/db-{db_prefix}_query-{input_prefix}.hmm"
+	params:
+		hmm_summary = "{run}/hmm/db-{db_prefix}_query-{input_prefix}_summary.txt"
+	threads:
+		config["threads"]
+	shell:
+		"""
+		hmmbuild --cpu {threads} --amino -n {wildcards.input_prefix} -o {params.hmm_summary} {output.hmmbuild} {input.post_search_msa}
 		"""

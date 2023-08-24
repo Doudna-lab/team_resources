@@ -9,3 +9,6 @@ iterative_search:
   cores: 20
   time: '8:00:00'
 
+realignment:
+  cores: 20
+  time: '4:00:00'

@@ -21,5 +21,4 @@ db_prefix: "NR"
 
 taxdump_path: "/groups/doudna/team_resources/shared_databases/taxdump"
 
-
 blast_custom_cols: "qacc sacc evalue pident qcovhsp staxid"

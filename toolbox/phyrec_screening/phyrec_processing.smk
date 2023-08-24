@@ -24,7 +24,10 @@ rule all:
 			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
 		# Generate Krona plot
 		expand("{run}/krona/db-{db_prefix}_query-{input_prefix}_krona-plot.html",
-			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"])
+			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		# Re-align the initial MSA with the PSI-BLAST hit sequences
+		expand("{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta",
+		run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"])
 
 # noinspection SmkAvoidTabWhitespace
 # rule merge_and_makedb:
@@ -114,12 +117,19 @@ rule krona:
 		"""
 	# ktUpdateTaxonomy.sh {params.taxdump_path}
 
-
-
 # noinspection SmkAvoidTabWhitespace
-rule alignment:
+rule realignment:
 	input:
 		hits_fasta = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_hits.fasta",
 		msa_in= "{run}/input/{input_prefix}.msa.fasta"
 	output:
-		post_search_msa = "{run}/muscle/db-{db_prefix}_query-{input_prefix}.msa.fasta"
+		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
+	params:
+		merged_input = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}_merged-input.fasta",
+	threads:
+		config["threads"]
+	shell:
+		"""
+		cat {input.msa_in} {input.hits_fasta} > {params.merged_input}
+		clustalo --iter 10 --threads {threads} -i {params.merged_input} -o {output.post_search_msa} -v
+		"""

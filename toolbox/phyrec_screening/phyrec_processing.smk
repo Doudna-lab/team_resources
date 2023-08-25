@@ -146,7 +146,7 @@ rule phylogeny:
 	output:
 		phylogenetic_reconstruction = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile"
 	params:
-		output_prefix = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}"
+		output_prefix = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}"
 	threads:
 		config["phylogeny"]["cores"]
 	shell:

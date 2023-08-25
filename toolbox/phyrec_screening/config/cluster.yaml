@@ -14,5 +14,5 @@ realignment:
   time: '2:00:00'
 
 phylogeny:
-  cores: 15
-  time: '4:00:00'
+  cores: 20
+  time: '12:00:00'

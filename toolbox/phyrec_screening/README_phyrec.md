@@ -4,7 +4,7 @@
 + This document describes the steps towards reconstructing the phylogeny of a specific protein motif and assessing its prevalence across the archaeal and prokaryotic domains of life.
 + The starting point of this workflow is a multiple sequence alignment under the title 'G2II_nLTR_RT'
 ### Materials
-+ Aiming to gain perspective about the evolutionary history of this motif, we first set out to glean information on similar sequences by conducting a broad iterative search using NCBI's NR database.
++ Aiming to gain broader perspective about the evolutionary history of this motif, we first set out to glean information on similar sequences by conducting a broad iterative search using NCBI's NR database.
   + Sequence Database Downloads:
     + NR: 08/18/2023 (https://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz)
 ### Methods

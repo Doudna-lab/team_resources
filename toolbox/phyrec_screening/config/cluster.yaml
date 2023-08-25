@@ -3,7 +3,7 @@ __default__:
   partition: node
   time: '2:00:00'
   nodes: 1
-  cores: 20
+  cores: 5
 
 iterative_search:
   cores: 20

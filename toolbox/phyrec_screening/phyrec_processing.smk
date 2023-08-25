@@ -1,5 +1,6 @@
 # **** Variables ****
 configfile: "config/phyrec_processing.yaml"
+configfile: "config/cluster.yaml"
 
 # **** Imports ****
 import glob
@@ -73,8 +74,7 @@ rule iterative_search:
 	params:
 		db = config["shared_db_path"],
 		custom_cols = config["blast_custom_cols"],
-	threads:
-		config["threads"]
+	threads: config["iterative_search"]["cores"]
 	message:
 		"Blasting query :\n {input.msa_in}\nAgainst database:\n {params.db}\nGenerating:\n {output.psiblast_out}"
 	shell:
@@ -132,8 +132,7 @@ rule realignment:
 		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
 	params:
 		merged_input = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}_merged-input.fasta",
-	threads:
-		config["threads"]
+	threads: config["realignment"]["cores"]
 	shell:
 		"""
 		cat {input.msa_in} {input.hits_fasta} > {params.merged_input}
@@ -149,7 +148,7 @@ rule phylogeny:
 	params:
 		output_prefix = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}"
 	threads:
-		config["threads"]
+		config["phylogeny"]["cores"]
 	shell:
 		"""
 		iqtree -s {input.post_search_msa} -mtree -m MFP -bb 1000 -pre {params.output_prefix} -st AA -nt {threads} -v 

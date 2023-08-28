@@ -4,26 +4,18 @@ threads: 10
 # Directory where the demultiplexed raw short reads are stored
 #   *** In case the files are not demultiplexed, run: py/process_barcodes.py
 # Biotite Path
-read_directory: "/groups/doudna/projects/doherty_ee/30-879189029_analysis/demultiplexed"
+read_directory: "/groups/doudna/projects/daniel_projects/doherty_ee/30-879189029/00_fastq"
 
 # Biotite Path where the current analysis files will be stored
-job_name: "/groups/doudna/projects/doherty_ee/30-879189029_analysis"
+job_name: "/groups/doudna/projects/daniel_projects/doherty_ee/30-879189029_analysis"
 
 # Path to reference sequence(s) to be used in te alignment
-reference_path: "/groups/doudna/projects/doherty_ee/30-879189029/reference_seq"
+reference_path: "/groups/doudna/projects/daniel_projects/doherty_ee/30-879189029/reference_seq"
 
 # Trimmomatic
-trim_params: "SLIDINGWINDOW:4:20 MINLEN:50"
+trim_params: "MINLEN:75"
 #REPORT: SAMPLE vs. RUN:
 samples:
-  '124-P_0': 'ED-I-116-1'
-  '124-P_120': 'ED-I-116-1'
-  '124-Q_0': 'ED-I-116-1'
-  '124-Q_120': 'ED-I-116-1'
-  '124-R_0': 'ED-I-116-1'
-  '124-R_120': 'ED-I-116-1'
-  '124-S_0': 'ED-I-116-1'
-  '124-S_120': 'ED-I-116-1'
   '124-T_0': 'ED-I-109-2'
   '124-T_120': 'ED-I-109-2'
   '124-U_0': 'ED-I-109-2'
@@ -48,17 +40,17 @@ samples:
   '109-I_120': 'ED-I-109-1'
   '109-K_0': 'ED-I-109-1'
   '109-K_120': 'ED-I-109-1'
+  '124-P_0': 'ED-I-116-1'
+  '124-P_120': 'ED-I-116-1'
+  '124-Q_0': 'ED-I-116-1'
+  '124-Q_120': 'ED-I-116-1'
+  '124-R_0': 'ED-I-116-1'
+  '124-R_120': 'ED-I-116-1'
+  '124-S_0': 'ED-I-116-1'
+  '124-S_120': 'ED-I-116-1'
 
 #REPORT: SAMPLE vs. REFERENCE SEQUENCE:
 reference:
-  '124-P_0': 'ED_o_093'
-  '124-P_120': 'ED_o_093'
-  '124-Q_0': 'ED_o_093'
-  '124-Q_120': 'ED_o_093'
-  '124-R_0': 'ED_o_097'
-  '124-R_120': 'ED_o_097'
-  '124-S_0': 'ED_o_097'
-  '124-S_120': 'ED_o_097'
   '124-T_0': 'ED_o_041'
   '124-T_120': 'ED_o_041'
   '124-U_0': 'ED_o_041'
@@ -83,6 +75,49 @@ reference:
   '109-I_120': 'ED_o_023'
   '109-K_0': 'ED_o_023'
   '109-K_120': 'ED_o_023'
+  '124-P_0': 'ED_o_093'
+  '124-P_120': 'ED_o_093'
+  '124-Q_0': 'ED_o_093'
+  '124-Q_120': 'ED_o_093'
+  '124-R_0': 'ED_o_097'
+  '124-R_120': 'ED_o_097'
+  '124-S_0': 'ED_o_097'
+  '124-S_120': 'ED_o_097'
 
 #REFERENCE LIST:
-reference_sequences: ['ED_o_041', 'ED_o_097', 'ED_o_023', 'ED_o_040', 'ED_o_093']
+reference_sequences: ['ED_o_097', 'ED_o_093', 'ED_o_040', 'ED_o_023', 'ED_o_041']
+#BARCODES vs. SAMPLE:
+barcode_to_sample:
+  "124-T_0": "ACAC-GTCA"
+  "124-T_120": "ACAC-CCAG"
+  "124-U_0": "TTAC-GTCA"
+  "124-U_120": "TTAC-CCAG"
+  "124-V_0": "ACCT-GTCA"
+  "124-V_120": "ACCT-CCAG"
+  "124-M_0": "GCAC-GTCA"
+  "124-M_120": "GCAC-CCAG"
+  "124-N_0": "CGCG-GTCA"
+  "124-N_120": "CGCG-CCAG"
+  "124-O_0": "CGCA-GTCA"
+  "124-O_120": "CGCA-CCAG"
+  "109-A_0": "ACAC-GTCA"
+  "109-A_120": "ACAC-CCAG"
+  "109-C_0": "TTAC-GTCA"
+  "109-C_120": "TTAC-CCAG"
+  "109-E_0": "ACCT-GTCA"
+  "109-E_120": "ACCT-CCAG"
+  "109-G_0": "GCAC-GTCA"
+  "109-G_120": "GCAC-CCAG"
+  "109-I_0": "CGCG-GTCA"
+  "109-I_120": "CGCG-CCAG"
+  "109-K_0": "CGCA-GTCA"
+  "109-K_120": "CGCA-CCAG"
+  "124-P_0": "ACAC-GTCA"
+  "124-P_120": "ACAC-GTCA"
+  "124-Q_0": "GTCA-GTCA"
+  "124-Q_120": "GTCA-GTCA"
+  "124-R_0": "ACCT-GTCA"
+  "124-R_120": "ACCT-GTCA"
+  "124-S_0": "GCAC-GTCA"
+  "124-S_120": "GCAC-GTCA"
+  

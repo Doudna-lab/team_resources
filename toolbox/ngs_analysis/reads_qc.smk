@@ -9,7 +9,9 @@ import glob
 # noinspection SmkAvoidTabWhitespace
 rule all:
     input:
-        expand("{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz",sample=config["samples"], run=config["job_name"]),
+        # Demultiplex reads
+        expand("{run}/demux/demultiplexed-{sample}_R1.fastq.gz", sample=config["samples"], run=config["job_name"]),
+        # expand("{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz", sample=config["samples"], run=config["job_name"]),
         #Reads QC Pre-Trim
         expand("{run}/fastqc_preTrim/", sample=config["samples"], run=config["job_name"]),
         expand("{run}/multiqc_preTrim/multiqc_report.html",run=config["job_name"]),
@@ -27,30 +29,50 @@ rule all:
 #     output:
 #         r1_demux = "",
 #         r2_demux = ""
-
-rule clumpify:
+rule demux_dual:
     input:
-        r1 = lambda wildcards: glob.glob("{directory}/{run_id}_S?_L001_R1_001_{sample}.fastq.gz".format(directory=config["read_directory"],
-            sample=wildcards.sample,run_id=config['samples'][wildcards.sample])),
-        r2 = lambda wildcards: glob.glob("{directory}/{run_id}_S?_L001_R2_001_{sample}.fastq.gz".format(directory=config["read_directory"],
-            sample=wildcards.sample,run_id=config['samples'][wildcards.sample]))
+        r1 = lambda wildcards: glob.glob("{directory}/{platform_run}_S?_L001_R1_001.fastq.gz".format(directory=config["read_directory"],
+            platform_run=config['samples'][wildcards.sample])),
+        r2 = lambda wildcards: glob.glob("{directory}/{platform_run}_S?_L001_R2_001.fastq.gz".format(directory=config["read_directory"],
+            platform_run=config['samples'][wildcards.sample])),
+        fwd_barcorde= lambda wildcards: glob.glob("{run}/demux/{platform_run}_0.fasta".format(run=wildcards.run,
+            platform_run=config['samples'][wildcards.sample])),
+        rev_barcorde= lambda wildcards: glob.glob("{run}/demux/{platform_run}_1.fasta".format(run=wildcards.run,
+            platform_run=config['samples'][wildcards.sample]))
     output:
-        r1_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz",
-        r2_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R2_dedup.fastq.gz"
+        r1_demux = "{run}/demux/demultiplexed-{sample}_R1.fastq.gz",
+        r2_demux = "{run}/demux/demultiplexed-{sample}_R2.fastq.gz"
     conda:
         "envs/biopy.yaml"
     message:
-        "Clumpifying read pairs:\nR1: {input.r1}\nR2: {input.r2}\n ==> Output:\n 1- {output.r1_dedup}\n 2- {output.r2_dedup}\nWildcards: {wildcards}"
+        "Demultiplexing read pairs:\nR1: {input.r1}\nR2: {input.r2}\nBarcodes:\n Fwd: {input.fwd_barcorde}\n Rev: {input.rev_barcorde}\n ==> Output:\n 1- {output.r1_demux}\n 2- {output.r2_demux}\nWildcards: {wildcards}"
     threads:
         config["threads"]
     shell:
         """
-        clumpify.sh in1={input.r1} in2={input.r2} out1={output.r1_dedup} out2={output.r2_dedup} dedupe=t optical=f
+        cutadapt -j {threads} -e 1 --no-indels --pair-adapters -g file:{input.fwd_barcorde} -G file:{input.rev_barcorde} -o '{wildcards.run}/demux/demultiplexed-{{name}}_R1.fastq.gz' -p '{wildcards.run}/demux/demultiplexed-{{name}}_R2.fastq.gz' {input.r1} {input.r2}
         """
+# rule clumpify:
+#     input:
+#         r1 = "{run}/demux/demultiplexed-{sample}_R1.fastq.gz",
+#         r2 = "{run}/demux/demultiplexed-{sample}_R2.fastq.gz"
+#     output:
+#         r1_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz",
+#         r2_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R2_dedup.fastq.gz"
+#     conda:
+#         "envs/biopy.yaml"
+#     message:
+#         "Clumpifying read pairs:\nR1: {input.r1}\nR2: {input.r2}\n ==> Output:\n 1- {output.r1_dedup}\n 2- {output.r2_dedup}\nWildcards: {wildcards}"
+#     threads:
+#         config["threads"]
+#     shell:
+#         """
+#         clumpify.sh in1={input.r1} in2={input.r2} out1={output.r1_dedup} out2={output.r2_dedup} dedupe=t optical=f
+#         """
 rule fastqc_1:
     input:
-        r1_dedup = expand("{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz", run=config["job_name"], sample=config["samples"]),
-        r2_dedup = expand("{run}/clumpify/{sample}_dedup/{sample}_R2_dedup.fastq.gz", run=config["job_name"], sample=config["samples"])
+        r1_dedup = expand("{run}/demux/demultiplexed-{sample}_R1.fastq.gz", run=config["job_name"], sample=config["samples"]),
+        r2_dedup = expand("{run}/demux/demultiplexed-{sample}_R2.fastq.gz", run=config["job_name"], sample=config["samples"])
     output:
         directory("{run}/fastqc_preTrim/")
     conda:
@@ -81,8 +103,8 @@ rule multiqc_1:
         """
 rule trimmomatic:
     input:
-        r1_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R1_dedup.fastq.gz",
-        r2_dedup = "{run}/clumpify/{sample}_dedup/{sample}_R2_dedup.fastq.gz"
+        r1_demux="{run}/demux/demultiplexed-{sample}_R1.fastq.gz",
+        r2_demux="{run}/demux/demultiplexed-{sample}_R2.fastq.gz"
     output:
         p1 = "{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_P1.fastq.gz",
         u1 = "{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_U1.fastq.gz",
@@ -94,7 +116,7 @@ rule trimmomatic:
     conda:
         "envs/biopy.yaml"
     message:
-        """Trimming read pairs:\nR1: {input.r1_dedup}\nR2: {input.r2_dedup} 
+        """Trimming read pairs:\nR1: {input.r1_demux}\nR2: {input.r2_demux}
         ==> Output:\n 1- {output.p1}\n 2- {output.p2} 
         ==> parameters: {params.trim_params}
         ==> Report:\n {output.report}"""
@@ -102,7 +124,10 @@ rule trimmomatic:
         config["threads"]
     shell:
         """
-        trimmomatic PE -threads {threads} -summary {output.report} {input.r1_dedup} {input.r2_dedup} {output.p1} {output.u1} {output.p2} {output.u2} {params.trim_params}
+        touch {output.u1} {output.u2} {output.report}
+        cp {input.r1_demux} {output.p1} 
+        cp {input.r2_demux} {output.p2} 
+        trimmomatic PE -threads {threads} -summary {output.report} {input.r1_demux} {input.r2_demux} {output.p1} {output.u1} {output.p2} {output.u2} {params.trim_params} || true
         """
 # rule sortmerna:
 # 	input:
@@ -168,7 +193,7 @@ rule fastqc_2:
     shell:
         """
         mkdir {output}
-        fastqc {input.p1} {input.p2} -t {threads} -o {output}
+        fastqc {input.p1} {input.p2} -t {threads} -o {output} || true
         """
 rule multiqc_2:
     input:

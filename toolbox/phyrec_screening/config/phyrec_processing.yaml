@@ -1,6 +1,8 @@
 # Default threads for processes ran in this pipeline
 threads: 5
 
+ram_phylogeny: 30000
+
 # Parent directorry where the analyses will be stored
 run: "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening"
 

@@ -30,8 +30,8 @@ rule all:
 		expand("{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta",
 			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
 		# Phylogenetic reconstruction
-		expand("{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile",
-			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		# expand("{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile",
+		# 	run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
 		# Fast phylogenetic reconstruction for probing
 		expand("{run}/fasttree/db-{db_prefix}_query-{input_prefix}.nwk",
 			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
@@ -92,7 +92,7 @@ rule iterative_search:
         -subject_besthit \
         -inclusion_ethresh 1e-05 \
         -evalue 1e-2 \
-        -qcov_hsp_perc 85 \
+        -qcov_hsp_perc 80 \
         -out {output.psiblast_out}
         """
 
@@ -122,7 +122,7 @@ rule krona:
 		"envs/krona.yaml"
 	shell:
 		"""		
-		ktImportTaxonomy -m 2 -t 3 -tax {params.taxdump_path} -o {output.krona_chart} {input.taxid_counts}
+		ktImportTaxonomy -m 2 -t 1 -tax {params.taxdump_path} -o {output.krona_chart} {input.taxid_counts}
 		"""
 # ktUpdateTaxonomy.sh {params.taxdump_path}
 
@@ -143,23 +143,23 @@ rule realignment:
 		"""
 
 # noinspection SmkAvoidTabWhitespace
-rule phylogeny:
-	input:
-		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
-	output:
-		phylogenetic_reconstruction = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile"
-	params:
-		output_prefix = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}"
-	conda:
-		"envs/iqtree.yaml"
-	threads:
-		config["phylogeny"]["cores"]
-	resources:
-		mem_mb = config["ram_phylogeny"],
-	shell:
-		"""
-		iqtree -s {input.post_search_msa} -m TEST -B 1000 -pre {params.output_prefix} -st AA -v 
-		"""
+# rule phylogeny:
+# 	input:
+# 		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
+# 	output:
+# 		phylogenetic_reconstruction = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile"
+# 	params:
+# 		output_prefix = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}"
+# 	conda:
+# 		"envs/iqtree.yaml"
+# 	threads:
+# 		config["phylogeny"]["cores"]
+# 	resources:
+# 		mem_mb = config["ram_phylogeny"],
+# 	shell:
+# 		"""
+# 		iqtree -s {input.post_search_msa} -m TEST -B 100 -pre {params.output_prefix} -st AA -v
+# 		"""
 
 # noinspection SmkAvoidTabWhitespace
 rule fast_phylogeny:
@@ -180,6 +180,7 @@ rule fast_phylogeny:
 		FastTree -boot 1000 -out {output.fast_phylogenetic_reconstruction} {input.post_search_msa} 
 		"""
 
+# noinspection SmkAvoidTabWhitespace
 rule build_hmm:
 	input:
 		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"

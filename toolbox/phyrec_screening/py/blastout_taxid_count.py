@@ -71,18 +71,18 @@ def main():
 	                       index_col=False).convert_dtypes().infer_objects()
 	# Process pd Dataframe and take the unique set of hit IDs
 	uniq_blast_hits = set(blast_df['sacc'].dropna().tolist())
-	id_to_taxid = blast_df[blast_df['sacc'].isin(uniq_blast_hits)][['sacc', 'staxid']]
+	id_to_taxid = blast_df[blast_df['sacc'].isin(uniq_blast_hits)][['sacc', 'staxid']].drop_duplicates()
 
 	# Count occurrences of each TaxID in the relevant column
 	taxid_counts_df = id_to_taxid['staxid'].value_counts().reset_index()
 	taxid_counts_df.columns = ['sacc', 'staxid_count']
 	# Export output
-	taxid_counts_df.to_csv(output_taxcount_table, sep="\t")
+	taxid_counts_df.to_csv(output_taxcount_table, sep="\t", index=False)
 
 	# Parse hit sequences to FASTA file
 	hit_seq_record_list = ncbi_fetch(uniq_blast_hits, 'protein', 'fasta')
 	hit_taxid_seq_record_list = attach_label_to_fasta(hit_seq_record_list, id_to_taxid)
-	export_records(hit_seq_record_list, output_fasta_hits, 'fasta')
+	export_records(hit_taxid_seq_record_list, output_fasta_hits, 'fasta')
 	#
 	# # Start the stopwatch / counter
 	# t1_start = process_time()

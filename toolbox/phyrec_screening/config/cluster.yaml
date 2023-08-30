@@ -10,9 +10,9 @@ iterative_search:
   time: '8:00:00'
 
 realignment:
-  cores: 10
-  time: '2:00:00'
+  cores: 15
+  time: '4:00:00'
 
 phylogeny:
   cores: 20
-  time: '20:00:00'
+  time: '30:00:00'

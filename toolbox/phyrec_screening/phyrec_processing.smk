@@ -1,5 +1,5 @@
 # **** Variables ****
-configfile: "config/phyrec_processing.yaml"
+configfile: "config/phyrec_processing_nogaps.yaml"
 configfile: "config/cluster.yaml"
 
 # **** Imports ****
@@ -28,6 +28,9 @@ rule all:
 			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
 		# Re-align the initial MSA with the PSI-BLAST hit sequences
 		expand("{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta",
+			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		# Automatically remove gaps on the MSA through JPRED4
+		expand("{run}/clustalo/db-{db_prefix}_query-{input_prefix}_jpred_report.txt",
 			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
 		# Phylogenetic reconstruction
 		# expand("{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile",
@@ -70,8 +73,9 @@ rule all:
 # noinspection SmkAvoidTabWhitespace
 rule iterative_search:
 	input:
-		msa_in = "{run}/input/{input_prefix}.msa.fasta"
-		# merged_db = lambda wildcards: glob.glob("{shared_db_path}/nr".format(shared_db_path=config["shared_db_path"])), #"{run}/custom_db/{db_prefix}.phr",
+		msa_in = lambda wildcards: glob.glob("{input_dir}/{input_prefix}.msa.fasta".format(
+			input_dir=config["input_dir"], input_prefix=wildcards.input_prefix))
+		# msa_in = "{run}/input/{input_prefix}.msa.fasta"
 	output:
 		psiblast_out = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}.blastout"
 	params:
@@ -129,8 +133,9 @@ rule krona:
 # noinspection SmkAvoidTabWhitespace
 rule realignment:
 	input:
-		hits_fasta = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_hits.fasta",
-		msa_in= "{run}/input/{input_prefix}.msa.fasta"
+		hits_fasta="{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_hits.fasta",
+		msa_in=lambda wildcards: glob.glob("{input_dir}/{input_prefix}.msa.fasta".format(
+			input_dir=config["input_dir"],input_prefix=wildcards.input_prefix))
 	output:
 		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
 	params:
@@ -142,6 +147,19 @@ rule realignment:
 		clustalo --iter 10 --threads {threads} -i {params.merged_input} -o {output.post_search_msa} -v
 		"""
 
+# noinspection SmkAvoidTabWhitespace
+rule msa_gap_removal:
+	input:
+		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
+	output:
+		jpred_report = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}_jpred_report.txt"
+	params:
+		# nogaps_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}_nogaps.msa.fasta",
+		output_path = "{run}/clustalo/"
+	shell:
+		"""
+		python3 py/jpred_submission.py {input.post_search_msa} {output.jpred_report} {params.output_path}
+		"""
 # noinspection SmkAvoidTabWhitespace
 # rule phylogeny:
 # 	input:

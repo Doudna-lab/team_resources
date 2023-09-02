@@ -23,3 +23,6 @@ taxdump_path: "/groups/doudna/team_resources/shared_databases/taxdump"
 
 # PSI-BLAST custom columns
 blast_custom_cols: "qacc sacc evalue pident qcovhsp staxid"
+
+# Jpred internally generated ID -- downloaded from JPRED online server
+jpred_id: "jp_T6I_JjO"

@@ -1,12 +1,12 @@
 # **** Variables ****
-configfile: "config/phyrec_processing_nogaps.yaml"
+configfile: "config/phyrec_processing.yaml"
 configfile: "config/cluster.yaml"
 
 # **** Imports ****
 import glob
 
 # Cluster run template
-#nohup snakemake --snakefile phyrec_processing.smk -j 5 --cluster "sbatch -t {cluster.time} -n {cluster.cores} -N {cluster.nodes}" --cluster-config config/cluster.yaml --latency-wait 120 --use-conda &
+#nohup snakemake --snakefile expanded_search.smk -j 5 --cluster "sbatch -t {cluster.time} -n {cluster.cores} -N {cluster.nodes}" --cluster-config config/cluster.yaml --latency-wait 120 --use-conda &
 
 # noinspection SmkAvoidTabWhitespace
 rule all:
@@ -29,18 +29,6 @@ rule all:
 		# Re-align the initial MSA with the PSI-BLAST hit sequences
 		expand("{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta",
 			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
-		# Automatically remove gaps on the MSA through JPRED4
-		expand("{run}/clustalo/db-{db_prefix}_query-{input_prefix}_jpred_report.txt",
-			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
-		# Phylogenetic reconstruction
-		# expand("{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile",
-		# 	run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
-		# Fast phylogenetic reconstruction for probing
-		expand("{run}/fasttree/db-{db_prefix}_query-{input_prefix}.nwk",
-			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
-		# Build HMM based on the consolidated alignment
-		expand("{run}/hmm/db-{db_prefix}_query-{input_prefix}.hmm",
-			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"])
 
 # noinspection SmkAvoidTabWhitespace
 # rule merge_and_makedb:
@@ -147,68 +135,3 @@ rule realignment:
 		clustalo --iter 10 --threads {threads} -i {params.merged_input} -o {output.post_search_msa} -v
 		"""
 
-# noinspection SmkAvoidTabWhitespace
-rule msa_gap_removal:
-	input:
-		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
-	output:
-		jpred_report = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}_jpred_report.txt"
-	params:
-		# nogaps_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}_nogaps.msa.fasta",
-		output_path = "{run}/clustalo/"
-	shell:
-		"""
-		python3 py/jpred_submission.py {input.post_search_msa} {output.jpred_report} {params.output_path}
-		"""
-# noinspection SmkAvoidTabWhitespace
-# rule phylogeny:
-# 	input:
-# 		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
-# 	output:
-# 		phylogenetic_reconstruction = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}.treefile"
-# 	params:
-# 		output_prefix = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}"
-# 	conda:
-# 		"envs/iqtree.yaml"
-# 	threads:
-# 		config["phylogeny"]["cores"]
-# 	resources:
-# 		mem_mb = config["ram_phylogeny"],
-# 	shell:
-# 		"""
-# 		iqtree -s {input.post_search_msa} -m TEST -B 100 -pre {params.output_prefix} -st AA -v
-# 		"""
-
-# noinspection SmkAvoidTabWhitespace
-rule fast_phylogeny:
-	input:
-		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
-	output:
-		fast_phylogenetic_reconstruction = "{run}/fasttree/db-{db_prefix}_query-{input_prefix}.nwk"
-	params:
-		output_prefix = "{run}/iqtree/db-{db_prefix}_query-{input_prefix}"
-	conda:
-		"envs/fasttree.yaml"
-	threads:
-		config["phylogeny"]["cores"]
-	resources:
-		mem_mb = config["ram_phylogeny"],
-	shell:
-		"""
-		FastTree -boot 1000 -out {output.fast_phylogenetic_reconstruction} {input.post_search_msa} 
-		"""
-
-# noinspection SmkAvoidTabWhitespace
-rule build_hmm:
-	input:
-		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
-	output:
-		hmmbuild = "{run}/hmm/db-{db_prefix}_query-{input_prefix}.hmm"
-	params:
-		hmm_summary = "{run}/hmm/db-{db_prefix}_query-{input_prefix}_summary.txt"
-	threads:
-		config["threads"]
-	shell:
-		"""
-		hmmbuild --cpu {threads} --amino -n {wildcards.input_prefix} -o {params.hmm_summary} {output.hmmbuild} {input.post_search_msa}
-		"""

@@ -11,10 +11,10 @@ from Bio import SeqIO
 # from Bio.SeqUtils import CodonUsage
 # from Bio.SeqUtils.CodonUsage import CodonAdaptationIndex as CAI
 
-
 # DEBUG
 # abs_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/fasta/TadA8e.fna"
 # config_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml"
+
 
 def parse_arguments():
 	#  Launch argparse parser
@@ -46,9 +46,11 @@ def format_codon_tbl(codon_tbl: dict):
 def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 	"""
 
-	:param ptnrec:
-	:param backtable:
-	:return:
+	:param ptnrec: A single sequence enclosed in a SeqIO.SeqRecord object
+	holding at least the sequence and an identifier
+	:param backtable: Codon back table: each key represented by a one-letter
+	abbreviation of an Aminoacid; each value represented by its respective codon
+	:return: Two lists of SeqIO.SeqRecord. First for AAs, second for NTs.
 	"""
 	# Force all AA to uppercase to keep consistency
 	format_backtable = format_codon_tbl(backtable)

@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="/toolbox/blast2region/blast2region_report/summary_report.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/toolbox/blast2region/scratch/blast2region_out.csv">
           <value>
             <Attribute>

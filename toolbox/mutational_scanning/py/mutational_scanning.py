@@ -66,16 +66,17 @@ def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 		for aa_in_lib in format_backtable:
 			if aa_in_lib != ptnseq_ls[aacid_idx].upper():
 				loop_ptnseq_ls = ptnseq_ls.copy()
-				variant_fasta_label = f"{ptn_id}|{aacid_idx}_{aa_in_lib}"
+				aacid_idx_label = aacid_idx + 1
+				variant_fasta_label = f"{ptn_id}|{aacid_idx_label}_{aa_in_lib}"
 				#
 				loop_ptnseq_ls[aacid_idx] = aa_in_lib
-				loop_ptnseq = ''.join(loop_ptnseq_ls)
-				ptn_record_ls.append(SeqIO.SeqRecord(loop_ptnseq, id=variant_fasta_label))
+				loop_ptnseq = Seq(''.join(loop_ptnseq_ls))
+				ptn_record_ls.append(SeqIO.SeqRecord(loop_ptnseq, id=variant_fasta_label, description=''))
 
 				variant_backtrans_seq = ""
 				for variand_aa in loop_ptnseq:
 					variant_backtrans_seq += format_backtable[variand_aa]
-				gene_record_ls.append(SeqIO.SeqRecord(variant_backtrans_seq, id=variant_fasta_label))
+				gene_record_ls.append(SeqIO.SeqRecord(Seq(variant_backtrans_seq), id=variant_fasta_label, description=''))
 	return ptn_record_ls, gene_record_ls
 
 
@@ -99,16 +100,24 @@ def main():
 	output_dir = config['output_dir']
 
 	# Parse FASTA abjects
-	dnaseq_record = SeqIO.read(fasta_in_path, "fasta")
+	try:
+		dnaseq_record = SeqIO.read(fasta_in_path, "fasta")
+	except (ValueError, TypeError):
+		raise "The file provided is not correctly formatted as a FASTA sequence"
 	dnaseq_in = Seq(dnaseq_record.seq)
 	ptnseq_in = SeqIO.SeqRecord(str(dnaseq_in.translate()), dnaseq_record.id)
 
+	print("FASTA sequence imported ")
 	# Generate AA and NT single variant libs based on the provided backtable
 	ptn_recs, gene_recs = generate_variants(ptnseq_in, back_table)
 
+	print("Single variants successfully generated")
 	# Export outputs
 	fasta_export(ptn_recs, output_dir, f"{config['out_file_prefix']}.faa")
 	fasta_export(gene_recs, output_dir, f"{config['out_file_prefix']}.fna")
+	print(f"FASTA libraries exported to {output_dir}:\n "
+	      f"AA FASTA: {output_dir}/{config['out_file_prefix']}.faa\n "
+	      f"NT FASTA: {output_dir}/{config['out_file_prefix']}.fna\n")
 
 
 if __name__ == "__main__":

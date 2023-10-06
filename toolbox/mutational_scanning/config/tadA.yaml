@@ -21,6 +21,6 @@ codonTable_noStops:
   'y': 'TAC'
   'w': 'TGG'
 
-output_dir: "/groups/doudna/projects/daniel_projects/doherty_ee/dms/tadA_singleVariant_lib"
+output_dir: "/groups/doudna/projects/daniel_projects/doherty_ee/dms/tadA_singleVariant_lib" #"/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/test_run" #
 
 out_file_prefix: "tadA_svl"

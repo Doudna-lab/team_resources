@@ -1,15 +1,9 @@
 # Native modules
 from argparse import ArgumentParser as argp
-# import os
-# from pathlib import Path
-# import re
 # Installed Modules
 import yaml
 from Bio.Seq import Seq
 from Bio import SeqIO
-# import Bio.Data.CodonTable as ctable
-# from Bio.SeqUtils import CodonUsage
-# from Bio.SeqUtils.CodonUsage import CodonAdaptationIndex as CAI
 
 # DEBUG
 # abs_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/fasta/TadA8e.fna"
@@ -30,7 +24,6 @@ def parse_arguments():
 	                    default='/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml',
 	                    help='Specify which config file will be loaded to the script. [Default: tadA.yaml]')
 
-
 	# Parse arguments from the command line
 	arguments = parser.parse_args()
 	return arguments
@@ -45,7 +38,6 @@ def format_codon_tbl(codon_tbl: dict):
 
 def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 	"""
-
 	:param ptnrec: A single sequence enclosed in a SeqIO.SeqRecord object
 	holding at least the sequence and an identifier
 	:param backtable: Codon back table: each key represented by a one-letter

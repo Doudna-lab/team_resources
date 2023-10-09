@@ -24,7 +24,6 @@ def parse_arguments():
 	                    default='/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml',
 	                    help='Specify which config file will be loaded to the script. [Default: tadA.yaml]')
 
-
 	# Parse arguments from the command line
 	arguments = parser.parse_args()
 	return arguments

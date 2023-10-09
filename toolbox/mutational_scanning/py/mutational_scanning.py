@@ -5,7 +5,6 @@ import yaml
 from Bio.Seq import Seq
 from Bio import SeqIO
 
-
 # DEBUG
 # abs_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/fasta/TadA8e.fna"
 # config_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml"

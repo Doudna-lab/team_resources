@@ -1,15 +1,10 @@
 # Native modules
 from argparse import ArgumentParser as argp
-# import os
-# from pathlib import Path
-# import re
 # Installed Modules
 import yaml
 from Bio.Seq import Seq
 from Bio import SeqIO
-# import Bio.Data.CodonTable as ctable
-# from Bio.SeqUtils import CodonUsage
-# from Bio.SeqUtils.CodonUsage import CodonAdaptationIndex as CAI
+
 
 # DEBUG
 # abs_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/fasta/TadA8e.fna"

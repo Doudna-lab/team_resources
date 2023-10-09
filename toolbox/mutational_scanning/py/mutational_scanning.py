@@ -38,7 +38,6 @@ def format_codon_tbl(codon_tbl: dict):
 
 def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 	"""
-
 	:param ptnrec: A single sequence enclosed in a SeqIO.SeqRecord object
 	holding at least the sequence and an identifier
 	:param backtable: Codon back table: each key represented by a one-letter

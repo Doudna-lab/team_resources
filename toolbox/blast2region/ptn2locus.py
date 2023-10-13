@@ -54,7 +54,7 @@ def ukb2ncbi(uid):
 	# gbk_id = u.mapping("UniProtKB_AC-ID", "EMBL-GenBank-DDBJ", query=uid, polling_interval_seconds=3, max_waiting_time=100)["results"][0]["to"]
 	try:
 		prot_id = u.mapping("UniProtKB_AC-ID", "EMBL-GenBank-DDBJ_CDS", query=uid, polling_interval_seconds=3, max_waiting_time=100)["results"][0]["to"]
-	except TypeError:
+	except (TypeError, IndexError):
 		prot_id = ''
 	return prot_id
 
@@ -65,6 +65,7 @@ def elink_routine(db, hit_uid):
 	linked = ""
 	link_record = ""
 	server_attempts = 0
+	handle = ""
 	try:
 		handle = Entrez.elink(dbfrom="protein", db=db, id=f"{hit_uid}")
 	except urllib.error.HTTPError as err:
@@ -74,7 +75,7 @@ def elink_routine(db, hit_uid):
 			return linked, hit_uid, not_found
 	try:
 		link_record = Entrez.read(handle)
-	except RuntimeError:
+	except (RuntimeError, ValueError):
 		not_found = hit_uid
 	if link_record:
 		try:

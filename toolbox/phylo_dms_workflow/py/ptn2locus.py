@@ -54,7 +54,7 @@ def ukb2ncbi(uid):
 	# gbk_id = u.mapping("UniProtKB_AC-ID", "EMBL-GenBank-DDBJ", query=uid, polling_interval_seconds=3, max_waiting_time=100)["results"][0]["to"]
 	try:
 		prot_id = u.mapping("UniProtKB_AC-ID", "EMBL-GenBank-DDBJ_CDS", query=uid, polling_interval_seconds=3, max_waiting_time=100)["results"][0]["to"]
-	except TypeError:
+	except (TypeError, IndexError):
 		prot_id = ''
 	return prot_id
 
@@ -74,7 +74,7 @@ def elink_routine(db, hit_uid):
 			return linked, hit_uid, not_found
 	try:
 		link_record = Entrez.read(handle)
-	except RuntimeError:
+	except (RuntimeError, ValueError):
 		not_found = hit_uid
 	if link_record:
 		try:
@@ -98,28 +98,30 @@ def ptn_to_nuc(id_list, db_name):
 		# Standardize protein identifiers to NCBI UIDs through ESearch
 		handle = Entrez.esearch(db="protein", term=f"{seq_id}", idtype="acc")
 		search_record = Entrez.read(handle)
-		print(search_record)
 		try:
 			uid = search_record['IdList'][0]
 		except IndexError:
+			print(f"Entrez.esearch could not find results for {seq_id}")
+			not_found_list.append(seq_id)
 			continue
 		handle.close()
 
 		# Grab Nuccore UIDs from the source database
 		loop_nuc_gi, loop_nuc_acc, not_found_hit = elink_routine(db_name, uid)
-		print(loop_nuc_gi)
-		print(loop_nuc_acc)
 		if not_found_hit:
 			loop_nuc_gi, loop_nuc_acc, c_not_found_hit = elink_routine(db_name,
 			                                                           ukb2ncbi(not_found_hit))
+
 			if not loop_nuc_gi:
 				not_found_list.append(c_not_found_hit)
 				continue
 		if loop_nuc_gi:
 			source2target.setdefault(loop_nuc_gi, seq_id)
 			nucleotide_uid_list.append(loop_nuc_gi)
+			print(f"Nuccore GI and ptn accession: {loop_nuc_gi} {seq_id}")
 
-		# Ouputs nuccore uids and the ptn->nuc uid links
+	# Ouputs nuccore uids and the ptn->nuc uid links
+	print(f"Total n of not found hits: {len(not_found_list)}")
 	return nucleotide_uid_list, source2target, list(set(not_found_list))
 
 
@@ -210,7 +212,7 @@ def main():
 	hit_list = df.iloc[:, 0].tolist()
 
 	# Entrez authentication
-	print("Entrez login")
+	print(f"Entrez login: {entrez_login}")
 	Entrez.email = entrez_login
 
 	# Query NCBI to get nuccore UIDs associated with the protein hits using ESearch/ELink
@@ -218,7 +220,7 @@ def main():
 	nuc_uid_list, hit_to_link, hits_not_found = ptn_to_nuc(hit_list, db)
 
 	# Get GenBank entries through EFetch
-	print("Retrieving GenBank objects")
+	print(f"Retrieving GenBank objects. {len(nuc_uid_list)} in total")
 	gb_seqrec = nuc_to_gb(nuc_uid_list)
 
 	# Narrow down Genbank files based on hit UIDs

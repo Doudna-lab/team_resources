@@ -65,6 +65,7 @@ def elink_routine(db, hit_uid):
 	linked = ""
 	link_record = ""
 	server_attempts = 0
+	handle = ""
 	try:
 		handle = Entrez.elink(dbfrom="protein", db=db, id=f"{hit_uid}")
 	except urllib.error.HTTPError as err:

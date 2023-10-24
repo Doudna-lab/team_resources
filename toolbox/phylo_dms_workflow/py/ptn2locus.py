@@ -233,6 +233,9 @@ def main():
 			target_gb_dict[item].id = target_gb_dict[item].features[0].qualifiers["protein_id"][0]
 			SeqIO.write(target_gb_dict[item], f, "fasta")
 
+	for entry in hits_not_found:
+		with open("failed_hits.txt", 'a') as f:
+			f.write(f"{entry}\n")
 
 if __name__ == "__main__":
 	main()

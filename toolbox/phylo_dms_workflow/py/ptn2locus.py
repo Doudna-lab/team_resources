@@ -237,5 +237,6 @@ def main():
 		with open("failed_hits.txt", 'a') as f:
 			f.write(f"{entry}\n")
 
+
 if __name__ == "__main__":
 	main()

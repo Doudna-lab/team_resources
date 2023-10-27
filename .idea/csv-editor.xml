@@ -3,10 +3,17 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="/toolbox/phylo_dms_workflow/scratch/rubs.csv">
+        <entry key="/toolbox/blast2region/scratch/rubisco_idlist.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/toolbox/blast2region/scratch/rubs.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="|" />
             </Attribute>
           </value>
         </entry>

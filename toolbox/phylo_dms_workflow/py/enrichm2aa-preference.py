@@ -16,16 +16,14 @@ def main():
 
 	# DEBUG INPUT
 	# dms_in = "/groups/doudna/projects/daniel_projects/prywes_n/input_data/dms_data.csv"
-	# position_col = 'position'
-	# enrichment_col = 'Enrichment_mainCond'
-	# aminoacid_col = 'residue'
+	# position_col = "Site"
+	# enrichment_col = "5percent_CO2_20uM_IPTG"
+	# aminoacid_col = "AminoAcid"
 
 	minenrichment = 1.0e-4  # minimum allowed enrichment
 	df = pd.read_csv(dms_in)
 
-	df["preference"] = [max(minenrichment, (
-			10**df[enrichment_col][x] + 10**df[enrichment_col][x])/2
-	                        ) for x in range(len(df))]
+	df["preference"] = [max(minenrichment, 10**df[enrichment_col][x]) for x in range(len(df))]
 
 	# Format the AA preference table
 	df_aapref = df.pivot(index=position_col, columns=aminoacid_col, values="preference")
@@ -35,7 +33,6 @@ def main():
 
 	# Export output
 	df_aapref.to_csv(dms_aapref_out, index=False)
-
 
 if __name__ == "__main__":
 	main()

@@ -5,6 +5,6 @@ input_dir: "/groups/doudna/projects/daniel_projects/prywes_n/input_data"
 run: "/groups/doudna/projects/daniel_projects/prywes_n/rubisco_dms"
 
 # Column names as displayed in the dms table
-position_col: "position"
-enrichment_col: "Enrichment_mainCond"
-aminoacid_col: "residue"
+position_col: "Site"
+enrichment_col: "5percent_CO2_20uM_IPTG"
+aminoacid_col: "AminoAcid"

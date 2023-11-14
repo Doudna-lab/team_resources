@@ -11,7 +11,8 @@ import glob
 rule all:
 	input:
 		expand("{run}/processed_inputs/aa_preference.csv",run=config["run"]),
-		expand("{run}/figures/aa_preference.pdf", run=config["run"])
+		expand("{run}/figures/aa_preference.pdf", run=config["run"]),
+		expand("{run}/processed_inputs/alignment.fna", run=config["run"])
 
 # noinspection SmkAvoidTabWhitespace
 rule convert_enrichment:
@@ -39,4 +40,18 @@ rule aa_preference_logo:
 	shell:
 		"""
 		phydms_logoplot --prefs {input.dms_out} {output.aa_logo}
+		"""
+
+rule align_sequences:
+	input:
+		seq_in = lambda wildcards: glob.glob("{in_dir}/sequences.fna".format(in_dir=config['input_dir'])),
+	output:
+		aligned_sequences = "{run}/processed_inputs/alignment.fna"
+	params:
+		reference_seq = config["ref_sequence_id"]
+	conda:
+		"envs/dms.yaml"
+	shell:
+		"""
+		phydms_prepalignment --minidentity 0.75  {input.seq_in} {output.aligned_sequences} {params.reference_seq}
 		"""

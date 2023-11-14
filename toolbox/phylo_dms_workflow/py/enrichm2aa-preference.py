@@ -1,6 +1,7 @@
 # Installed modules
 import pandas as pd
 from matplotlib import pyplot as plt
+from Bio import SeqIO
 
 
 def main():
@@ -15,9 +16,9 @@ def main():
 	aminoacid_col = str(snakemake.params.aminoacid_col)
 
 	# DEBUG INPUT
-	# dms_in = "/groups/doudna/projects/daniel_projects/prywes_n/input_data/dms_data.csv"
+	dms_in = "/Users/bellieny/projects/team_resources/toolbox/phylo_dms_workflow/scratch/betalactamase/betaLactamase_enrichmentScores.txt" # "/groups/doudna/projects/daniel_projects/prywes_n/input_data/dms_data.csv"
 	# position_col = "Site"
-	# enrichment_col = "5percent_CO2_20uM_IPTG"
+	# enrichment_col = "Trial_1_AmpConc_2500" # "5percent_CO2_20uM_IPTG"
 	# aminoacid_col = "AminoAcid"
 
 	minenrichment = 1.0e-4  # minimum allowed enrichment
@@ -33,6 +34,26 @@ def main():
 
 	# Export output
 	df_aapref.to_csv(dms_aapref_out, index=False)
+
+
+
+	dms_in_r = "/Users/bellieny/projects/team_resources/toolbox/phylo_dms_workflow/scratch/rbsc_enrichmentScores.csv"
+	df_r = pd.read_csv(dms_in_r)
+	with open("/Users/bellieny/projects/team_resources/toolbox/phylo_dms_workflow/ptn2locus_reports/rrub_rbsc.fasta",
+	          'r') as f:
+		rbsc_seq = SeqIO.read(f, 'fasta')
+
+	df_r.fillna(0, inplace=True)
+
+	df_r['minus1'] = df_r['5percent_CO2_20uM_IPTG'] - 1
+
+	df_r["preference"] = [max(minenrichment, 10 ** df_r["minus1"][x]) for x in range(len(df_r))]
+	df_r = df_r.pivot(index="Site", columns="AminoAcid", values="preference")
+	for idx in range(len(rbsc_seq)):
+		df_r.iat[idx, list(df_r.columns).index(rbsc_seq[idx])] = 10 ** 1
+	df_r.fillna(1, inplace=True)
+	df_r = df_r.div(df_r.sum(axis=1), axis=0)
+	df_r.insert(0, "site", range(1, len(df) + 1))
 
 if __name__ == "__main__":
 	main()

@@ -1,0 +1,618 @@
+2023-11-01 15:36:30,362 - INFO - Beginning execution of phydms in directory /groups/doudna/team_resources/toolbox/phylo_dms_workflow/scratch/betalactamase
+
+2023-11-01 15:36:30,362 - INFO - Progress is being logged to betalac_phydms/YNGKP_M5_log.log
+
+2023-11-01 15:36:30,362 - INFO - Version information:
+	Time and date: Wed Nov  1 15:36:29 2023
+	Platform: Linux-5.15.0-69-generic-x86_64-with-glibc2.35
+	Python version: 3.11.3 (main, Apr 20 2023, 11:48:39) [GCC 11.3.0]
+	phydms version: 2.4.1
+	Bio version: 1.81
+	cython version: 0.29.34
+	numpy version: 1.24.2
+	scipy version: 1.10.1
+	matplotlib version: 3.7.1
+	natsort version: 8.4.0
+	sympy version: 1.12
+	six version: 1.16.0
+	pandas version: 2.0.0
+	pyvolve version: 1.1.0
+	statsmodels version: 0.14.0
+	weblogolib version: 3.5.0
+	PyPDF2 version: 3.0.1
+
+2023-11-01 15:36:30,363 - INFO - Parsed the following arguments:
+	alignment = betaLactamase_alignment.fasta
+	tree = betalac_phydms/RAxML_tree.newick
+	model = YNGKP_M5
+	outprefix = betalac_phydms/YNGKP_M5
+	brlen = optimize
+	gammaomega = False
+	gammabeta = False
+	omegabysite = True
+	omegabysite_fixsyn = False
+	diffprefsbysite = False
+	diffprefsprior = ('invquadratic', 150.0, 0.5)
+	fitphi = False
+	randprefs = False
+	avgprefs = False
+	divpressure = None
+	ncpus = 1
+	fitprefsmethod = 2
+	ncats = 4
+	minbrlen = 1e-06
+	minpref = 0.002
+	seed = 1
+	initparams = None
+	profile = False
+	opt_details = False
+	nograd = False
+
+2023-11-01 15:36:30,363 - INFO - Random number seed: 1
+
+2023-11-01 15:36:30,363 - INFO - Reading alignment from betaLactamase_alignment.fasta
+2023-11-01 15:36:30,838 - INFO - Read 50 aligned sequences from betaLactamase_alignment.fasta, each consisting of 263 codons.
+
+2023-11-01 15:36:30,839 - INFO - Codon substitution model with be M5 version (Yang, Nielsen, Goldman, & Pederson. Genetics. 155:431-449).
+2023-11-01 15:36:30,852 - INFO - For this YNGKP_M5 model, omega will be drawn from 4 gamma-distributed categories.
+2023-11-01 15:36:30,863 - INFO - Reading tree from betalac_phydms/RAxML_tree.newick
+2023-11-01 15:36:30,866 - INFO - Tree has 50 tips.
+2023-11-01 15:36:30,875 - INFO - Adjusted 1 branch lengths up to minbrlen 1e-06
+
+2023-11-01 15:36:30,876 - INFO - Initializing TreeLikelihood..
+2023-11-01 15:36:35,486 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:35,492 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:35,496 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:35,501 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:35,505 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:35,509 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:35,515 - INFO - TreeLikelihood initialized.
+2023-11-01 15:36:35,515 - INFO - Maximizing log likelihood (initially -3034.43).
+2023-11-01 15:36:35,516 - INFO - Branch lengths will be optimized individually.
+2023-11-01 15:36:39,463 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:39,468 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:39,472 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:39,476 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:39,480 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:39,485 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:43,332 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:43,337 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:43,341 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:43,345 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:43,349 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:43,353 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:47,199 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:47,204 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:47,208 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:47,212 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:47,216 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:47,220 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:51,056 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:51,061 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:51,066 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:51,070 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:51,074 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:51,078 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:54,900 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:54,904 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:54,909 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:54,913 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:54,917 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:54,921 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:58,745 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:58,750 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:58,754 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:58,758 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:36:58,762 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:36:58,766 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:02,561 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:02,566 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:02,570 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:02,574 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:02,578 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:02,582 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:06,381 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:06,386 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:06,390 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:06,394 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:06,398 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:06,402 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:10,217 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:10,222 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:10,226 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:10,230 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:10,234 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:10,238 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:14,037 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:14,041 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:14,045 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:14,050 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:14,054 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:14,058 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:17,877 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:17,882 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:17,886 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:17,890 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:17,894 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:17,898 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:21,715 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:21,719 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:21,723 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:21,727 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:21,731 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:21,735 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:25,517 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:25,521 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:25,525 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:25,529 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:25,533 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:25,537 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:29,342 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:29,346 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:29,350 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:29,354 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:29,358 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:29,363 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:33,141 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:33,146 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:33,150 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:33,154 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:33,158 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:33,162 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:36,958 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:36,963 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:36,967 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:36,971 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:36,975 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:36,979 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:40,755 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:40,759 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:40,764 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:40,768 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:40,772 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:40,776 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:44,600 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:44,604 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:44,608 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:44,613 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:44,617 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:44,621 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:48,396 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:48,400 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:48,404 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:48,408 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:37:48,412 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:37:48,419 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:42,740 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:42,745 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:42,749 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:42,753 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:42,757 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:42,761 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:46,531 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:46,536 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:46,540 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:46,544 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:46,548 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:46,552 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:50,304 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:50,308 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:50,312 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:50,316 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:50,320 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:50,324 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:54,090 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:54,094 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:54,098 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:54,102 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:54,106 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:54,110 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:57,888 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:57,893 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:57,897 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:57,901 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:40:57,905 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:40:57,909 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:01,674 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:41:01,679 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:01,683 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:01,687 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:41:01,691 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:01,694 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:05,471 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:41:05,475 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:05,479 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:05,483 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:41:05,487 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:05,491 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:09,264 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:41:09,268 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:09,272 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:09,276 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:41:09,280 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:09,284 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:13,063 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:41:13,067 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:13,071 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:13,075 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2191: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam = scipy.misc.derivative(f, pvalue, dx, n=1, order=5)
+
+2023-11-01 15:41:13,079 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:13,083 - WARNING - /home/danielbr/.local/lib/python3.11/site-packages/phydmslib/models.py:2194: DeprecationWarning: scipy.misc.derivative is deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. You may consider using findiff: https://github.com/maroba/findiff or numdifftools: https://github.com/pbrod/numdifftools
+  dparam2 = scipy.misc.derivative(f, pvalue, stepchange * dx,
+
+2023-11-01 15:41:40,051 - INFO - Maximization complete:
+	Step 1: optimized parameters, loglik went from -3034.43 to -2936.14 (12 iterations, 20 function evals)
+	Step 2: optimized branches, loglik went from -2936.14 to -2934.67 (21 iterations, 25 function evals)
+	Step 3: optimized parameters, loglik went from -2934.67 to -2934.38 (4 iterations, 10 function evals)
+	Step 4: optimized branches, loglik went from -2934.38 to -2934.38 (1 iterations, 4 function evals)
+2023-11-01 15:41:40,051 - INFO - Optimized log likelihood is -2934.38.
+2023-11-01 15:41:40,052 - INFO - Writing log likelihood to betalac_phydms/YNGKP_M5_loglikelihood.txt
+2023-11-01 15:41:40,067 - INFO - Model parameters after optimization:
+	alpha_omega = 0.352607
+	beta_omega = 0.700001
+	kappa = 2.9246
+	phi0A = 0.255391
+	phi0C = 0.257621
+	phi0G = 0.360967
+	phi1A = 0.274267
+	phi1C = 0.242454
+	phi1G = 0.212275
+	phi2A = 0.200391
+	phi2C = 0.28751
+	phi2G = 0.298419
+2023-11-01 15:41:40,068 - INFO - Writing model parameters to betalac_phydms/YNGKP_M5_modelparams.txt
+2023-11-01 15:41:40,069 - INFO - Writing the optimized tree to betalac_phydms/YNGKP_M5_tree.newick
+
+2023-11-01 15:41:40,071 - INFO - 
+Fitting a different omega to each site to detect diversifying selection.
+2023-11-01 15:41:40,072 - INFO - Will fit different synonymous rate for each site.
+2023-11-01 15:41:40,072 - INFO - Fitting with 1 CPUs...
+2023-11-01 15:46:22,346 - INFO - Completed fitting the site-specific omega values.
+2023-11-01 15:46:22,347 - INFO - Writing results to betalac_phydms/YNGKP_M5_omegabysite.txt
+
+2023-11-01 15:46:22,352 - INFO - Successful completion of phydms

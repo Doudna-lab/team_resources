@@ -1,0 +1,43 @@
+2023-10-26 17:11:08,685 - INFO - Beginning execution of phydms_comprehensive in directory /groups/doudna/team_resources/toolbox/phylo_dms_workflow/ptn2locus_reports
+
+2023-10-26 17:11:08,686 - INFO - Progress is being logged to rub_test.log
+
+2023-10-26 17:11:08,687 - INFO - Version information:
+	Time and date: Thu Oct 26 17:11:04 2023
+	Platform: Linux-5.15.0-69-generic-x86_64-with-glibc2.35
+	Python version: 3.11.3 (main, Apr 20 2023, 11:48:39) [GCC 11.3.0]
+	phydms version: 2.4.1
+	Bio version: 1.81
+	cython version: 0.29.34
+	numpy version: 1.24.2
+	scipy version: 1.10.1
+	matplotlib version: 3.7.1
+	natsort version: 8.4.0
+	sympy version: 1.12
+	six version: 1.16.0
+	pandas version: 2.0.0
+	pyvolve version: 1.1.0
+	statsmodels version: 0.14.0
+	weblogolib version: 3.5.0
+	PyPDF2 version: 3.0.1
+
+2023-10-26 17:11:08,688 - INFO - Parsed the following command-line arguments:
+	outprefix = rub_test_
+	alignment = rubs_test
+	prefsfiles = ['/groups/doudna/projects/daniel_projects/prywes_n/rubisco_dms/processed_inputs/aa_preference.csv']
+	raxml = /shared/software/bin/raxmlHPC-PTHREADS-AVX2
+	tree = None
+	ncpus = -1
+	brlen = optimize
+	omegabysite = False
+	diffprefsbysite = False
+	gammaomega = False
+	gammabeta = False
+	noavgprefs = False
+	randprefs = False
+
+2023-10-26 17:11:08,689 - INFO - Checking that the alignment rubs_test is valid...
+2023-10-26 17:11:13,668 - INFO - Valid alignment specifying 175 sequences of length 1398.
+
+2023-10-26 17:11:13,669 - INFO - Tree not specified.
+2023-10-26 17:11:13,670 - INFO - Inferring tree with RAxML using command /shared/software/bin/raxmlHPC-PTHREADS-AVX2

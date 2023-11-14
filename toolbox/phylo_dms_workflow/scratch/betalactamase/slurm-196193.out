@@ -1,0 +1,89 @@
+2023-11-01 15:36:24,759 - INFO - Beginning execution of phydms_comprehensive in directory /groups/doudna/team_resources/toolbox/phylo_dms_workflow/scratch/betalactamase
+
+2023-11-01 15:36:24,759 - INFO - Progress is being logged to betalac_phydms/log.log
+
+2023-11-01 15:36:24,760 - INFO - Version information:
+	Time and date: Wed Nov  1 15:36:22 2023
+	Platform: Linux-5.15.0-69-generic-x86_64-with-glibc2.35
+	Python version: 3.11.3 (main, Apr 20 2023, 11:48:39) [GCC 11.3.0]
+	phydms version: 2.4.1
+	Bio version: 1.81
+	cython version: 0.29.34
+	numpy version: 1.24.2
+	scipy version: 1.10.1
+	matplotlib version: 3.7.1
+	natsort version: 8.4.0
+	sympy version: 1.12
+	six version: 1.16.0
+	pandas version: 2.0.0
+	pyvolve version: 1.1.0
+	statsmodels version: 0.14.0
+	weblogolib version: 3.5.0
+	PyPDF2 version: 3.0.1
+
+2023-11-01 15:36:24,760 - INFO - Parsed the following command-line arguments:
+	outprefix = betalac_phydms/
+	alignment = betaLactamase_alignment.fasta
+	prefsfiles = ['betaLactamase_prefs.txt']
+	raxml = /home/danielbr/miniconda3/envs/rax/bin/raxmlHPC-PTHREADS-SSE3
+	tree = None
+	ncpus = 48
+	brlen = optimize
+	omegabysite = True
+	diffprefsbysite = True
+	gammaomega = False
+	gammabeta = False
+	noavgprefs = False
+	randprefs = False
+
+2023-11-01 15:36:24,761 - INFO - Checking that the alignment betaLactamase_alignment.fasta is valid...
+2023-11-01 15:36:25,113 - INFO - Valid alignment specifying 50 sequences of length 789.
+
+2023-11-01 15:36:25,114 - INFO - Tree not specified.
+2023-11-01 15:36:25,114 - INFO - Inferring tree with RAxML using command /home/danielbr/miniconda3/envs/rax/bin/raxmlHPC-PTHREADS-SSE3
+2023-11-01 15:36:27,250 - INFO - RAxML inferred tree is now named betalac_phydms/RAxML_tree.newick
+2023-11-01 15:36:27,292 - INFO - Removed the following existing files that have names that match the names of output files that will be created: betalac_phydms/modelcomparison.md, betalac_phydms/YNGKP_M0_log.log, betalac_phydms/YNGKP_M0_tree.newick, betalac_phydms/YNGKP_M0_loglikelihood.txt, betalac_phydms/YNGKP_M0_modelparams.txt, betalac_phydms/YNGKP_M0_omegabysite.txt, betalac_phydms/YNGKP_M5_log.log, betalac_phydms/YNGKP_M5_tree.newick, betalac_phydms/YNGKP_M5_loglikelihood.txt, betalac_phydms/YNGKP_M5_modelparams.txt, betalac_phydms/YNGKP_M5_omegabysite.txt, betalac_phydms/ExpCM_betaLactamase_prefs_log.log, betalac_phydms/ExpCM_betaLactamase_prefs_tree.newick, betalac_phydms/ExpCM_betaLactamase_prefs_loglikelihood.txt, betalac_phydms/ExpCM_betaLactamase_prefs_modelparams.txt, betalac_phydms/ExpCM_betaLactamase_prefs_omegabysite.txt, betalac_phydms/ExpCM_betaLactamase_prefs_diffprefsbysite.txt, betalac_phydms/averaged_ExpCM_betaLactamase_prefs_log.log, betalac_phydms/averaged_ExpCM_betaLactamase_prefs_tree.newick, betalac_phydms/averaged_ExpCM_betaLactamase_prefs_loglikelihood.txt, betalac_phydms/averaged_ExpCM_betaLactamase_prefs_modelparams.txt, betalac_phydms/averaged_ExpCM_betaLactamase_prefs_omegabysite.txt, betalac_phydms/averaged_ExpCM_betaLactamase_prefs_diffprefsbysite.txt
+
+2023-11-01 15:36:27,292 - INFO - Starting analysis to optimize tree in betalac_phydms/RAxML_tree.newick using model YNGKP_M0. The command is: phydms betaLactamase_alignment.fasta betalac_phydms/RAxML_tree.newick YNGKP_M0 betalac_phydms/YNGKP_M0 --brlen optimize --omegabysite --ncpus 1
+
+2023-11-01 15:36:27,293 - INFO - Starting analysis to optimize tree in betalac_phydms/RAxML_tree.newick using model YNGKP_M5. The command is: phydms betaLactamase_alignment.fasta betalac_phydms/RAxML_tree.newick YNGKP_M5 betalac_phydms/YNGKP_M5 --brlen optimize --omegabysite --ncpus 1
+
+2023-11-01 15:36:27,293 - INFO - Starting analysis to optimize tree in betalac_phydms/RAxML_tree.newick using model ExpCM_betaLactamase_prefs. The command is: phydms betaLactamase_alignment.fasta betalac_phydms/RAxML_tree.newick ExpCM_betaLactamase_prefs.txt betalac_phydms/ExpCM_betaLactamase_prefs --brlen optimize --omegabysite --diffprefsbysite --ncpus 23
+
+2023-11-01 15:36:27,293 - INFO - Starting analysis to optimize tree in betalac_phydms/RAxML_tree.newick using model averaged_ExpCM_betaLactamase_prefs. The command is: phydms betaLactamase_alignment.fasta betalac_phydms/RAxML_tree.newick ExpCM_betaLactamase_prefs.txt betalac_phydms/averaged_ExpCM_betaLactamase_prefs --brlen optimize --omegabysite --diffprefsbysite --avgprefs --ncpus 23
+
+2023-11-01 15:44:05,381 - INFO - Analysis completed for YNGKP_M0
+2023-11-01 15:44:05,382 - INFO - Found expected output file betalac_phydms/YNGKP_M0_log.log
+2023-11-01 15:44:05,383 - INFO - Found expected output file betalac_phydms/YNGKP_M0_tree.newick
+2023-11-01 15:44:05,384 - INFO - Found expected output file betalac_phydms/YNGKP_M0_loglikelihood.txt
+2023-11-01 15:44:05,384 - INFO - Found expected output file betalac_phydms/YNGKP_M0_modelparams.txt
+2023-11-01 15:44:05,384 - INFO - Found expected output file betalac_phydms/YNGKP_M0_omegabysite.txt
+2023-11-01 15:44:05,385 - INFO - Analysis successful for YNGKP_M0
+
+2023-11-01 15:46:23,403 - INFO - Analysis completed for YNGKP_M5
+2023-11-01 15:46:23,404 - INFO - Found expected output file betalac_phydms/YNGKP_M5_log.log
+2023-11-01 15:46:23,405 - INFO - Found expected output file betalac_phydms/YNGKP_M5_tree.newick
+2023-11-01 15:46:23,405 - INFO - Found expected output file betalac_phydms/YNGKP_M5_loglikelihood.txt
+2023-11-01 15:46:23,406 - INFO - Found expected output file betalac_phydms/YNGKP_M5_modelparams.txt
+2023-11-01 15:46:23,406 - INFO - Found expected output file betalac_phydms/YNGKP_M5_omegabysite.txt
+2023-11-01 15:46:23,407 - INFO - Analysis successful for YNGKP_M5
+
+2023-11-01 15:54:23,467 - INFO - Analysis completed for ExpCM_betaLactamase_prefs
+2023-11-01 15:54:23,468 - INFO - Found expected output file betalac_phydms/ExpCM_betaLactamase_prefs_log.log
+2023-11-01 15:54:23,468 - INFO - Found expected output file betalac_phydms/ExpCM_betaLactamase_prefs_tree.newick
+2023-11-01 15:54:23,469 - INFO - Found expected output file betalac_phydms/ExpCM_betaLactamase_prefs_loglikelihood.txt
+2023-11-01 15:54:23,469 - INFO - Found expected output file betalac_phydms/ExpCM_betaLactamase_prefs_modelparams.txt
+2023-11-01 15:54:23,469 - INFO - Found expected output file betalac_phydms/ExpCM_betaLactamase_prefs_omegabysite.txt
+2023-11-01 15:54:23,470 - INFO - Found expected output file betalac_phydms/ExpCM_betaLactamase_prefs_diffprefsbysite.txt
+2023-11-01 15:54:23,470 - INFO - Analysis successful for ExpCM_betaLactamase_prefs
+
+2023-11-01 15:56:09,481 - INFO - Analysis completed for averaged_ExpCM_betaLactamase_prefs
+2023-11-01 15:56:09,483 - INFO - Found expected output file betalac_phydms/averaged_ExpCM_betaLactamase_prefs_log.log
+2023-11-01 15:56:09,483 - INFO - Found expected output file betalac_phydms/averaged_ExpCM_betaLactamase_prefs_tree.newick
+2023-11-01 15:56:09,484 - INFO - Found expected output file betalac_phydms/averaged_ExpCM_betaLactamase_prefs_loglikelihood.txt
+2023-11-01 15:56:09,484 - INFO - Found expected output file betalac_phydms/averaged_ExpCM_betaLactamase_prefs_modelparams.txt
+2023-11-01 15:56:09,485 - INFO - Found expected output file betalac_phydms/averaged_ExpCM_betaLactamase_prefs_omegabysite.txt
+2023-11-01 15:56:09,485 - INFO - Found expected output file betalac_phydms/averaged_ExpCM_betaLactamase_prefs_diffprefsbysite.txt
+2023-11-01 15:56:09,485 - INFO - Analysis successful for averaged_ExpCM_betaLactamase_prefs
+
+2023-11-01 15:56:10,491 - INFO - Successful completion of phydms_comprehensive

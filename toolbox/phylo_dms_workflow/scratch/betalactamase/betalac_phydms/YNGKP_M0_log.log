@@ -1,0 +1,96 @@
+2023-11-01 15:36:29,781 - INFO - Beginning execution of phydms in directory /groups/doudna/team_resources/toolbox/phylo_dms_workflow/scratch/betalactamase
+
+2023-11-01 15:36:29,781 - INFO - Progress is being logged to betalac_phydms/YNGKP_M0_log.log
+
+2023-11-01 15:36:29,781 - INFO - Version information:
+	Time and date: Wed Nov  1 15:36:28 2023
+	Platform: Linux-5.15.0-69-generic-x86_64-with-glibc2.35
+	Python version: 3.11.3 (main, Apr 20 2023, 11:48:39) [GCC 11.3.0]
+	phydms version: 2.4.1
+	Bio version: 1.81
+	cython version: 0.29.34
+	numpy version: 1.24.2
+	scipy version: 1.10.1
+	matplotlib version: 3.7.1
+	natsort version: 8.4.0
+	sympy version: 1.12
+	six version: 1.16.0
+	pandas version: 2.0.0
+	pyvolve version: 1.1.0
+	statsmodels version: 0.14.0
+	weblogolib version: 3.5.0
+	PyPDF2 version: 3.0.1
+
+2023-11-01 15:36:29,782 - INFO - Parsed the following arguments:
+	alignment = betaLactamase_alignment.fasta
+	tree = betalac_phydms/RAxML_tree.newick
+	model = YNGKP_M0
+	outprefix = betalac_phydms/YNGKP_M0
+	brlen = optimize
+	gammaomega = False
+	gammabeta = False
+	omegabysite = True
+	omegabysite_fixsyn = False
+	diffprefsbysite = False
+	diffprefsprior = ('invquadratic', 150.0, 0.5)
+	fitphi = False
+	randprefs = False
+	avgprefs = False
+	divpressure = None
+	ncpus = 1
+	fitprefsmethod = 2
+	ncats = 4
+	minbrlen = 1e-06
+	minpref = 0.002
+	seed = 1
+	initparams = None
+	profile = False
+	opt_details = False
+	nograd = False
+
+2023-11-01 15:36:29,782 - INFO - Random number seed: 1
+
+2023-11-01 15:36:29,782 - INFO - Reading alignment from betaLactamase_alignment.fasta
+2023-11-01 15:36:30,103 - INFO - Read 50 aligned sequences from betaLactamase_alignment.fasta, each consisting of 263 codons.
+
+2023-11-01 15:36:30,103 - INFO - Codon substitution model with be M0 version (Yang, Nielsen, Goldman, & Pederson. Genetics. 155:431-449).
+2023-11-01 15:36:30,119 - INFO - Reading tree from betalac_phydms/RAxML_tree.newick
+2023-11-01 15:36:30,122 - INFO - Tree has 50 tips.
+2023-11-01 15:36:30,131 - INFO - Adjusted 1 branch lengths up to minbrlen 1e-06
+
+2023-11-01 15:36:30,131 - INFO - Initializing TreeLikelihood..
+2023-11-01 15:36:31,598 - INFO - TreeLikelihood initialized.
+2023-11-01 15:36:31,598 - INFO - Maximizing log likelihood (initially -3072.34).
+2023-11-01 15:36:31,598 - INFO - Branch lengths will be optimized individually.
+2023-11-01 15:39:05,383 - INFO - Maximization complete:
+	Step 1: optimized parameters, loglik went from -3072.34 to -3002.07 (13 iterations, 21 function evals)
+	Step 2: optimized branches, loglik went from -3002.07 to -2987.94 (19 iterations, 22 function evals)
+	Step 3: optimized parameters, loglik went from -2987.94 to -2986.46 (9 iterations, 13 function evals)
+	Step 4: optimized branches, loglik went from -2986.46 to -2986.33 (16 iterations, 20 function evals)
+	Step 5: optimized parameters, loglik went from -2986.33 to -2986.32 (6 iterations, 11 function evals)
+	Step 6: optimized branches, loglik went from -2986.32 to -2986.31 (2 iterations, 5 function evals)
+2023-11-01 15:39:05,384 - INFO - Optimized log likelihood is -2986.31.
+2023-11-01 15:39:05,385 - INFO - Writing log likelihood to betalac_phydms/YNGKP_M0_loglikelihood.txt
+2023-11-01 15:39:05,386 - INFO - Model parameters after optimization:
+	kappa = 2.38582
+	omega = 0.278994
+	phi0A = 0.255391
+	phi0C = 0.257621
+	phi0G = 0.360967
+	phi1A = 0.274267
+	phi1C = 0.242454
+	phi1G = 0.212275
+	phi2A = 0.200391
+	phi2C = 0.28751
+	phi2G = 0.298419
+2023-11-01 15:39:05,386 - INFO - Writing model parameters to betalac_phydms/YNGKP_M0_modelparams.txt
+2023-11-01 15:39:05,387 - INFO - Writing the optimized tree to betalac_phydms/YNGKP_M0_tree.newick
+
+2023-11-01 15:39:05,390 - INFO - 
+Fitting a different omega to each site to detect diversifying selection.
+2023-11-01 15:39:05,390 - INFO - Will fit different synonymous rate for each site.
+2023-11-01 15:39:05,390 - INFO - Fitting with 1 CPUs...
+2023-11-01 15:44:04,210 - INFO - Completed fitting the site-specific omega values.
+2023-11-01 15:44:04,211 - INFO - Writing results to betalac_phydms/YNGKP_M0_omegabysite.txt
+
+2023-11-01 15:44:04,212 - INFO - Successful completion of phydms

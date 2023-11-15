@@ -2,7 +2,9 @@
 input_dir: "/groups/doudna/projects/daniel_projects/prywes_n/input_data"
 
 # File directory where files will be stored in
-run: "/groups/doudna/projects/daniel_projects/prywes_n/rubisco_dms"
+run: "/groups/doudna/projects/daniel_projects/prywes_n/rubisco_dms_75mid"
+
+min_ident: '0.75'
 
 # Column names as displayed in the dms table
 position_col: "Site"

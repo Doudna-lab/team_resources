@@ -28,6 +28,17 @@ rule convert_enrichment:
 	script:
 		"py/enrichm2aa-preference.py"
 
+rule inspect_prefs:
+	input:
+		dms_out = "{run}/processed_inputs/aa_preference.csv",
+	output:
+		radial_prefs = "{run}/figures/aa_preference.svg"
+	conda:
+		"envs/dms.yaml"
+	script:
+		"py/inspect_prefs.py"
+
+
 # noinspection SmkAvoidTabWhitespace
 rule aa_preference_logo:
 	input:
@@ -40,3 +51,22 @@ rule aa_preference_logo:
 		"""
 		phydms_logoplot --prefs {input.dms_out} {output.aa_logo}
 		"""
+
+# noinspection SmkAvoidTabWhitespace
+rule seq_alignment:
+	input:
+		multi_fasta = lambda wildcards: glob.glob("{in_dir}/input_multi_fasta.csv".format(in_dir=config['input_dir']))
+	output:
+		msa = "{run}/processed_inputs/nt_alignment.csv"
+	params:
+		min_ident = config["min_ident"]
+	shell:
+		"""
+		phydms_prepalignment {input.multi_fasta} {output.msa} --minidentity {params.min_ident}
+		"""
+
+# noinspection SmkAvoidTabWhitespace
+rule phydms:
+	input:
+		msa = "{run}/processed_inputs/nt_alignment.csv",
+		dms_out= "{run}/processed_inputs/aa_preference.csv"

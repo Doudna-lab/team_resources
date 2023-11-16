@@ -48,10 +48,11 @@ rule align_sequences:
 	output:
 		aligned_sequences = "{run}/processed_inputs/alignment.fna"
 	params:
-		reference_seq = config["ref_sequence_id"]
+		reference_seq = config["ref_sequence_id"],
+		minident = config["minident"]
 	conda:
 		"envs/dms.yaml"
 	shell:
 		"""
-		phydms_prepalignment --minidentity 0.75  {input.seq_in} {output.aligned_sequences} {params.reference_seq}
+		phydms_prepalignment --minidentity {params.minident}  {input.seq_in} {output.aligned_sequences} {params.reference_seq}
 		"""

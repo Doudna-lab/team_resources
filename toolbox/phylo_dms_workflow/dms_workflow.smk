@@ -29,6 +29,17 @@ rule convert_enrichment:
 	script:
 		"py/enrichm2aa-preference.py"
 
+rule inspect_prefs:
+	input:
+		dms_out = "{run}/processed_inputs/aa_preference.csv",
+	output:
+		radial_prefs = "{run}/figures/aa_preference.svg"
+	conda:
+		"envs/dms.yaml"
+	script:
+		"py/inspect_prefs.py"
+
+
 # noinspection SmkAvoidTabWhitespace
 rule aa_preference_logo:
 	input:
@@ -42,17 +53,21 @@ rule aa_preference_logo:
 		phydms_logoplot --prefs {input.dms_out} {output.aa_logo}
 		"""
 
-rule align_sequences:
+# noinspection SmkAvoidTabWhitespace
+rule seq_alignment:
 	input:
-		seq_in = lambda wildcards: glob.glob("{in_dir}/sequences.fna".format(in_dir=config['input_dir'])),
+		multi_fasta = lambda wildcards: glob.glob("{in_dir}/input_multi_fasta.csv".format(in_dir=config['input_dir']))
 	output:
-		aligned_sequences = "{run}/processed_inputs/alignment.fna"
+		msa = "{run}/processed_inputs/nt_alignment.csv"
 	params:
-		reference_seq = config["ref_sequence_id"],
-		minident = config["minident"]
-	conda:
-		"envs/dms.yaml"
+		min_ident = config["min_ident"]
 	shell:
 		"""
-		phydms_prepalignment --minidentity {params.minident}  {input.seq_in} {output.aligned_sequences} {params.reference_seq}
+		phydms_prepalignment {input.multi_fasta} {output.msa} --minidentity {params.min_ident}
 		"""
+
+# noinspection SmkAvoidTabWhitespace
+rule phydms:
+	input:
+		msa = "{run}/processed_inputs/nt_alignment.csv",
+		dms_out= "{run}/processed_inputs/aa_preference.csv"

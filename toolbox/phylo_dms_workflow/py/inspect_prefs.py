@@ -2,7 +2,6 @@
 import io
 # Installed Modules
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 import pandas as pd
 
@@ -37,12 +36,13 @@ def add_labels(angles, values, labels, offset, ax):
 			ha=alignment,
 			va="center",
 			rotation=rotation,
-			rotation_mode="anchor"
+			rotation_mode="anchor",
+			fontsize=20
 		)
 
 
-def plot_grouped_radar(df, values_series, label_series, group_series):
-
+def plot_grouped_radar(df, title, values_series, label_series, group_series):
+	fontsize = 70
 	# Grab the group values
 	df['interp'] = np.interp(values_series, (values_series.min(), values_series.max()), (0, 100))
 	GROUP = group_series.values
@@ -70,7 +70,8 @@ def plot_grouped_radar(df, values_series, label_series, group_series):
 
 	# Same layout as above
 	fig, ax = plt.subplots(figsize=(10, 10), subplot_kw={"projection": "polar"})
-
+	ax.set_title(title, fontsize=fontsize)
+	ax.tick_params(axis='both', labelsize=fontsize)  # Set the tick label font size
 	ax.set_theta_offset(OFFSET)
 	ax.set_ylim(-40, 100)
 	ax.set_frame_on(False)
@@ -100,12 +101,10 @@ def main():
 	dms_prefs = str(snakemake.input.dms_out)
 	# Outputs
 	radial_prefs = str(snakemake.output.radial_prefs)
-
+	# Params
+	site_offset = int(snakemake.params.site_offset)
 	# DEBUG INPUT
 	# dms_prefs = "/Users/bellieny/projects/team_resources/toolbox/phylo_dms_workflow/scratch/edited_aa_preferences.csv"
-	# position_col = "Site"
-	# enrichment_col = "Trial_1_AmpConc_2500" # "5percent_CO2_20uM_IPTG"
-	# aminoacid_col = "AminoAcid"
 
 	aa_groups = {'G': 'np',
 	             'A': 'np',
@@ -130,12 +129,12 @@ def main():
 	             }
 
 	df_aapref = pd.read_csv(dms_prefs)
-	df_aapref = df_aapref.head(8)
+	df_aapref = df_aapref.head(18)
 	trns_df = df_aapref.T
 	# Create a list to store each subplot
 	subplots = []
 	for col in trns_df:
-		print(col)
+		graph_title = col + site_offset
 		trns_df['group'] = trns_df.index.map(aa_groups)
 		b = trns_df[[col, 'group']].dropna(axis=0)
 		b = b.rename(columns={col: 'value'})
@@ -144,14 +143,13 @@ def main():
 		# fig, ax = plt.subplots(subplot_kw={"projection": "polar"}, figsize=(8, 8))
 
 		# Plot on the subplot
-		(fig, ax) = plot_grouped_radar(b, b['value'], b.index, b['group'])
+		(fig, ax) = plot_grouped_radar(b, graph_title, b['value'], b.index, b['group'])
 
 		# Store the subplot in the list
 		subplots.append((fig, ax))
-		print(f'Added plot for idx {col}')
 		plt.close('all')
 	# Create a grid of subplots
-	cols = 2  # Change this based on how many columns you want
+	cols = 5  # Change this based on how many columns you want
 	rows = int(np.round(len(df_aapref) / cols))  # Change this based on how many rows you want
 
 	fig, axes = plt.subplots(rows, cols, figsize=(15, 15))
@@ -161,6 +159,7 @@ def main():
 		for j in range(cols):
 			idx = i * cols + j
 			if idx < len(subplots):
+				print(idx)
 				fig, ax = subplots[idx]
 
 				# Save the figure to a BytesIO object
@@ -169,14 +168,18 @@ def main():
 				img_io.seek(0)
 
 				# Read the image from BytesIO and display it on the subplot
-				img = plt.imread(img_io)
+				img = plt.imread(img_io, format='svg')
 				axes[i, j].imshow(img)
 
 				axes[i, j].axis("off")
-				# plt.close('all')
-	#TODO: Add label to plots
+			else:
+				# If no subplot, remove the empty axes
+				axes[i, j].axis("off")
+
 	plt.tight_layout()
-	plt.show()
+	# plt.show()
+	plt.savefig(radial_prefs, format='svg')
+
 
 if __name__ == "__main__":
 	main()

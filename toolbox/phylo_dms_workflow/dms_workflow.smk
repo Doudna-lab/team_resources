@@ -29,16 +29,18 @@ rule convert_enrichment:
 	script:
 		"py/enrichm2aa-preference.py"
 
+# noinspection SmkAvoidTabWhitespace
 rule inspect_prefs:
 	input:
 		dms_out = "{run}/processed_inputs/aa_preference.csv",
 	output:
 		radial_prefs = "{run}/figures/aa_preference.svg"
+	params:
+		site_offset = config["site_offset"]
 	conda:
 		"envs/dms.yaml"
 	script:
 		"py/inspect_prefs.py"
-
 
 # noinspection SmkAvoidTabWhitespace
 rule aa_preference_logo:

@@ -5,6 +5,7 @@ input_dir: "/groups/doudna/projects/daniel_projects/prywes_n/input_data"
 run: "/groups/doudna/projects/daniel_projects/prywes_n/rubisco_dms_75mid"
 
 min_ident: '0.75'
+site_offset: '3'
 
 # Column names as displayed in the dms table
 position_col: "Site"

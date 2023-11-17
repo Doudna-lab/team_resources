@@ -34,7 +34,7 @@ rule inspect_prefs:
 	input:
 		dms_out = "{run}/processed_inputs/aa_preference.csv",
 	output:
-		radial_prefs = "{run}/figures/aa_preference.svg"
+		radial_prefs = "{run}/figures/aa_preference.png"
 	params:
 		site_offset = config["site_offset"]
 	conda:
@@ -63,6 +63,8 @@ rule seq_alignment:
 		msa = "{run}/processed_inputs/nt_alignment.csv"
 	params:
 		min_ident = config["min_ident"]
+	conda:
+		"envs/dms.yaml"
 	shell:
 		"""
 		phydms_prepalignment {input.multi_fasta} {output.msa} --minidentity {params.min_ident}
@@ -72,4 +74,14 @@ rule seq_alignment:
 rule phydms:
 	input:
 		msa = "{run}/processed_inputs/nt_alignment.csv",
-		dms_out= "{run}/processed_inputs/aa_preference.csv"
+		dms_out = "{run}/processed_inputs/aa_preference.csv"
+	output:
+		dms_models = "{run}/phydmsresults/modelcomparison.md"
+	params:
+		outdir = "{run}/phydmsresults/"
+	conda:
+		"envs/dms.yaml"
+	shell:
+		"""
+		phydms_comprehensive
+		"""

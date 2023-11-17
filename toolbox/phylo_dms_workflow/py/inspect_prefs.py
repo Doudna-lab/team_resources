@@ -69,7 +69,7 @@ def plot_grouped_radar(df, title, values_series, label_series, group_series):
 		offset += size + PAD
 
 	# Same layout as above
-	fig, ax = plt.subplots(figsize=(10, 10), subplot_kw={"projection": "polar"})
+	fig, ax = plt.subplots(figsize=(15, 15), subplot_kw={"projection": "polar"})
 	ax.set_title(title, fontsize=fontsize)
 	ax.tick_params(axis='both', labelsize=fontsize)  # Set the tick label font size
 	ax.set_theta_offset(OFFSET)
@@ -164,11 +164,11 @@ def main():
 
 				# Save the figure to a BytesIO object
 				img_io = io.BytesIO()
-				fig.savefig(img_io, format='png')
+				fig.savefig(img_io, format='png', dpi=300)
 				img_io.seek(0)
 
 				# Read the image from BytesIO and display it on the subplot
-				img = plt.imread(img_io, format='svg')
+				img = plt.imread(img_io, format='png')
 				axes[i, j].imshow(img)
 
 				axes[i, j].axis("off")
@@ -177,8 +177,8 @@ def main():
 				axes[i, j].axis("off")
 
 	plt.tight_layout()
-	# plt.show()
-	plt.savefig(radial_prefs, format='svg')
+	plt.show()
+	plt.savefig('delete.png', format='png')
 
 
 if __name__ == "__main__":

@@ -1,0 +1,17 @@
+# Folder where input data is stored
+input_dir: "/groups/doudna/projects/daniel_projects/prywes_n/input_data"
+
+# File directory where files will be stored in
+run: "/groups/doudna/projects/daniel_projects/prywes_n/rubisco_dms_75mid"
+
+min_ident: '0.75'
+site_offset: '3'
+
+experiment_id: ["A0A140D2T1_ZIKV", "A0A192B1T2_9HIV1", "A0A1I9GEU1_NEIME", "A0A1J4YT16_9PROT", "A0A2Z5U3Z0_9INFA", "A4D664_9INFA", "A4GRB6_PSEAI", "A4_HUMAN", "AACC1_PSEAI", "ADRB2_HUMAN", "AMIE_PSEAE", "B1LPA6_ECOSM", "B3VI55_LIPST", "BLAT_ECOLX", "BRCA1_HUMAN", "C6KNH7_9INFA", "CALM1_HUMAN", "CAPSD_AAV2S", "CCDB_ECOLI", "CP2C9_HUMAN", "DLG4_HUMAN", "DLG4_RAT", "DYR_ECOLI", "ENV_HV1B9", "ENV_HV1BR", "ESTA_BACSU", "F7YBW8_MESOW", "GAL4_YEAST", "GCN4_YEAST", "GFP_AEQVI", "GRB2_HUMAN", "HIS7_YEAST", "HSP82_YEAST", "I6TAH8_I68A0", "IF1_ECOLI", "KCNH2_HUMAN", "KKA2_KLEPN", "MK01_HUMAN", "MSH2_HUMAN", "MTH3_HAEAE", "NCAP_I34A1", "NRAM_I33A0", "NUD15_HUMAN", "P53_HUMAN", "P84126_THETH", "PABP_YEAST", "PA_I34A1", "POLG_CXB3N", "POLG_HCVJF", "PTEN_HUMAN", "Q2N0S5_9HIV1", "Q59976_STRSQ", "R1AB_SARS2", "RASH_HUMAN", "REV_HV1H2", "RL401_YEAST", "SC6A4_HUMAN", "SCN5A_HUMAN", "SPG1_STRSG", "SPIKE_SARS2", "SRC_HUMAN", "SUMO1_HUMAN", "SYUA_HUMAN", "TADBP_HUMAN", "TAT_HV1BR", "TPK1_HUMAN", "TPMT_HUMAN", "TPOR_HUMAN", "TRPC_SACS2", "TRPC_THEMA", "UBC9_HUMAN", "UBE4B_MOUSE", "VKOR1_HUMAN", "YAP1_HUMAN"]
+
+rax_path: "/home/danielbr/miniconda3/envs/rax/bin/raxmlHPC-PTHREADS-SSE3"
+
+# Column names as displayed in the dms table
+position_col: "Site"
+enrichment_col: "5percent_CO2_20uM_IPTG"
+aminoacid_col: "AminoAcid"

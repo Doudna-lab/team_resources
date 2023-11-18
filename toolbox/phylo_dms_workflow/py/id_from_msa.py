@@ -3,17 +3,25 @@ from sys import argv
 
 
 def main():
-	seq_path = argv[1]
 
-	seq_path = "/Users/bellieny/projects/team_resources/toolbox/phylo_dms_workflow/protein_gym/ProteinGym_Files/MSA_files/TRPC_SACS2_full_11-26-2021_b07.a2m"
+	# DEBUG
+	# seq_path = "/Users/bellieny/projects/team_resources/toolbox/phylo_dms_workflow/protein_gym/MSA_files/A0A1I9GEU1_NEIME_full_11-26-2021_b08.a2m"
+
+	seq_path = argv[1]
+	output_id_list = argv[2]
 
 	with open(seq_path, 'r') as f:
 		records = AlignIO.read(f, "fasta")
-	for rec in records:
-		id = rec.id.split("_")[1]
-		id = id.split("/")[0]
 
-		print(id)
+	str_out = ""
+	for rec in records:
+		seq_id = rec.id.split("_")[1]
+		seq_id = seq_id.split("/")[0]
+		str_out += f"{seq_id}\n"
+
+	with open(output_id_list, 'w') as out:
+		out.write(str_out)
+
 
 if __name__ == "__main__":
 	main()

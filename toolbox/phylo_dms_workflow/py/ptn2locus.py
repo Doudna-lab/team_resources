@@ -16,7 +16,7 @@ def parse_arguments():
 	#  Launch argparse parser
 	parser = argp(
 		prog='fetch_region',
-		description='Uses RefSeq protein IDs to retrieve their associated genomic regions. Returns a FASTA nt',
+		description='Uses RefSeq/Uniprot protein IDs to retrieve their associated genomic regions. Returns a multi FASTA nt',
 		usage='%(prog)s [options]')
 	# Define arguments
 	parser.add_argument('id_list',
@@ -26,11 +26,11 @@ def parse_arguments():
 	parser.add_argument('-o',
 	                    dest='output',
 	                    default='sequences.fa',
-	                    help='Path to output file')
+	                    help='Path to output file [default=sequences.fa]')
 	parser.add_argument('-d',
 	                    dest='database',
 	                    default='nuccore',
-	                    help='NCBI database to search for entries associated with source PTN ID')
+	                    help='NCBI database to search for entries associated with source PTN ID [default=nuccore')
 
 	# positional argument
 

@@ -10,9 +10,9 @@ import glob
 # noinspection SmkAvoidTabWhitespace
 rule all:
 	input:
-		expand("{run}/{experiment_id}/processed_inputs/aa_preference.csv",run=config["run"]),
-		expand("{run}/{experiment_id}/figures/aa_preference.pdf", run=config["run"]),
-		expand("{run}/{experiment_id}/processed_inputs/alignment.fna", run=config["run"])
+		expand("{run}/{experiment_id}/processed_inputs/aa_preference.csv",run=config["run"],experiment_id=config["experiment_id"]),
+		expand("{run}/{experiment_id}/figures/aa_preference.pdf", run=config["run"],experiment_id=config["experiment_id"]),
+		expand("{run}/{experiment_id}/processed_inputs/nt_alignment_msa.fna", run=config["run"],experiment_id=config["experiment_id"])
 
 # noinspection SmkAvoidTabWhitespace
 rule convert_enrichment:

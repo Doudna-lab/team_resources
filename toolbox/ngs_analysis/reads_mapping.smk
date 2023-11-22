@@ -1,5 +1,5 @@
 # **** Variables ****
-configfile: "config/reads_qc-30-942700356_wc.yaml"
+# configfile: "config/reads_qc-30-942700356_wc.yaml"
 
 # **** Imports ****
 import glob

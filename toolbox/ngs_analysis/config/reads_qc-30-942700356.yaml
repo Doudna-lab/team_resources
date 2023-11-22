@@ -1,0 +1,41 @@
+# number of threads for multi-threaded applications
+threads: 10
+
+# Directory where the demultiplexed raw short reads are stored
+#   *** In case the files are not demultiplexed, run: py/process_barcodes.py
+# Biotite Path
+read_directory: "/groups/doudna/projects/daniel_projects/doherty_ee/30-942700356/00_fastq"
+
+# Biotite Path where the current analysis files will be stored
+job_name: "/groups/doudna/projects/daniel_projects/doherty_ee/30-942700356_analysis"
+
+# Path to reference sequence(s) to be used in te alignment
+reference_path: "/groups/doudna/projects/daniel_projects/doherty_ee/30-942700356/reference_seq"
+
+# Trimmomatic
+trim_params: "MINLEN:75"
+#REPORT: SAMPLE vs. RUN:
+samples:
+  'NT': 'ED-II-47-1'
+  '023N': 'ED-II-47-1'
+  '023O': 'ED-II-47-1'
+  '40': 'ED-II-47-1'
+  '41': 'ED-II-47-2'
+  '93': 'ED-II-47-2'
+  '97': 'ED-II-47-2'
+
+#REPORT: SAMPLE vs. REFERENCE SEQUENCE:
+reference:
+  'NT': 'ED_o_023'
+  '023N': 'ED_o_023'
+  '023O': 'ED_o_023'
+  '40': 'ED_o_040'
+  '41': 'ED_o_041'
+  '93': 'ED_o_093'
+  '97': 'ED_o_097'
+
+#REFERENCE LIST:
+reference_sequences: ['ED_o_023', 'ED_o_097', 'ED_o_040', 'ED_o_041', 'ED_o_093']
+#BARCODES vs. SAMPLE:
+barcode_to_sample:
+  

@@ -1,0 +1,16 @@
+# Set column index to capture sample identifiers
+sample_id_col: [3]
+
+# Set column index to capture barcode sequence(s)
+barcode_seq_col: [1,2]
+
+# Set column index to capture reference sequence identifiers
+reference_seq_col: [6]
+
+# Set column index to capture run identifiers
+run_id_col: [0]
+
+# Multiplexed reads directory path
+reads_raw_dir_path: 'dump/00_fastq'
+
+# Demultiplexed reads output path

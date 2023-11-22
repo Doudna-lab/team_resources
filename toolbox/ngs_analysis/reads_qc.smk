@@ -1,5 +1,5 @@
 # **** Variables ****
-configfile: "config/reads_qc.yaml"
+configfile: "config/reads_qc-30-942700356_nt41.yaml"
 # **** Imports ****
 import glob
 
@@ -129,39 +129,6 @@ rule trimmomatic:
         cp {input.r2_demux} {output.p2} 
         trimmomatic PE -threads {threads} -summary {output.report} {input.r1_demux} {input.r2_demux} {output.p1} {output.u1} {output.p2} {output.u2} {params.trim_params} || true
         """
-# rule sortmerna:
-# 	input:
-# 		p1 = "{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_P1.fastq.gz",
-# 		p2 = "{run}/trimmomatic/{sample}_trimmed/{sample}_dedup_P2.fastq.gz",
-# 		rrna_lsu = lambda wildcards: glob.glob("{rrna_db_dir}/SILVA_132_LSURef_tax_silva_trunc.fasta".format(
-# 			rrna_db_dir=config["rrna_db_dir"]
-# 		)),
-# 		rrna_ssu = lambda wildcards: glob.glob("{rrna_db_dir}/SILVA_132_SSURef_tax_silva_trunc.fasta".format(
-# 			rrna_db_dir=config["rrna_db_dir"]
-# 		))
-# 	output:
-# 		rrna_clean_1 = "{run}/sortmerna/{sample}_rrna_clean/{sample}_R1_rrna_clean.fastq.gz",
-# 		rrna_clean_2 = "{run}/sortmerna/{sample}_rrna_clean/{sample}_R2_rrna_clean.fastq.gz"
-# 	conda:
-# 		"envs/sortmerna.yaml"
-# 	message:
-# 		"Cleaning up rRNA from deduplicated sequences:\n Ref: {input.rrna_lsu}\nR1: {input.p1}\nR2: {input.p2}\n ==> Output:\n 1- {output.rrna_clean_1}\n 2- {output.rrna_clean_2}"
-# 	threads:
-# 		config["threads"]
-# 	params:
-# 		outdir = "{run}/sortmerna/{sample}_rrna_clean/",
-# 		aligned_rrna = "{run}/sortmerna/{sample}_rrna_clean/out/aligned.fq.gz",
-# 		rrna_clean_path_1 = "{run}/sortmerna/{sample}_rrna_clean/{sample}_R1_rrna_clean.fastq",
-# 		rrna_clean_path_2 = "{run}/sortmerna/{sample}_rrna_clean/{sample}_R2_rrna_clean.fastq"
-# 	shell:
-# 		"""
-# 		sortmerna --ref {input.rrna_ssu} --ref {input.rrna_lsu} --reads {input.p1} --reads {input.p2} --workdir {params.outdir} --threads {threads} --fastx
-# 		python scripts/cleanup_rrna.py {params.aligned_rrna} {input.p1} {params.rrna_clean_path_1}
-# 		python scripts/cleanup_rrna.py {params.aligned_rrna} {input.p2} {params.rrna_clean_path_2}
-# 		pigz -9 -p{threads} {params.rrna_clean_path_1}
-# 		pigz -9 -p{threads} {params.rrna_clean_path_2}
-# 		rm -rf {params.outdir}/out {params.outdir}/idx {params.outdir}/readb
-# 		"""
 rule trim_stats:
     input:
         report = expand("{run}/trimmomatic/{sample}_trimmed/{sample}_trim_report.txt", run=config["job_name"], sample=config["samples"])

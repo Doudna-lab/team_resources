@@ -89,10 +89,16 @@ def get_filepath_list(parent_dir, name_pattern, file_extension):
 
 
 def extract_item_from_df(df, value, anchor_col, target_col):
+	out_list = []
 	try:
 		out_list = df[df[anchor_col] == value][target_col].iloc[0, :].tolist()
-	except IndexingError:
-		out_list = df[df[anchor_col] == value][target_col].tolist()
+	except (IndexingError, IndexError):
+		if len(df[df[anchor_col] == value][target_col]) > 1:
+			out_list = df[df[anchor_col] == value][target_col].tolist()
+		if len(df[df[anchor_col] == value][target_col]) <= 1:
+			# print(f"ESSE CAPETA: {df[df[anchor_col] == value][target_col]}")
+			# return df[df[anchor_col] == value][target_col]
+			out_list = [df[df[anchor_col] == value][target_col].iloc[0]]
 
 	if len(out_list) <= 1:
 		return str(out_list[0])
@@ -248,10 +254,11 @@ def demux(barcode_dict, barcode_window, fwd_fastq_path, rev_fastq_path, mismatch
 	return report_records, record_mismatches
 
 	# DEBUG lines
-	# config_path = "toolbox/ngs_analysis/config/process_barcodes.yaml"
-	# csv_file_path = "toolbox/ngs_analysis/dump/barcode_reference.csv"
+	# config_path = "/Users/bellieny/projects/team_resources/toolbox/ngs_analysis/config/process_barcodes-30-942700356.yaml"
+	# quality_check_config = "/Users/bellieny/projects/team_resources/toolbox/ngs_analysis/config/reads_qc-30-942700356_nt93.yaml"
+	# csv_file_path = "/Users/bellieny/projects/team_resources/toolbox/ngs_analysis/dump/30-942700356_nt93.csv"
 	# output_path = "/groups/doudna/team_resources/toolbox/ngs_analysis/dump"
-	# run = 'ED-I-109-1'
+	# run = 'ED-II-47-1'
 	# raw_fastq_path = '/groups/doudna/team_resources/toolbox/ngs_analysis/dump/00_fastq'
 	# reference_list = []
 
@@ -270,9 +277,9 @@ def main():
 
 	# Load config files
 	with open(config_path, "r") as f:
-		config = yaml.load(f, Loader=yaml.FullLoader)
+		config = yaml.safe_load(f)
 	with open(quality_check_config, "r") as f:
-		config_main = yaml.load(f, Loader=yaml.FullLoader)
+		config_main = yaml.safe_load(f)
 
 	# Import csv sample file
 	df = pd.read_csv(csv_file_path)
@@ -300,8 +307,12 @@ def main():
 		write_content = ''
 		barcode_file_path = f'{output_path}{os.sep}{run}.tsv'
 		# Gather input (multiplexed filenames)
-
-		sample_id_list.extend(extract_item_from_df(df, run, run_id_col_name, sample_id_col_name))
+		print(run_id_col_name, "----", sample_id_col_name, "----", "\n DF: ", df)
+		extracted_samples = extract_item_from_df(df, run, run_id_col_name, sample_id_col_name)
+		if isinstance(extracted_samples, str):
+			sample_id_list.append(extracted_samples)
+		if isinstance(extracted_samples, list):
+			sample_id_list.extend(extracted_samples)
 		print(run, sample_id_list)
 		# print(sample_id_list)
 		fastq_path = get_filepath_list(raw_fastq_path, run, 'fastq.gz')

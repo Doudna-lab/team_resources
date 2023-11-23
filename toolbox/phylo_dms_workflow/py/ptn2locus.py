@@ -4,6 +4,7 @@ import copy
 import re
 # External modules
 import pandas as pd
+import yaml
 from Bio import SeqIO
 from bioservices import UniProt
 from Bio.SeqRecord import SeqRecord
@@ -27,6 +28,10 @@ def parse_arguments():
 	                    dest='output',
 	                    default='sequences.fa',
 	                    help='Path to output file [default=sequences.fa]')
+	parser.add_argument('-c',
+	                    dest='config',
+	                    help='Path to config file in the dms_workflow.smk format. '
+	                         'The program will save the output on the path specified by input_dir.')
 	parser.add_argument('-d',
 	                    dest='database',
 	                    default='nuccore',
@@ -206,11 +211,17 @@ def main():
 	input_col = args.id_list
 	entrez_login = args.login
 	db = args.database
+	config = args.config
 	output_path = args.output
 	# Set blast arguments
 	# DEBUG
 	df = pd.read_csv(input_col)
 	hit_list = df.iloc[:, 0].tolist()
+
+	if config:
+		with open(config, 'r') as config_handle:
+			config_dms = yaml.safe_load(config_handle)
+		output_path = f"{config_dms['input_dir']}/multi_fasta.fna"
 
 	# Entrez authentication
 	print(f"Entrez login: {entrez_login}")

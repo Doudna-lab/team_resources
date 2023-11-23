@@ -4,10 +4,12 @@ input_dir: "/groups/doudna/projects/daniel_projects/prywes_n/input_data"
 threads: 20
 
 # File directory where files will be stored in
-run: "/groups/doudna/projects/daniel_projects/prywes_n/rubisco_dms_75mid"
+run: "/groups/doudna/projects/daniel_projects/prywes_n/rubisco_dms"
 
-min_ident: '0.75'
+min_ident: ['0.75', '0.65', '0.70']
 site_offset: '3'
+reference_seq:
+  rubisco_dms: 'WP_011390153.1'
 
 experiment_id: ['rubisco_dms']
 

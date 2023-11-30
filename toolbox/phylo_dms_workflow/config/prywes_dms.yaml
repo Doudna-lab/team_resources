@@ -6,10 +6,11 @@ threads: 20
 # File directory where files will be stored in
 run: "/groups/doudna/projects/daniel_projects/prywes_n/rubisco_dms"
 
-min_ident: ['0.75', '0.65', '0.70']
+min_ident: ['0.75', '0.65', '0.70', '0.0']
 site_offset: '3'
 reference_seq:
   rubisco_dms: 'WP_011390153.1'
+reference_fasta: "fasta/WP_011390153.1.fna"
 
 experiment_id: ['rubisco_dms']
 

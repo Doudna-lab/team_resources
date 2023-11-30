@@ -9,7 +9,7 @@ def main():
 	# Inputs
 	dms_in = str(snakemake.input.dms_data)
 	# Outputs
-	dms_aapref_out = str(snakemake.output.dms_out)
+	dms_aapref_out = str(snakemake.output.dms_prefs)
 	# Params
 	position_col = str(snakemake.params.position_col)
 	enrichment_col = str(snakemake.params.enrichment_col)

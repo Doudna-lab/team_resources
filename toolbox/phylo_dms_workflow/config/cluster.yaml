@@ -2,3 +2,7 @@
 __default__:
   time: '2:00:00'
   cores: 2
+
+phydms:
+  time: '5:00:00'
+  cores: 20

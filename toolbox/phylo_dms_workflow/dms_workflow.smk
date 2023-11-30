@@ -63,7 +63,8 @@ rule seq_alignment:
 	output:
 		msa = "{run}_{min_ident}/{experiment_id}/processed_inputs/nt_alignment_msa.fna"
 	params:
-		reference_seq = lambda wildcards: config["reference_seq"][wildcards.experiment_id]
+		reference_seq = lambda wildcards: config["reference_seq"][wildcards.experiment_id],
+		impute_ref = config["reference_fasta"]
 	conda:
 		"envs/dms.yaml"
 	message:
@@ -74,7 +75,8 @@ rule seq_alignment:
 		"""
 	shell:
 		"""
-		phydms_prepalignment {input.multi_fasta} {output.msa} {params.reference_seq} --minidentity {wildcards.min_ident}
+		cat {params.impute_ref} {input.multi_fasta} > {input.multi_fasta}_ref_imputed
+		phydms_prepalignment {input.multi_fasta}_ref_imputed {output.msa} {params.reference_seq} --minidentity {wildcards.min_ident}
 		"""
 
 # noinspection SmkAvoidTabWhitespace

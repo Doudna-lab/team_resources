@@ -82,8 +82,10 @@ rule iterative_search:
         -num_iterations 10 \
         -max_hsps 1 \
         -subject_besthit \
+#       - LOWER GAP PENALTY
         -inclusion_ethresh 1e-05 \
         -evalue 1e-2 \
+#       - LOWER QCOV_PERC -> 50 
         -qcov_hsp_perc 80 \
         -out {output.psiblast_out}
         """

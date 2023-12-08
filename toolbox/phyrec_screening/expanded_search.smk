@@ -6,7 +6,7 @@ configfile: "config/cluster.yaml"
 import glob
 
 # Cluster run template
-#nohup snakemake --snakefile expanded_search.smk -j 5 --cluster "sbatch -t {cluster.time} -n {cluster.cores} -N {cluster.nodes}" --cluster-config config/cluster.yaml --latency-wait 120 --use-conda &
+#nohup snakemake --snakefile expanded_search.smk -j 5 --cluster "sbatch -t {cluster.time} -n {cluster.cores} " --cluster-config config/cluster.yaml --latency-wait 120 --use-conda &
 
 # noinspection SmkAvoidTabWhitespace
 rule all:
@@ -71,7 +71,12 @@ rule iterative_search:
 		custom_cols = config["blast_custom_cols"],
 	threads: config["iterative_search"]["cores"]
 	message:
-		"Blasting query :\n {input.msa_in}\nAgainst database:\n {params.db}\nGenerating:\n {output.psiblast_out}"
+		"""
+Blasting query :\n {input.msa_in}\n
+Against database:\n {params.db}\nGenerating:\n {output.psiblast_out}
+Default psiblast gapopen changed from 11 to 9
+Default psiblast gapextend kept at value 1 
+		"""
 	shell:
 		"""
         psiblast \
@@ -82,11 +87,10 @@ rule iterative_search:
         -num_iterations 10 \
         -max_hsps 1 \
         -subject_besthit \
-#       - LOWER GAP PENALTY
+        -gapopen 9 \
         -inclusion_ethresh 1e-05 \
         -evalue 1e-2 \
-#       - LOWER QCOV_PERC -> 50 
-        -qcov_hsp_perc 80 \
+        -qcov_hsp_perc 60 \
         -out {output.psiblast_out}
         """
 

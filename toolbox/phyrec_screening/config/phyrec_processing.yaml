@@ -4,7 +4,7 @@ threads: 5
 ram_phylogeny: 30000
 
 # Parent directorry where the analyses will be stored
-run: "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening"
+run: "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening_50qcov"
 
 # Directory that stores input MSA files
 input_dir: "/groups/doudna/projects/daniel_projects/boger_r/reference_msa"

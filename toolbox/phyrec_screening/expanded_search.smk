@@ -90,7 +90,7 @@ Default psiblast gapextend kept at value 1
         -gapopen 9 \
         -inclusion_ethresh 1e-05 \
         -evalue 1e-2 \
-        -qcov_hsp_perc 60 \
+        -qcov_hsp_perc 50 \
         -out {output.psiblast_out}
         """
 
@@ -118,9 +118,23 @@ rule krona:
 		taxdump_path = config["taxdump_path"]
 	conda:
 		"envs/krona.yaml"
+	message:
+		"""
+This rule implements Krona for interactive visualization of taxonomic distribution of the sequences.
+The first five lines of the shell section are intended to correct Krona's issues with handling of taxonomic
+background data.
+Input data: {input.taxid_counts}
+Output: {output.krona_chart}
+Wildcards used in this rule: {wildcards}
+		"""
 	shell:
 		"""		
-		ktImportTaxonomy -m 2 -t 1 -tax {params.taxdump_path} -o {output.krona_chart} {input.taxid_counts}
+		mkdir $CONDA_PREFIX/bin/scripts || true
+		mkdir $CONDA_PREFIX/bin/taxonomy || true
+		ln -s $CONDA_PREFIX/opt/krona/scripts/extractTaxonomy.pl $CONDA_PREFIX/bin/scripts || true 
+		ln -s $CONDA_PREFIX/opt/krona/scripts/taxonomy.make $CONDA_PREFIX/bin/scripts || true
+		ktUpdateTaxonomy.sh
+		ktImportTaxonomy -m 2 -t 1 -tax $CONDA_PREFIX/bin/taxonomy -o {output.krona_chart} {input.taxid_counts}
 		"""
 # ktUpdateTaxonomy.sh {params.taxdump_path}
 

@@ -88,8 +88,8 @@ Default psiblast gapextend kept at value 1
         -max_hsps 1 \
         -subject_besthit \
         -gapopen 9 \
-        -inclusion_ethresh 1e-05 \
-        -evalue 1e-2 \
+        -inclusion_ethresh 1e-2 \
+        -evalue 1e-1 \
         -qcov_hsp_perc 50 \
         -out {output.psiblast_out}
         """

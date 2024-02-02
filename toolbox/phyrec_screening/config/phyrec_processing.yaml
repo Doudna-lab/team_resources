@@ -13,7 +13,8 @@ input_dir: "/groups/doudna/projects/daniel_projects/boger_r/reference_msa"
 entrez_login: "thedoudnalab@gmail.com"
 
 # Parent path to the shared database files in the server
-shared_db_path: "/shared/db/genbank/256/blast/nr"
+#shared_db_path: "/shared/db/genbank/256/blast/nr"
+shared_db_path: "/groups/doudna/team_resources/shared_databases/ncbi_nr/nr"
 
 # Prefix name found in the input MSA filename
 input_prefix: ["G2II_nLTR_RT"]

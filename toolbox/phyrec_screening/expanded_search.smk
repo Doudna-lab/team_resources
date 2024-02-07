@@ -62,8 +62,9 @@ rule all:
 rule iterative_search:
 	input:
 		msa_in = lambda wildcards: glob.glob("{input_dir}/{input_prefix}.msa.fasta".format(
-			input_dir=config["input_dir"], input_prefix=wildcards.input_prefix))
-		# msa_in = "{run}/input/{input_prefix}.msa.fasta"
+			input_dir=config["input_dir"], input_prefix=wildcards.input_prefix)),
+		# sequence_db = lambda wildcards: glob.glob("{shared_db_path}/{db_prefix}.01.phr".format(
+		# 	shared_db_path=config["shared_db_path"], db_prefix=wildcards.db_prefix))
 	output:
 		psiblast_out = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}.blastout"
 	params:
@@ -72,16 +73,15 @@ rule iterative_search:
 	threads: config["iterative_search"]["cores"]
 	message:
 		"""
-Blasting query :\n {input.msa_in}\n
-Against database:\n {params.db}\nGenerating:\n {output.psiblast_out}
-Default psiblast gapopen changed from 11 to 9
-Default psiblast gapextend kept at value 1 
+Blasting query :\n {input.msa_in}
+Against database:\n {params.db}/{wildcards.db_prefix} \nGenerating:\n {output.psiblast_out}
+Wildcards: {wildcards}
 		"""
 	shell:
 		"""
         psiblast \
         -in_msa {input.msa_in} \
-        -db {params.db} \
+        -db {params.db}/{wildcards.db_prefix} \
         -outfmt "10 {params.custom_cols}" \
         -num_threads {threads} \
         -num_iterations 10 \
@@ -129,12 +129,29 @@ Wildcards used in this rule: {wildcards}
 		"""
 	shell:
 		"""		
-		mkdir $CONDA_PREFIX/bin/scripts || true
-		mkdir $CONDA_PREFIX/bin/taxonomy || true
-		ln -s $CONDA_PREFIX/opt/krona/scripts/extractTaxonomy.pl $CONDA_PREFIX/bin/scripts || true 
-		ln -s $CONDA_PREFIX/opt/krona/scripts/taxonomy.make $CONDA_PREFIX/bin/scripts || true
-		ktUpdateTaxonomy.sh
-		ktImportTaxonomy -m 2 -t 1 -tax $CONDA_PREFIX/bin/taxonomy -o {output.krona_chart} {input.taxid_counts}
+mkdir $CONDA_PREFIX/bin/scripts || true
+mkdir $CONDA_PREFIX/bin/taxonomy || true
+ln -s $CONDA_PREFIX/opt/krona/scripts/extractTaxonomy.pl $CONDA_PREFIX/bin/scripts || true 
+ln -s $CONDA_PREFIX/opt/krona/scripts/taxonomy.make $CONDA_PREFIX/bin/scripts || true
+
+# Retry logic for ktUpdateTaxonomy.sh
+retry_count=0
+max_retries=10
+while true; do
+    if ktUpdateTaxonomy.sh; then
+        break  # If the command succeeds, exit the loop
+    else
+        retry_count=$((retry_count+1))
+        if [ $retry_count -ge $max_retries ]; then
+            echo "Reached maximum retry attempts. Exiting."
+            exit 1  # Exit script if maximum retries reached
+        fi
+        echo "Error occurred. Retrying ($retry_count of $max_retries)..."
+        sleep 10  # Add a delay before retrying (adjust as needed)
+    fi
+done
+
+ktImportTaxonomy -m 2 -t 1 -tax $CONDA_PREFIX/bin/taxonomy -o {output.krona_chart} {input.taxid_counts}
 		"""
 # ktUpdateTaxonomy.sh {params.taxdump_path}
 

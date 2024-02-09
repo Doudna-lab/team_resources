@@ -171,4 +171,3 @@ rule realignment:
 		cat {input.msa_in} {input.hits_fasta} > {params.merged_input}
 		clustalo --iter 1 --threads {threads} -i {params.merged_input} -o {output.post_search_msa} -v
 		"""
-

@@ -15,20 +15,20 @@ rule all:
 		# expand("{run}/custom_db/{db_prefix}.phr",
 		# 	run=config["run"],db_prefix=config["db_prefix"]),
 		# PSI-Blast the MSA input using a list of sequence databases
-		expand("{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}.blastout",
-			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		expand("{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_taxid{taxid}.blastout",
+			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"], taxid=config["taxid_filter"]),
 		# Count TaxID occurrences in PSI-BLAST output
-		expand("{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid_counts.tsv",
-			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		expand("{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid{taxid}_taxid_counts.tsv",
+			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"], taxid=config["taxid_filter"]),
 		# Export FASTA sequences of PSIBLAST Hits containing taxid labels
-		expand("{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_hits.fasta",
-			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		expand("{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_taxid{taxid}_hits.fasta",
+			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"], taxid=config["taxid_filter"]),
 		# Generate Krona plot
-		expand("{run}/krona/db-{db_prefix}_query-{input_prefix}_krona-plot.html",
-			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		expand("{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid{taxid}_krona-plot.html",
+			run=config["run"],db_prefix=config["db_prefix"], input_prefix=config["input_prefix"], taxid=config["taxid_filter"]),
 		# Re-align the initial MSA with the PSI-BLAST hit sequences
-		expand("{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta",
-			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"]),
+		expand("{run}/clustalo/db-{db_prefix}_query-{input_prefix}_taxid{taxid}.msa.fasta",
+			run=config["run"], db_prefix=config["db_prefix"], input_prefix=config["input_prefix"], taxid=config["taxid_filter"]),
 
 # noinspection SmkAvoidTabWhitespace
 # rule merge_and_makedb:
@@ -66,10 +66,12 @@ rule iterative_search:
 		# sequence_db = lambda wildcards: glob.glob("{shared_db_path}/{db_prefix}.01.phr".format(
 		# 	shared_db_path=config["shared_db_path"], db_prefix=wildcards.db_prefix))
 	output:
-		psiblast_out = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}.blastout"
+		psiblast_out = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_taxid{taxid}.blastout"
 	params:
 		db = config["shared_db_path"],
 		custom_cols = config["blast_custom_cols"],
+	conda:
+		"envs/blast.yaml"
 	threads: config["iterative_search"]["cores"]
 	message:
 		"""
@@ -84,23 +86,24 @@ Wildcards: {wildcards}
         -db {params.db}/{wildcards.db_prefix} \
         -outfmt "10 {params.custom_cols}" \
         -num_threads {threads} \
+        -taxids {wildcards.taxid} \
         -num_iterations 10 \
         -max_hsps 1 \
         -subject_besthit \
         -gapopen 9 \
-        -inclusion_ethresh 1e-2 \
-        -evalue 1e-1 \
-        -qcov_hsp_perc 50 \
+        -inclusion_ethresh 1e-15 \
+        -evalue 1e-10 \
+        -qcov_hsp_perc 70 \
         -out {output.psiblast_out}
         """
 
 # noinspection SmkAvoidTabWhitespace
 rule taxid_parse:
 	input:
-		psiblast_out = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}.blastout"
+		psiblast_out = "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_taxid{taxid}.blastout"
 	output:
-		taxid_counts = "{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid_counts.tsv",
-		hits_fasta= "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_hits.fasta"
+		taxid_counts = "{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid{taxid}_taxid_counts.tsv",
+		hits_fasta= "{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_taxid{taxid}_hits.fasta"
 	params:
 		blast_col_names = config["blast_custom_cols"]
 	conda:
@@ -111,9 +114,9 @@ rule taxid_parse:
 # noinspection SmkAvoidTabWhitespace
 rule krona:
 	input:
-		taxid_counts = "{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid_counts.tsv"
+		taxid_counts = "{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid{taxid}_taxid_counts.tsv"
 	output:
-		krona_chart = "{run}/krona/db-{db_prefix}_query-{input_prefix}_krona-plot.html",
+		krona_chart = "{run}/krona/db-{db_prefix}_query-{input_prefix}_taxid{taxid}_krona-plot.html",
 	params:
 		taxdump_path = config["taxdump_path"]
 	conda:
@@ -153,18 +156,17 @@ done
 
 ktImportTaxonomy -m 2 -t 1 -tax $CONDA_PREFIX/bin/taxonomy -o {output.krona_chart} {input.taxid_counts}
 		"""
-# ktUpdateTaxonomy.sh {params.taxdump_path}
 
 # noinspection SmkAvoidTabWhitespace
 rule realignment:
 	input:
-		hits_fasta="{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_hits.fasta",
+		hits_fasta="{run}/psiblast_out/db-{db_prefix}_query-{input_prefix}_taxid{taxid}_hits.fasta",
 		msa_in=lambda wildcards: glob.glob("{input_dir}/{input_prefix}.msa.fasta".format(
 			input_dir=config["input_dir"],input_prefix=wildcards.input_prefix))
 	output:
-		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}.msa.fasta"
+		post_search_msa = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}_taxid{taxid}.msa.fasta"
 	params:
-		merged_input = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}_merged-input.fasta",
+		merged_input = "{run}/clustalo/db-{db_prefix}_query-{input_prefix}_taxid{taxid}_merged-input.fasta",
 	threads: config["realignment"]["cores"]
 	shell:
 		"""

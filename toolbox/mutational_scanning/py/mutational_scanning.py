@@ -4,6 +4,8 @@ from argparse import ArgumentParser as argp
 import yaml
 from Bio.Seq import Seq
 from Bio import SeqIO
+# Project modules
+from re_check import reverser_complement, avoidREs_nodelchar
 
 # DEBUG
 # abs_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/fasta/TadA8e.fna"
@@ -23,6 +25,14 @@ def parse_arguments():
 	                    dest='config',
 	                    default='/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml',
 	                    help='Specify which config file will be loaded to the script. [Default: tadA.yaml]')
+	parser.add_argument('-s',
+						dest='split_variants',
+						action='store_true',
+						help='Specify whether the resulting sequences should be split in half or not')
+	parser.add_argument('--re',
+						dest='res_enzyme',
+						help='Specify a path to restriction enzyme data where the second column '
+							 'contains sequence strings of the recognition sites')
 
 	# Parse arguments from the command line
 	arguments = parser.parse_args()
@@ -74,6 +84,20 @@ def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 	return ptn_record_ls, gene_record_ls
 
 
+def split_variants(gene_records):
+	split_5p = []
+	split_3p = []
+	for record in gene_records:
+		half_site = round(len(record.seq))
+		record_5p_seq = record.seq[0:half_site]
+		record_3p_seq = record.seq[(half_site + 1):-1]
+
+		record.seq = record_5p_seq
+		split_5p.append(record)
+		record.seq = record_3p_seq
+		split_3p.append(record)
+
+
 def fasta_export(fasta_records: list, dir_path: str, out_filename: str):
 	with open(f"{dir_path}/{out_filename}", "w") as fasta_out:
 		SeqIO.write(fasta_records, fasta_out, "fasta")
@@ -84,6 +108,7 @@ def main():
 	args = parse_arguments()
 	config_path = args.config
 	fasta_in_path = args.fasta_file
+	res_enzyme_path = args.res_enzyme
 
 	# Load config file
 	with open(config_path, "r") as f:
@@ -105,13 +130,24 @@ def main():
 	# Generate AA and NT single variant libs based on the provided backtable
 	ptn_recs, gene_recs = generate_variants(ptnseq_in, back_table)
 
+	if res_enzyme_path:
+		pass_list, fail_list, refail_list = avoidREs_nodelchar(res_enzyme_path, gene_recs)
+		# Export outputs
+		fasta_export(pass_list, output_dir, f"{config['out_file_prefix']}.fna")
+		fasta_export(fail_list, output_dir, f"{config['out_file_prefix']}_failRE.fna")
+
 	print("Single variants successfully generated")
 	# Export outputs
 	fasta_export(ptn_recs, output_dir, f"{config['out_file_prefix']}.faa")
-	fasta_export(gene_recs, output_dir, f"{config['out_file_prefix']}.fna")
+	if not res_enzyme_path:
+		fasta_export(gene_recs, output_dir, f"{config['out_file_prefix']}.fna")
 	print(f"FASTA libraries exported to {output_dir}:\n "
 	      f"AA FASTA: {output_dir}/{config['out_file_prefix']}.faa\n "
 	      f"NT FASTA: {output_dir}/{config['out_file_prefix']}.fna\n")
+
+
+
+
 
 
 if __name__ == "__main__":

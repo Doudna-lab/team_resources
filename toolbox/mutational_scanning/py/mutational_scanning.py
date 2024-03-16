@@ -1,15 +1,17 @@
 # Native modules
+import re
 from argparse import ArgumentParser as argp
 # Installed Modules
 import yaml
 from Bio.Seq import Seq
 from Bio import SeqIO
 # Project modules
-from re_check import reverser_complement, avoidREs_nodelchar
+from re_check import avoidREs_nodelchar
 
 # DEBUG
-# abs_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/fasta/TadA8e.fna"
+# fasta_in_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/fasta/TadA8e.fna"
 # config_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml"
+# res_enzyme_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/data/pacI_restriction.csv"
 
 
 def parse_arguments():
@@ -26,8 +28,8 @@ def parse_arguments():
 	                    default='/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml',
 	                    help='Specify which config file will be loaded to the script. [Default: tadA.yaml]')
 	parser.add_argument('-s',
-						dest='split_variants',
-						action='store_true',
+						dest='split_parts',
+						default='',
 						help='Specify whether the resulting sequences should be split in half or not')
 	parser.add_argument('--re',
 						dest='res_enzyme',
@@ -63,6 +65,13 @@ def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 	# Set return variables
 	ptn_record_ls = []
 	gene_record_ls = []
+	wt_backtranslated_seq = ''
+
+	# Set up a SeqRecord entry for the WT nucleotide sequence backtranslated
+	wt_ptnseq = Seq(''.join(ptnseq))
+	for wt_residue in wt_ptnseq:
+		wt_backtranslated_seq += format_backtable[wt_residue]
+	SeqIO.SeqRecord(Seq(wt_backtranslated_seq), id=ptn_id, description='')
 
 	# Loop through the AA position in the reference sequence
 	for aacid_idx in range(len(ptnseq_ls)):
@@ -81,21 +90,29 @@ def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 				for variand_aa in loop_ptnseq:
 					variant_backtrans_seq += format_backtable[variand_aa]
 				gene_record_ls.append(SeqIO.SeqRecord(Seq(variant_backtrans_seq), id=variant_fasta_label, description=''))
-	return ptn_record_ls, gene_record_ls
+	return ptn_record_ls, gene_record_ls, wt_backtranslated_seq
 
 
-def split_variants(gene_records):
-	split_5p = []
-	split_3p = []
+def split_variants(gene_records, original_sequence, split_parts: int):
+	count = 0
+	filtered_split_records = []
 	for record in gene_records:
-		half_site = round(len(record.seq))
-		record_5p_seq = record.seq[0:half_site]
-		record_3p_seq = record.seq[(half_site + 1):-1]
+		left_split_anchor = 0
+		for sequence_window in range(1, split_parts + 1):
+			right_split_anchor = round(len(record.seq) / split_parts * sequence_window)
+			if right_split_anchor >= len(original_sequence):
+				right_split_anchor = len(original_sequence)
 
-		record.seq = record_5p_seq
-		split_5p.append(record)
-		record.seq = record_3p_seq
-		split_3p.append(record)
+			if re.search(str(record.seq[left_split_anchor:right_split_anchor]), str(original_sequence)):
+				count += 1
+				left_split_anchor = right_split_anchor + 1
+				continue
+
+			split_record = SeqIO.SeqRecord(record.seq[left_split_anchor:right_split_anchor], f"{record.id}|split_{sequence_window}")
+			filtered_split_records.append(split_record)
+			left_split_anchor = right_split_anchor + 1
+
+	return filtered_split_records
 
 
 def fasta_export(fasta_records: list, dir_path: str, out_filename: str):
@@ -109,6 +126,8 @@ def main():
 	config_path = args.config
 	fasta_in_path = args.fasta_file
 	res_enzyme_path = args.res_enzyme
+	split_parts = int(args.split_parts)
+
 
 	# Load config file
 	with open(config_path, "r") as f:
@@ -128,7 +147,12 @@ def main():
 
 	print("FASTA sequence imported ")
 	# Generate AA and NT single variant libs based on the provided backtable
-	ptn_recs, gene_recs = generate_variants(ptnseq_in, back_table)
+	ptn_recs, gene_recs, backtranslated_base_sequence = generate_variants(ptnseq_in, back_table)
+
+	# Check request for sequence split
+	if split_parts:
+		split_gene_recs = split_variants(gene_recs, backtranslated_base_sequence, split_parts)
+		gene_recs = split_gene_recs
 
 	if res_enzyme_path:
 		pass_list, fail_list, refail_list = avoidREs_nodelchar(res_enzyme_path, gene_recs)
@@ -144,10 +168,6 @@ def main():
 	print(f"FASTA libraries exported to {output_dir}:\n "
 	      f"AA FASTA: {output_dir}/{config['out_file_prefix']}.faa\n "
 	      f"NT FASTA: {output_dir}/{config['out_file_prefix']}.fna\n")
-
-
-
-
 
 
 if __name__ == "__main__":

@@ -84,6 +84,17 @@ def match_dict2fastarecs(records_list, match_dict):
 	return formatted_id_records
 
 
+def handle_fasta_dups(records_list):
+	check_dups = []
+	checked_records = copy.deepcopy(records_list)
+	for record in checked_records:
+		if record.id in check_dups:
+			record.id += "_2"
+		elif record.id not in check_dups:
+			check_dups.append(record.id)
+	return checked_records
+
+
 def main():
 	# Argparse Variables
 	args = parse_arguments()
@@ -105,8 +116,10 @@ def main():
 
 	concat_fasta_records = match_dict2fastarecs(fasta_records, match_id_dict)
 
+	dedup_concat_fasta_records = handle_fasta_dups(concat_fasta_records)
+
 	with open(output_file, "w") as processed_fasta_handle:
-		SeqIO.write(concat_fasta_records, processed_fasta_handle, "fasta")
+		SeqIO.write(dedup_concat_fasta_records, processed_fasta_handle, "fasta")
 
 
 if __name__ == "__main__":

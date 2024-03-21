@@ -89,7 +89,7 @@ def handle_fasta_dups(records_list):
 	checked_records = copy.deepcopy(records_list)
 	for record in checked_records:
 		if record.id in check_dups:
-			record.id += "_2"
+			record.id += "_dup"
 		elif record.id not in check_dups:
 			check_dups.append(record.id)
 	return checked_records

@@ -4,7 +4,7 @@ threads: 5
 ram_phylogeny: 30000
 
 # Parent directorry where the analyses will be stored
-run: "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening_50qcov_lowEval_euk"
+run: "/groups/doudna/projects/daniel_projects/boger_r/phyrec_screening_50qcov_lowEval"
 
 # Directory that stores input MSA files
 input_dir: "/groups/doudna/projects/daniel_projects/boger_r/reference_msa"
@@ -13,16 +13,14 @@ input_dir: "/groups/doudna/projects/daniel_projects/boger_r/reference_msa"
 entrez_login: "thedoudnalab@gmail.com"
 
 # Parent path to the shared database files in the server
-shared_db_path: "/shared/db/genbank/257/blast"
-#shared_db_path: "/groups/doudna/team_resources/shared_databases/ncbi_nr"
+#shared_db_path: "/shared/db/genbank/256/blast/nr"
+shared_db_path: "/groups/doudna/team_resources/shared_databases/ncbi_nr/nr"
 
 # Prefix name found in the input MSA filename
-input_prefix: ["G2II_nLTR_RT", "G2II_nLTR_RT_EUK"]
-
-taxid_filter: ["2157", "2", "2759"]
+input_prefix: ["G2II_nLTR_RT"]
 
 # Name given to the merger of the databases collected for the analysis
-db_prefix: ["nr"]
+db_prefix: "NR"
 
 # Path to NCBI taxonomy download directory
 taxdump_path: "/groups/doudna/team_resources/shared_databases/taxdump"

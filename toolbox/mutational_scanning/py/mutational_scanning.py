@@ -1,18 +1,27 @@
 # Native modules
 import re
+import shutil
+import copy
 from argparse import ArgumentParser as argp
 # Installed Modules
 import yaml
 from Bio.Seq import Seq
 from Bio import SeqIO
+from Bio.SeqRecord import SeqRecord
+
 # Project modules
+#DEBUG LINE
+# from toolbox.mutational_scanning.py.re_check import avoidREs_nodelchar
 from re_check import avoidREs_nodelchar
+
 
 # DEBUG
 # fasta_in_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/fasta/TadA8e.fna"
 # config_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml"
 # res_enzyme_path = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/data/pacI_restriction.csv"
-
+# split_parts = 2
+# add_3p_handle = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/data/3prime_handle.fasta"
+# add_5p_handle = "/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/data/5prime_handle.fasta"
 
 def parse_arguments():
 	#  Launch argparse parser
@@ -35,6 +44,16 @@ def parse_arguments():
 						dest='res_enzyme',
 						help='Specify a path to restriction enzyme data where the second column '
 							 'contains sequence strings of the recognition sites')
+	parser.add_argument('--add_5p_handle',
+						dest='add_5p_handle',
+						default='',
+						help='[Requires --split_parts] Provide a FASTA formatted file with sequence(s) to be added to both ends of the '
+							 '5 prime resulting sequences. Each entry must be laballed with either ">5p" or "3p".')
+	parser.add_argument('--add_3p_handle',
+						dest='add_3p_handle',
+						default='',
+						help='[Requires --split_parts] Provide a FASTA formatted file with sequence(s) to be added to both ends of the '
+							 '3 prime end sequences. Each entry must be laballed with either ">5p" or "3p".')
 
 	# Parse arguments from the command line
 	arguments = parser.parse_args()
@@ -115,6 +134,21 @@ def split_variants(gene_records, original_sequence, split_parts: int):
 	return filtered_split_records
 
 
+def add_sequence_segments(original_records: list, sequence_segments: list, apply_to_split: int):
+	modified_records = copy.deepcopy(original_records)
+	for variant_record in modified_records:
+		current_id = variant_record.id.split("|")[-1]
+		split_info_field = current_id.split("_")[-1]
+		if int(split_info_field) == int(apply_to_split):
+			for handle_record in sequence_segments:
+				if handle_record.id == '5p':
+					variant_record.seq = handle_record.seq.upper() + variant_record.seq.upper()
+				elif handle_record.id == '3p':
+					variant_record.seq = variant_record.seq.upper() + handle_record.seq.upper()
+
+	return modified_records
+
+
 def fasta_export(fasta_records: list, dir_path: str, out_filename: str):
 	with open(f"{dir_path}/{out_filename}", "w") as fasta_out:
 		SeqIO.write(fasta_records, fasta_out, "fasta")
@@ -127,7 +161,8 @@ def main():
 	fasta_in_path = args.fasta_file
 	res_enzyme_path = args.res_enzyme
 	split_parts = int(args.split_parts)
-
+	add_5p_handle = args.add_5p_handle
+	add_3p_handle = args.add_3p_handle
 
 	# Load config file
 	with open(config_path, "r") as f:
@@ -153,6 +188,22 @@ def main():
 	if split_parts:
 		split_gene_recs = split_variants(gene_recs, backtranslated_base_sequence, split_parts)
 		gene_recs = split_gene_recs
+
+		if add_5p_handle:
+			add_5p_records = []
+			with open(add_5p_handle, "r") as add_5p:
+				for record in SeqIO.parse(add_5p, "fasta"):
+					add_5p_records.append(record)
+			gene_recs_5p_added = add_sequence_segments(gene_recs, add_5p_records, 1)
+			gene_recs = gene_recs_5p_added
+
+		if add_3p_handle:
+			add_3p_records = []
+			with open(add_3p_handle, "r") as add_3p:
+				for record in SeqIO.parse(add_3p, "fasta"):
+					add_3p_records.append(record)
+			gene_recs_3p_added = add_sequence_segments(gene_recs, add_3p_records, 2)
+			gene_recs = gene_recs_3p_added
 
 	if res_enzyme_path:
 		pass_list, fail_list, refail_list = avoidREs_nodelchar(res_enzyme_path, gene_recs)

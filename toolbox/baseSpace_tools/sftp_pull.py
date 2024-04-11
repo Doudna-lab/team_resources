@@ -36,7 +36,9 @@ def download_directory(sftp_instance, remote_dir, local_dir):
 
 try:
     # Create an instance of the `pysftp.Connection` class
-    with pysftp.Connection(sftp_config["sftp_address"], sftp_config["username"], sftp_config["password"]) as sftp:
+    with pysftp.Connection(sftp_config["sftp_address"],
+                           username=sftp_config["username"],
+                           password=sftp_config["password"]) as sftp:
         # Change to the desired remote directory
         sftp.chdir(sftp_config["sftp_target_directory"])
 

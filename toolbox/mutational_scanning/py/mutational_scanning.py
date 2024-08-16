@@ -10,7 +10,7 @@ from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 
 # Project modules
-#DEBUG LINE
+# DEBUG LINE
 # from toolbox.mutational_scanning.py.re_check import avoidREs_nodelchar
 from re_check import avoidREs_nodelchar
 
@@ -31,11 +31,11 @@ def parse_arguments():
 		usage='%(prog)s [options] <fasta_file>')
 	# Define arguments
 	parser.add_argument('fasta_file',
-	                    help='Path to fasta input file')  # positional argument
+						help='Path to fasta input file')  # positional argument
 	parser.add_argument('-c',
-	                    dest='config',
-	                    default='/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml',
-	                    help='Specify which config file will be loaded to the script. [Default: tadA.yaml]')
+						dest='config',
+						default='/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/config/tadA.yaml',
+						help='Specify which config file will be loaded to the script. [Default: tadA.yaml]')
 	parser.add_argument('-s',
 						dest='split_parts',
 						default='',
@@ -54,6 +54,14 @@ def parse_arguments():
 						default='',
 						help='[Requires --split_parts] Provide a FASTA formatted file with sequence(s) to be added to both ends of the '
 							 '3 prime end sequences. Each entry must be laballed with either ">5p" or "3p".')
+	parser.add_argument('--left_limit',
+						dest='left_limit',
+						default=0,
+						help='DNA position in the <fasta_file> where the permutation should start. Actual position not 0-based. [Default: First NT in the input sequence]')
+	parser.add_argument('--right_limit',
+						dest='right_limit',
+						default=0,
+						help='DNA position in the <fasta_file> where the permutation should end. Actual position not 0-based [Default: Last NT in the input sequence]')
 
 	# Parse arguments from the command line
 	arguments = parser.parse_args()
@@ -67,8 +75,10 @@ def format_codon_tbl(codon_tbl: dict):
 	return formated_codon
 
 
-def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
+def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict, seq_left_limit: 0, seq_right_limit: 0):
 	"""
+	:param seq_right_limit:
+	:param seq_left_limit:
 	:param ptnrec: A single sequence enclosed in a SeqIO.SeqRecord object
 	holding at least the sequence and an identifier
 	:param backtable: Codon back table: each key represented by a one-letter
@@ -81,10 +91,22 @@ def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 	ptnseq = ptnrec.seq
 	ptn_id = ptnrec.id
 	ptnseq_ls = list(ptnseq)
+	# If the 'null' value of right_limit is provided, assume the full length of the sequence
+	if seq_right_limit == 0:
+		seq_right_limit = len(ptnseq_ls)
 	# Set return variables
 	ptn_record_ls = []
 	gene_record_ls = []
 	wt_backtranslated_seq = ''
+
+	# Validate sequence boundaries
+	actual_dna_length = len(ptnseq_ls[seq_left_limit:seq_right_limit])
+	if actual_dna_length % 3 != 0:
+		print(f'ERROR: Sequence length must be divisible by 3. '
+			  f'The current DNA sequence boundaries '
+			  f'(between {seq_left_limit} and {seq_right_limit}) result in a {actual_dna_length} NT sequence')
+		print('Exiting code')
+		exit(0)
 
 	# Set up a SeqRecord entry for the WT nucleotide sequence backtranslated
 	wt_ptnseq = Seq(''.join(ptnseq))
@@ -93,7 +115,7 @@ def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 	SeqIO.SeqRecord(Seq(wt_backtranslated_seq), id=ptn_id, description='')
 
 	# Loop through the AA position in the reference sequence
-	for aacid_idx in range(len(ptnseq_ls)):
+	for aacid_idx in range(seq_left_limit, seq_right_limit):
 		# Each AA position will be replaced by all possible amino acids in the backtable
 		for aa_in_lib in format_backtable:
 			if aa_in_lib != ptnseq_ls[aacid_idx].upper():
@@ -108,7 +130,8 @@ def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict):
 				variant_backtrans_seq = ""
 				for variand_aa in loop_ptnseq:
 					variant_backtrans_seq += format_backtable[variand_aa]
-				gene_record_ls.append(SeqIO.SeqRecord(Seq(variant_backtrans_seq), id=variant_fasta_label, description=''))
+				gene_record_ls.append(
+					SeqIO.SeqRecord(Seq(variant_backtrans_seq), id=variant_fasta_label, description=''))
 	return ptn_record_ls, gene_record_ls, wt_backtranslated_seq
 
 
@@ -127,7 +150,8 @@ def split_variants(gene_records, original_sequence, split_parts: int):
 				left_split_anchor = right_split_anchor + 1
 				continue
 
-			split_record = SeqIO.SeqRecord(record.seq[left_split_anchor:right_split_anchor], f"{record.id}|split_{sequence_window}")
+			split_record = SeqIO.SeqRecord(record.seq[left_split_anchor:right_split_anchor],
+										   f"{record.id}|split_{sequence_window}")
 			filtered_split_records.append(split_record)
 			left_split_anchor = right_split_anchor + 1
 
@@ -163,6 +187,8 @@ def main():
 	split_parts = int(args.split_parts)
 	add_5p_handle = args.add_5p_handle
 	add_3p_handle = args.add_3p_handle
+	dna_left_limit = args.left_limit
+	dna_right_limit = args.right_limit
 
 	# Load config file
 	with open(config_path, "r") as f:
@@ -180,10 +206,17 @@ def main():
 	dnaseq_in = Seq(dnaseq_record.seq)
 	ptnseq_in = SeqIO.SeqRecord(str(dnaseq_in.translate()), dnaseq_record.id)
 
+	# Format left- and right-limits from DNA to amino acid positions
+	#  The internal format will be 0-based throughout the script
+	ptn_left_limit = ((dna_left_limit - 1) // 3)
+	ptn_right_limit = ((dna_right_limit - 1) // 3)
+
 	print("FASTA sequence imported ")
 	# Generate AA and NT single variant libs based on the provided backtable
-	ptn_recs, gene_recs, backtranslated_base_sequence = generate_variants(ptnseq_in, back_table)
-
+	ptn_recs, gene_recs, backtranslated_base_sequence = generate_variants(ptnseq_in,
+																		  back_table,
+																		  ptn_left_limit,
+																		  ptn_right_limit)
 	# Check request for sequence split
 	if split_parts:
 		split_gene_recs = split_variants(gene_recs, backtranslated_base_sequence, split_parts)
@@ -217,8 +250,8 @@ def main():
 	if not res_enzyme_path:
 		fasta_export(gene_recs, output_dir, f"{config['out_file_prefix']}.fna")
 	print(f"FASTA libraries exported to {output_dir}:\n "
-	      f"AA FASTA: {output_dir}/{config['out_file_prefix']}.faa\n "
-	      f"NT FASTA: {output_dir}/{config['out_file_prefix']}.fna\n")
+		  f"AA FASTA: {output_dir}/{config['out_file_prefix']}.faa\n "
+		  f"NT FASTA: {output_dir}/{config['out_file_prefix']}.fna\n")
 
 
 if __name__ == "__main__":

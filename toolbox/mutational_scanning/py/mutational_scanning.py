@@ -75,10 +75,11 @@ def format_codon_tbl(codon_tbl: dict):
 	return formated_codon
 
 
-def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict, seq_left_limit: 0, seq_right_limit: 0):
+def generate_variants(ptnrec: SeqIO.SeqRecord, dnarec: Seq, backtable: dict, dna_left_boundary, dna_right_boundary):
 	"""
-	:param seq_right_limit:
-	:param seq_left_limit:
+	:param dna_right_boundary:
+	:param dna_left_boundary:
+	:param dnarec:
 	:param ptnrec: A single sequence enclosed in a SeqIO.SeqRecord object
 	holding at least the sequence and an identifier
 	:param backtable: Codon back table: each key represented by a one-letter
@@ -92,32 +93,31 @@ def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict, seq_left_limit: 
 	ptn_id = ptnrec.id
 	ptnseq_ls = list(ptnseq)
 	# If the 'null' value of right_limit is provided, assume the full length of the sequence
-	if seq_right_limit == 0:
-		seq_right_limit = len(ptnseq_ls)
+	# if seq_right_limit == 0:
+	# 	seq_right_limit = len(ptnseq_ls)
 	# Set return variables
 	ptn_record_ls = []
 	gene_record_ls = []
-	wt_backtranslated_seq = ''
-
-	# Validate sequence boundaries
-	actual_dna_length = len(ptnseq_ls[seq_left_limit:seq_right_limit])
-	if actual_dna_length % 3 != 0:
-		print(f'ERROR: Sequence length must be divisible by 3. '
-			  f'The current DNA sequence boundaries '
-			  f'(between {seq_left_limit} and {seq_right_limit}) result in a {actual_dna_length} NT sequence')
-		print('Exiting code')
-		exit(0)
+	wt_backtranslated_seq = []
 
 	# Set up a SeqRecord entry for the WT nucleotide sequence backtranslated
 	wt_ptnseq = Seq(''.join(ptnseq))
+	variant_backtrans_template = list(copy.deepcopy(dnarec))
 	for wt_residue in wt_ptnseq:
-		wt_backtranslated_seq += format_backtable[wt_residue]
+		wt_backtranslated_seq.extend(format_backtable[wt_residue])
+	variant_backtrans_template[dna_left_boundary:dna_right_boundary] = wt_backtranslated_seq
+	variant_backtrans_template = ''.join(variant_backtrans_template)
+	wt_backtranslated_seq = variant_backtrans_template
+	print(f"WT backtrans reference sequence of length {len(wt_backtranslated_seq)}: {wt_backtranslated_seq}")
 	SeqIO.SeqRecord(Seq(wt_backtranslated_seq), id=ptn_id, description='')
 
+	print(f"Ref DNA seq: {dnarec}")
+
 	# Loop through the AA position in the reference sequence
-	for aacid_idx in range(seq_left_limit, seq_right_limit):
+	for aacid_idx in range(len(ptnseq_ls)):
 		# Each AA position will be replaced by all possible amino acids in the backtable
 		for aa_in_lib in format_backtable:
+
 			if aa_in_lib != ptnseq_ls[aacid_idx].upper():
 				loop_ptnseq_ls = ptnseq_ls.copy()
 				aacid_idx_label = aacid_idx + 1
@@ -127,18 +127,30 @@ def generate_variants(ptnrec: SeqIO.SeqRecord, backtable: dict, seq_left_limit: 
 				loop_ptnseq = Seq(''.join(loop_ptnseq_ls))
 				ptn_record_ls.append(SeqIO.SeqRecord(loop_ptnseq, id=variant_fasta_label, description=''))
 
-				variant_backtrans_seq = ""
+				variant_backtrans_seq = []
+				variant_backtrans_template = list(copy.deepcopy(dnarec))
 				for variand_aa in loop_ptnseq:
-					variant_backtrans_seq += format_backtable[variand_aa]
+					variant_backtrans_seq.extend(''.join(format_backtable[variand_aa]))
+
+				# print(f"Plug mutated sequence of length {len(variant_backtrans_seq)}: {variant_backtrans_seq}")
+				# print(f"Into reference sequence of length {len(variant_backtrans_template)}: {variant_backtrans_template}")
+				# print(f"Boundaries: {dna_left_boundary} -> {dna_right_boundary}")
+
+				variant_backtrans_template[dna_left_boundary:dna_right_boundary] = variant_backtrans_seq
+				variant_backtrans_template = ''.join(variant_backtrans_template)
+
+				# print(f"Resuting merged sequence of length {len(variant_backtrans_template)}: {variant_backtrans_template}")
 				gene_record_ls.append(
-					SeqIO.SeqRecord(Seq(variant_backtrans_seq), id=variant_fasta_label, description=''))
+					SeqIO.SeqRecord(Seq(variant_backtrans_template), id=variant_fasta_label, description=''))
 	return ptn_record_ls, gene_record_ls, wt_backtranslated_seq
 
 
 def split_variants(gene_records, original_sequence, split_parts: int):
 	count = 0
 	filtered_split_records = []
+	repeated_records = []
 	for record in gene_records:
+		add_sequence_greenlight = True
 		left_split_anchor = 0
 		for sequence_window in range(1, split_parts + 1):
 			right_split_anchor = round(len(record.seq) / split_parts * sequence_window)
@@ -152,10 +164,18 @@ def split_variants(gene_records, original_sequence, split_parts: int):
 
 			split_record = SeqIO.SeqRecord(record.seq[left_split_anchor:right_split_anchor],
 										   f"{record.id}|split_{sequence_window}")
-			filtered_split_records.append(split_record)
+
+			# Do not allow repeated sequences in the result
+			for gathered_records in filtered_split_records:
+				if split_record.seq == gathered_records.seq:
+					repeated_records.append(split_record)
+					add_sequence_greenlight = False
+					break
+			if add_sequence_greenlight:
+				filtered_split_records.append(split_record)
 			left_split_anchor = right_split_anchor + 1
 
-	return filtered_split_records
+	return filtered_split_records, repeated_records
 
 
 def add_sequence_segments(original_records: list, sequence_segments: list, apply_to_split: int):
@@ -187,8 +207,8 @@ def main():
 	split_parts = int(args.split_parts)
 	add_5p_handle = args.add_5p_handle
 	add_3p_handle = args.add_3p_handle
-	dna_left_limit = args.left_limit
-	dna_right_limit = args.right_limit
+	dna_left_limit = int(args.left_limit)
+	dna_right_limit = int(args.right_limit)
 
 	# Load config file
 	with open(config_path, "r") as f:
@@ -204,23 +224,47 @@ def main():
 	except (ValueError, TypeError):
 		raise "The file provided is not correctly formatted as a FASTA sequence"
 	dnaseq_in = Seq(dnaseq_record.seq)
-	ptnseq_in = SeqIO.SeqRecord(str(dnaseq_in.translate()), dnaseq_record.id)
 
 	# Format left- and right-limits from DNA to amino acid positions
 	#  The internal format will be 0-based throughout the script
-	ptn_left_limit = ((dna_left_limit - 1) // 3)
-	ptn_right_limit = ((dna_right_limit - 1) // 3)
+	ptn_left_limit = (dna_left_limit - 1) // 3
+	ptn_right_limit = (dna_right_limit - 1) // 3
+
+
+	# Assign the actual value (0-Based) to DNA rightmost boundary
+	zero_based_dna_right_limit = dna_right_limit
+	if dna_right_limit == 0:
+		zero_based_dna_right_limit = len(dnaseq_in) + 1
+
+	zero_based_dna_left_limit = dna_left_limit - 1
+
+	# Validate sequence boundaries
+	actual_dna_length = len(dnaseq_in[dna_left_limit:dna_right_limit]) + 1
+	if actual_dna_length % 3 != 0:
+		print(f'ERROR: The length of sequence to be processed must be divisible by 3. '
+			  f'The current DNA sequence boundaries '
+			  f'(between {dna_left_limit} and {dna_right_limit}) result in a {actual_dna_length} NT sequence')
+		print('Exiting code')
+		exit(0)
+
+	# Translate NT to AA: This could be the entire DNA sequence or a segment per user-request
+	ptnseq_in = SeqIO.SeqRecord(str(dnaseq_in[dna_left_limit-1:dna_right_limit].translate()), dnaseq_record.id)
+	print(f"Process protein sequence \n{ptnseq_in.seq}\n")
 
 	print("FASTA sequence imported ")
+
+	print(f"DNA 0_based sequence boundaries: Left: {zero_based_dna_left_limit}, Right: {zero_based_dna_right_limit}")
 	# Generate AA and NT single variant libs based on the provided backtable
 	ptn_recs, gene_recs, backtranslated_base_sequence = generate_variants(ptnseq_in,
+																		  dnaseq_in,
 																		  back_table,
-																		  ptn_left_limit,
-																		  ptn_right_limit)
+																		  zero_based_dna_left_limit,
+																		  zero_based_dna_right_limit)
 	# Check request for sequence split
 	if split_parts:
-		split_gene_recs = split_variants(gene_recs, backtranslated_base_sequence, split_parts)
+		split_gene_recs, repeat_sequences = split_variants(gene_recs, backtranslated_base_sequence, split_parts)
 		gene_recs = split_gene_recs
+		fasta_export(repeat_sequences, output_dir, f"{config['out_file_prefix']}_repeated.fna")
 
 		if add_5p_handle:
 			add_5p_records = []

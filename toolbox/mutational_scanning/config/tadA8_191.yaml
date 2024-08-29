@@ -1,0 +1,26 @@
+
+codonTable_noStops: 
+  'r': 'CGG'
+  'h': 'CAC'
+  'k': 'AAG'
+  'd': 'GAC'
+  'e': 'GAG'
+  's': 'AGC'
+  't': 'ACC'
+  'n': 'AAC'
+  'q': 'CAG'
+  'c': 'TGC'
+  'g': 'GGC'
+  'p': 'CCC'
+  'a': 'GCC'
+  'v': 'GTG'
+  'i': 'ATC'
+  'l': 'CTG'
+  'm': 'ATG'
+  'f': 'TTC'
+  'y': 'TAC'
+  'w': 'TGG'
+
+output_dir: "/groups/doudna/projects/daniel_projects/doherty_ee/dms/tadA_singleVariant_lib" #"/Users/bellieny/projects/team_resources/toolbox/mutational_scanning/test_run" #
+
+out_file_prefix: "tadA8_191"

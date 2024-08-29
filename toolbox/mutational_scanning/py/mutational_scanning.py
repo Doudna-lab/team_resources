@@ -38,7 +38,7 @@ def parse_arguments():
 						help='Specify which config file will be loaded to the script. [Default: tadA.yaml]')
 	parser.add_argument('-s',
 						dest='split_parts',
-						default='',
+						default=0,
 						help='Specify whether the resulting sequences should be split in half or not')
 	parser.add_argument('--re',
 						dest='res_enzyme',

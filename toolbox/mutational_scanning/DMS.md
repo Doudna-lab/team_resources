@@ -7,3 +7,8 @@
 ### Methods
 + The translated sequence of the gene was set as reference, as each canonical amino acid was inserted through a computational iteration to create a variant using biopython (http://10.0.4.69/bioinformatics/btp163). Then each variant was back-translated to nucleotide based on a *Homo sapiens*-optimized codon table ("data/codon table .docx").
 + A total of 3154 sequences were generated in this library.
+
+## Example Run
++ No Split, No Handle, Fixed ends
+
+```python py/mutational_scanning.py -c config/tadA8_204.yaml --re data/pacI_restriction.csv --left_limit 26 --right_limit 274 fasta/tadA8_204.fna ```

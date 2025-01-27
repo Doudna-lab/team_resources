@@ -6,7 +6,7 @@
     + biopympi.yaml is required to run `process_maxconv.py`
 
 ```
-conda create -f envs/biopympi.yaml
+conda create -f envs/biopympi.yaml -n biopympi
 ```
 
 ### Run

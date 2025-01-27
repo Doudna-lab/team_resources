@@ -1,6 +1,7 @@
 name: biopympi
 channels:
   - conda-forge
+  - bioconda
 dependencies:
   - zipp=3.19.2
   - mpi=1.0

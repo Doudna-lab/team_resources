@@ -4,6 +4,7 @@ channels:
   - bioconda
 dependencies:
   - seaborn
+  - cutadapt>=5.0
   - scipy
   - matplotlib
   - sqlalchemy
@@ -13,6 +14,7 @@ dependencies:
   - scikit-learn
   - psycopg2
   - openpyxl
+  - numpy>=2.2.3
   - lxml
   - html5lib
   - beautifulsoup4

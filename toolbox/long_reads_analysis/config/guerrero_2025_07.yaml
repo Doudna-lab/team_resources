@@ -1,0 +1,12 @@
+# number of threads for multi-threaded applications
+threads: 10
+
+# Directory where the demultiplexed raw short reads are stored
+# Biotite Path
+read_directory: ""
+
+# Biotite Path where the current analysis files will be stored
+job_name: ""
+
+# Path to reference sequence(s) to be used in te alignment
+reference_path: ""
